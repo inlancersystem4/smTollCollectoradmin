@@ -15,9 +15,7 @@ export default {
     },
 
     methods: {
-
         async login() {
-
             var login_data = new FormData();
             login_data.append("user_email", this.email);
             login_data.append("user_password", this.password);
