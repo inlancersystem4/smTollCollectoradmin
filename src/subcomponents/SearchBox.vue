@@ -3,6 +3,16 @@ export default {
     props: {
         placeholder: String,
         value: String
+    },
+    data() {
+        return {
+            inputValue: this.value || ''
+        };
+    },
+    watch: {
+        value(newValue) {
+            this.inputValue = newValue;
+        }
     }
 }
 </script>
@@ -13,9 +23,8 @@ export default {
         <button class="icon">
             <img src="../assets/img/icons/search.svg" class="img-not-selected">
         </button>
-        <input type="text" class=" w-100" :placeholder="placeholder"
-            :value="value">
-        <button class="icon val_clear" style="cursor: pointer;">
+        <input type="text" class=" w-100" :placeholder="placeholder" v-model="inputValue">
+        <button class="icon val_clear" style="cursor: pointer;" v-if="inputValue">
             <img src="../assets/img/icons/close-icon.svg" class="img-not-selected">
         </button>
     </div>

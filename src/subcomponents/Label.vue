@@ -8,5 +8,16 @@ export default {
 
 
 <template>
-    <label :for="label" class="text-base capitalize font-medium tracking-wide block cursor-pointer">{{ label }}</label>
+    <label :for="label">{{ label }}</label>
 </template>
+
+<style scoped>
+label {
+    font-size: 14px;
+    text-transform: capitalize;
+    font-family: 500;
+    letter-spacing: 0.2px;
+    display: block;
+    cursor: pointer;
+}
+</style>

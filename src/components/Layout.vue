@@ -7,6 +7,19 @@ export default {
         Sidebar,
         Header,
     },
+    created() {
+        this.checkUser()
+    },
+    methods: {
+        checkUser() {
+            const User = localStorage.getItem('userToken')
+
+            if (!User) {
+                this.$router.push({ name: 'Login' });
+            }
+
+        }
+    },
 }
 </script>
 

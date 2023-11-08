@@ -18,12 +18,7 @@ const router = createRouter({
       path: '/toll-crud',
       name: 'TollCrud',
       component: () => import('../pages/TollCrud.vue'),
-    },
-    {
-      path: '/add-toll_plaza',
-      name: 'AddTollPlaza',
-      component: () => import('../pages/AddTollPlaza.vue')
-    },
+    }
   ]
 })
 

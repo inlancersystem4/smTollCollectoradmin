@@ -218,13 +218,13 @@
     color: var(--Grey-50);
 }
 
-.table-pagination .pagination-btn:hover {
-    background-color: var(--Grey-5);
-}
-
-.pagination-btn-disabled {
+.table-pagination .pagination-btn:disabled {
     cursor: no-drop !important;
     color: var(--Grey-40) !important;
+}
+
+.table-pagination .pagination-btn:hover {
+    background-color: var(--Grey-5);
 }
 
 .pagination-btn-group {

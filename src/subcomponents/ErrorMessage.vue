@@ -7,5 +7,12 @@ export default {
 </script>
 
 <template>
-    <p class="text-rose-600 font-semibold text-base capitalize">{{ msg }}</p>
+    <p class="text-rose-600 required">{{ msg }}</p>
 </template>
+
+<style scoped>
+p {
+    font-size: 16px;
+    font-weight: 600;
+}
+</style>
