@@ -18,6 +18,21 @@ const router = createRouter({
       path: '/toll-crud',
       name: 'TollCrud',
       component: () => import('../pages/TollCrud.vue'),
+    },
+    {
+      path: '/lane-crud',
+      name: 'LaneCrud',
+      component: () => import('../pages/LaneCrud.vue'),
+    },
+    {
+      path: '/vehicle-crud',
+      name: 'VehicleCrud',
+      component: () => import('../pages/VehicleCrud.vue'),
+    },
+    {
+      path: '/shift-crud',
+      name: 'ShiftCrud',
+      component: () => import('../pages/ShiftCrud.vue'),
     }
   ]
 })

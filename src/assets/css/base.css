@@ -1083,7 +1083,6 @@ body {
     height: 100%;
     overflow: hidden;
     z-index: 100;
-    display: none;
 }
 
 
@@ -1354,7 +1353,6 @@ body {
 
 .model {
     z-index: 100;
-    display: none;
 }
 
 

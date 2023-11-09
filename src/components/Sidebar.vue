@@ -4,6 +4,15 @@ export default {
     computed: {
         isTollCrudActive() {
             return this.$route.matched.some(route => route.path === '/toll-crud' || route.path === '/add-toll_plaza');
+        },
+        islaneCrudActive() {
+            return this.$route.matched.some(route => route.path === '/lane-crud');
+        },
+        isvehicleCrudActive() {
+            return this.$route.matched.some(route => route.path === '/vehicle-crud');
+        },
+        isshiftCrudActive() {
+            return this.$route.matched.some(route => route.path === '/shift-crud');
         }
     }
 }
@@ -59,6 +68,33 @@ export default {
                             <div class="link-items">
                                 <img src="../assets/img/icons/bell.svg" class="img-not-selected">
                                 <p class="link-title">Toll Plaza Crud</p>
+                            </div>
+                        </router-link>
+                    </li>
+
+                    <li class="list-items">
+                        <router-link to="/lane-crud" class="list-link" :class="{ link_active: islaneCrudActive }">
+                            <div class="link-items">
+                                <img src="../assets/img/icons/bell.svg" class="img-not-selected">
+                                <p class="link-title">Lane Crud</p>
+                            </div>
+                        </router-link>
+                    </li>
+
+                    <li class="list-items">
+                        <router-link to="/vehicle-crud" class="list-link" :class="{ link_active: isvehicleCrudActive }">
+                            <div class="link-items">
+                                <img src="../assets/img/icons/bell.svg" class="img-not-selected">
+                                <p class="link-title">Vehicle Crud</p>
+                            </div>
+                        </router-link>
+                    </li>
+
+                    <li class="list-items">
+                        <router-link to="/shift-crud" class="list-link" :class="{ link_active: isshiftCrudActive }">
+                            <div class="link-items">
+                                <img src="../assets/img/icons/bell.svg" class="img-not-selected">
+                                <p class="link-title">Shirt Crud</p>
                             </div>
                         </router-link>
                     </li>

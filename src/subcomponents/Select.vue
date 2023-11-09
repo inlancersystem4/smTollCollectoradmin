@@ -22,8 +22,8 @@ export default {
             this.selectDropdownOpen = !this.selectDropdownOpen;
         },
         selectOption(option) {
-            this.selectedOption = option.label;
-            this.selectedOptionVal = option.value;
+            this.selectedOption = option.t_name;
+            this.selectedOptionVal = option;
             this.selectDropdownOpen = false;
             this.$emit('option-selected', this.selectedOptionVal);
         },
@@ -41,13 +41,12 @@ export default {
 <template>
     <!-- <Select :options="array" @option-selected="onOptionSelected" /> -->
 
-    <div
-        class="w-full border border-solid border-Theme-color1 flex items-center justify-between py-2 px-3 rounded-md relative">
-        <p @click="toggleDropdown" class="w-full capitalize text-gray-400 font-medium"
-            :class="{ 'color-main': selectedOption !== null }">
+    <div class="select">
+        <p @click="toggleDropdown" class="w-100 capitalize color-Grey_90 font-medium"
+            :class="{ 'color-Grey_50': selectedOption !== null }">
             {{ selectedOption ? selectedOption : 'Select Option' }}
         </p>
-        <div class="flex items-center space-x-2">
+        <div class="select-icon">
             <div @click="clearSelection" v-if="selectedOption" class="">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path
@@ -66,12 +65,69 @@ export default {
                 </svg>
             </div>
         </div>
-        <div v-if="selectDropdownOpen"
-            class="w-full absolute top-full rounded-md bg-white shadow-md py-1 left-0 mt-2 border border-solid border-black1 max-h-[250px] overflow-y-auto">
-            <ul class="w-full">
-                <li v-for="(option, index) in options" :key="index.value" @click="selectOption(option)"
-                    class="block px-4 py-1.5 hover:bg-slate-100 cursor-pointer capitalize">{{ option.label }}</li>
+        <div v-if="selectDropdownOpen" class="select-option">
+            <ul class="w-100">
+                <li v-for="(option, index) in options" :key="index" @click="selectOption(option)">
+                    {{ option.t_name }}
+                </li>
             </ul>
         </div>
     </div>
 </template>
+
+
+<style scoped>
+.select {
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--Grey-20);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    border-radius: 0.375rem;
+    position: relative;
+}
+
+.select-option {
+    width: 100%;
+    position: absolute;
+    top: 90%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--Grey-20);
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.375rem;
+    left: 0;
+    margin-top: 0.5rem;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+
+.select-icon {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.select-option li {
+    display: block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+    cursor: pointer;
+    text-transform: capitalize;
+    border-bottom: 1px solid var(--Grey-20);
+}
+
+.select-option li:hover {
+    background-color: var(--Grey-20);
+}
+</style>

@@ -5,6 +5,8 @@ import axios from 'axios';
 import OverLaye from '../subcomponents/OverLaye.vue';
 import ErrorMessage from '../subcomponents/ErrorMessage.vue';
 
+import { useAuthStore } from "../stores";
+
 
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
@@ -12,7 +14,8 @@ const baseUrl = `${import.meta.env.VITE_API_URL}`;
 export default {
     components: {
         OverLaye,
-        ErrorMessage
+        ErrorMessage,
+        useAuthStore,
     },
     data() {
         return {
@@ -67,7 +70,7 @@ export default {
 
                 this.overlay = true
 
-                const loginUser = await axios.post(`${baseUrl}/ad/ad-login`, login_data);
+                const loginUser = await axios.post(`${baseUrl}/admin/ad-login`, login_data);
 
 
 
@@ -95,6 +98,12 @@ export default {
             }
 
         },
+
+        // async login(values) {
+        //     const authStore = useAuthStore();
+        //     const { email, password } = values;
+        //     await authStore.login(email, password);
+        // },
 
     },
 }
@@ -125,8 +134,8 @@ export default {
                     <div class="input-group">
 
                         <label for="">Email</label>
-                        <input type="email" class="input-1" v-model="email" :class="getInputError(email)">
-                        <ErrorMessage msg="Email Is reqired" v-if="!email && fromSubmited" />
+                        <input type="email" class="input-1" :class="getInputError(email)">
+                        <!-- <ErrorMessage msg="Email Is reqired" v-if="!email && fromSubmited" /> -->
 
                     </div>
 
@@ -135,7 +144,7 @@ export default {
 
                         <label for="">Password</label>
                         <div class="search-wrraper w-100 border-Grey_20" :class="getInputError(password)">
-                            <input class="w-100" :type="typePassword ? 'password' : 'text'" v-model="password">
+                            <input class="w-100" :type="typePassword ? 'password' : 'text'">
                             <div class="icon togglePassword">
                                 <span v-if="typePassword" @click="typePassword = false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -175,7 +184,7 @@ export default {
                                 </span>
                             </div>
                         </div>
-                        <ErrorMessage msg="Password Is reqired" v-if="!email && fromSubmited" />
+                        <!-- <ErrorMessage msg="Password Is reqired" v-if="!email && fromSubmited" /> -->
 
                     </div>
 

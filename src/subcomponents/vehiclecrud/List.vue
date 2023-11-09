@@ -5,10 +5,10 @@ export default {
     },
     methods: {
         deleteToll(id) {
-            this.$emit('delete_toll_plaza', id)
+            this.$emit('delete_vehicle', id)
         },
         editToll(id) {
-            this.$emit('edit_toll_plaza', id)
+            this.$emit('edit_vehicle', id)
         }
     },
 }
@@ -17,27 +17,27 @@ export default {
 <template>
     <li class="list" v-for="(items, index) in list" :key="index">
 
-        <h6 class="text-large_semibold color-Grey_90">{{ items.t_id }}.</h6>
+        <img :src="items.v_image" :alt="items.v_image">
 
-        <div class="space-y-4px">
-            <h2 class="text-large_semibold color-Grey_90">{{ items.t_name }}</h2>
-            <p class="text-small_regular color-Grey_50">{{ items.t_address }}</p>
+        <div class="space-y-4px display-flex align-center text-center justify-center" style="flex-direction: column;">
+            <h2 class="text-xl_semibold color-Grey_90">{{ items.v_name }}</h2>
+            <p class="text-md_regular color-Grey_50">{{ items.v_price }}</p>
         </div>
 
         <div class="options">
             <div class="icon-btn icon-btn_32px  custom-dropdown">
                 <img src="../../assets/img/icons/dots-icon.svg">
                 <ul class="custom-dropdown-list leftside icon-dropdown">
-                    <li class="dropdown-item" @click="editToll(items.t_id)">
+                    <li class="dropdown-item" @click="editToll(items.v_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/edit.svg">
-                            <p class="dropdown-link-title"> Edit Toll Plaza </p>
+                            <p class="dropdown-link-title"> Edit Vehicle </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="deleteToll(items.t_id)">
+                    <li class="dropdown-item" @click="deleteToll(items.v_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/trash.svg">
-                            <p class="dropdown-link-title required"> Delete Toll Plaza </p>
+                            <p class="dropdown-link-title required"> Delete Vehicle </p>
                         </div>
                     </li>
                 </ul>
@@ -54,7 +54,9 @@ export default {
     padding: 16px 24px;
     border-radius: 8px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     gap: 12px;
     cursor: pointer;
     position: relative;
@@ -88,5 +90,10 @@ export default {
 
 .list .options .custom-dropdown-list {
     top: 104%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 </style>

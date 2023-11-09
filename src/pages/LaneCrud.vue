@@ -8,7 +8,7 @@ import axios from 'axios';
 import Layout from '../components/Layout.vue';
 import OverLaye from '../subcomponents/OverLaye.vue';
 import SearchBox from '../subcomponents/SearchBox.vue';
-import List from '../subcomponents/tollPlaza/List.vue';
+import List from '../subcomponents/lanecrud/List.vue';
 import Pagination from '../subcomponents/Pagination.vue';
 import Model from '../subcomponents/Model.vue';
 import Input from '../subcomponents/Input.vue';
@@ -16,14 +16,18 @@ import Label from '../subcomponents/Label.vue';
 import Textarea from '../../../vuejsProject/vuedashboard/src/subcomponents/Textarea.vue';
 import DeleteModel from '../subcomponents/DeleteModel.vue';
 import Drawer from '../subcomponents/Drawer.vue';
+import Select from '../subcomponents/Select.vue';
+
+
 
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
-    components: { Layout, SearchBox, List, OverLaye, Pagination, Model, Input, Label, Textarea, DeleteModel, Drawer, useAuthStore },
+    components: { Layout, SearchBox, List, OverLaye, Pagination, Model, Input, Label, Textarea, DeleteModel, Drawer, Select },
     data() {
         return {
             list: [],
+            tollArray: [],
             searchText: "",
             gridView: true,
             listView: false,
@@ -31,29 +35,58 @@ export default {
             pagination: "",
             currentPage: 1,
             totalPages: 1,
-            plazzName: "",
-            plazzName1: "",
-            plazzAddress: "",
-            plazzAddress1: "",
-            addPlazaModal: false,
-            deleteToll: false,
-            trollId: "",
-            editTollPlaza: false,
-        };
+            laneNumber: "",
+            laneName: "",
+            tollSelected: "",
+            addlaneModal: false,
+            deletelane: false,
+            editLaneModel: false,
+            laneNumber1: "",
+            laneName2: "",
+            laneId: "",
+        }
     },
-    created() {
-        this.tollData();
-    },
+
     computed: {
         modelSubmitBtn() {
-            return !this.plazzName.trim() || !this.plazzAddress.trim();
+            return !this.laneNumber.trim() || !this.laneName.trim() || this.tollSelected === '' || !this.tollSelected;
         },
+    },
+
+    created() {
+        this.laneData();
+        this.tollData();
     },
     methods: {
 
         searchTextFun(event) {
             this.searchText = event.target.value.trim();
-            this.tollData();
+            this.laneData();
+        },
+
+        onOptionSelected(option) {
+            this.tollSelected = option.t_name
+            console.log(this.tollSelected)
+        },
+
+        async laneData() {
+            var toll_data = new FormData();
+            toll_data.append("l_id", "");
+            toll_data.append("sort", this.sort);
+            toll_data.append("search", this.searchText);
+            toll_data.append("page", this.currentPage);
+
+            try {
+                const response = await fetchWrapper.post(`${baseUrl}/admin/lane-list`, toll_data);
+
+                this.list = response.data
+
+                this.totalPages = response.total_pages;
+
+            } catch (error) {
+                console.log(error);
+            }
+
         },
 
         async tollData() {
@@ -65,67 +98,44 @@ export default {
 
             try {
                 const response = await fetchWrapper.post(`${baseUrl}/admin/toll-plaza-list`, toll_data);
-                this.list = response.data;
-                this.totalPages = response.total_pages;
+                this.tollArray = response.data;
+
             } catch (error) {
                 console.log(error);
             }
 
         },
 
-
         updatePage(Number) {
             this.currentPage = Number
-            this.tollData();
+            this.laneData();
         },
+
         chnageSort() {
             this.sort = this.sort === 'desc' ? 'asc' : 'desc';
-            this.tollData();
+            this.laneData();
         },
 
 
-        async addTollPlaza() {
+        async addLane() {
 
-            var Add_toll_data = new FormData();
-
-            Add_toll_data.append("t_id", this.trollId);
-            Add_toll_data.append("t_name", this.plazzName);
-            Add_toll_data.append("t_address", this.plazzAddress);
+            var add_lane = new FormData();
+            add_lane.append("l_id", "");
+            add_lane.append("l_name", this.laneName);
+            add_lane.append("l_number", this.laneNumber);
+            add_lane.append("l_toll_plaza", this.tollSelected);
 
             try {
-                const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-toll-plaza`, Add_toll_data);
+                const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-lane`, add_lane);
                 console.log(data)
 
-                this.addPlazaModal = false;
-                this.tollData();
-
-            } catch (error) {
-                const alertStore = useAlertStore()
-                alertStore.error(error)
-            }
-        },
-
-        getTollplazaId(id) {
-            this.deleteToll = true
-            this.trollId = id
-        },
-        editTollOpen(id) {
-            this.editTollPlaza = true
-            this.trollId = id
-            console.log(this.trollId)
-            this.getTollPlazadata();
-        },
-        async deletTollPlaza() {
-            var Delete_Toll = new FormData();
-
-            Delete_Toll.append("t_id", this.trollId);
-            this.deleteToll = false
-
-            try {
-                const data = await fetchWrapper.post(`${baseUrl}/admin/remove-toll-plaza`, Delete_Toll);
+                this.addlaneModal = false;
 
                 if (data.success === 1) {
-                    this.tollData();
+                    this.laneData();
+                    this.laneName = ""
+                    this.laneNumber = ""
+                    this.tollSelected = ""
                 }
 
             } catch (error) {
@@ -133,45 +143,75 @@ export default {
                 alertStore.error(error)
             }
         },
-        async getTollPlazadata() {
-            var toll_data = new FormData();
-            toll_data.append("t_id", this.trollId);
+
+        getLaneId(id) {
+            this.deletelane = true
+            this.laneId = id
+        },
+
+        editLaneOpen(id) {
+            this.laneId = id
+            this.editLaneModel = true
+            this.getLaneData();
+        },
+
+        async getLaneData() {
+            var lane_data = new FormData();
+            lane_data.append("l_id", this.laneId);
 
             try {
-                const data = await fetchWrapper.post(`${baseUrl}/admin/toll-plaza-list`, toll_data);
-                console.log("this is data", data)
+                const data = await fetchWrapper.post(`${baseUrl}/admin/lane-list`, lane_data);
 
-                this.plazzName1 = data.data.t_name
-                this.plazzAddress1 = data.data.t_address
+                this.laneNumber1 = data.data.l_name
+                this.laneName2 = data.data.l_number
 
             } catch (error) {
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
         },
-        async editToll() {
-            var Add_toll_data = new FormData();
 
-            Add_toll_data.append("t_id", this.trollId);
-            Add_toll_data.append("t_name", this.plazzName1);
-            Add_toll_data.append("t_address", this.plazzAddress1);
+        async deletTollPlaza() {
+            var delete_lane = new FormData();
+
+            delete_lane.append("l_id", this.laneId);
+            this.deletelane = false
 
             try {
-                const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-toll-plaza`, Add_toll_data);
-                console.log(data)
+                const data = await fetchWrapper.post(`${baseUrl}/admin/remove-lane`, delete_lane);
 
-                this.editTollPlaza = false;
-                this.tollData();
+                if (data.success === 1) {
+                    this.laneData();
+                }
+
+            } catch (error) {
+                const alertStore = useAlertStore()
+                alertStore.error(error)
+            }
+        },
+
+        async editLane() {
+            var edit_lane = new FormData();
+            edit_lane.append("l_id", this.laneId);
+            edit_lane.append("l_name", this.laneName2);
+            edit_lane.append("l_number", this.laneNumber1);
+            edit_lane.append("l_toll_plaza", this.tollSelected);
+
+            try {
+                const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-lane`, edit_lane);
+
+                this.editLaneModel = false;
+                this.laneData();
 
             } catch (error) {
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
         }
+
     },
 }
 </script>
-
 
 <template>
     <Layout>
@@ -181,7 +221,7 @@ export default {
             <div class="table-header display-flex-wrap">
 
                 <div class="display-flex align-center gap-16px w-100">
-                    <p class="text-large_semibold color-Grey_90 cursor-pointer">Toll Plaza Crud</p>
+                    <p class="text-large_semibold color-Grey_90 cursor-pointer">Lane Crud</p>
                 </div>
 
                 <div
@@ -230,9 +270,9 @@ export default {
 
 
                         <button class="btn-regular display-flex align-center  gap-8px text-no-wrap"
-                            @click="addPlazaModal = true">
+                            @click="addlaneModal = true">
                             <img src="../assets/img/icons/plus-3.svg">
-                            New Toll Plaza</button>
+                            New Lane</button>
 
                     </div>
 
@@ -249,7 +289,7 @@ export default {
 
                 <ul class="list" :class="{ 'list-row': listView }">
 
-                    <List :list="list" @delete_toll_plaza="getTollplazaId" @edit_toll_plaza="editTollOpen" />
+                    <List :list="list" @delete_lane="getLaneId" @edit_lane="editLaneOpen" />
 
                 </ul>
 
@@ -267,44 +307,54 @@ export default {
     <OverLaye v-if="overalye" />
 
 
-    <Model model_title="Add Toll Plaza" Btn_text="Add Toll Plaza" @modelbtn_clicked="addTollPlaza"
-        :isButtonDisabled="modelSubmitBtn" v-if="addPlazaModal" @model_close="addPlazaModal = false">
+    <Model model_title="Add Lane" Btn_text="Add Lane" @modelbtn_clicked="addLane()" :isButtonDisabled="modelSubmitBtn"
+        v-if="addlaneModal" @model_close="addlaneModal = false">
         <div class="space-y-24px">
-            <div class="space-y-8px">
-                <Label label="Plaza Name" />
-                <Input placeholder="Enter Plazz Name" id="Plaza Name" :value="plazzName"
-                    @input="event => plazzName = event.target.value" />
-
+            <div class="address-form">
+                <div class="space-y-8px">
+                    <Label label="Lane number" />
+                    <Input placeholder="Enter Plazz Name" id="Plaza Name" :value="laneNumber"
+                        @input="event => laneNumber = event.target.value" />
+                </div>
             </div>
             <div class="space-y-8px">
-                <Label label="Plaza Address" />
-                <Textarea placeholder="Enter Plazz Address" id="Plaza Address" :value="plazzAddress"
-                    @input="event => plazzAddress = event.target.value" />
+                <Label label="Lane Name" />
+                <Input placeholder="Enter Plazz Address" id="Plaza Address" :value="laneName"
+                    @input="event => laneName = event.target.value" />
+            </div>
+            <div class="space-y-8px">
+                <Label label="Lane Name" />
+                <Select :options="tollArray" @option-selected="onOptionSelected" />
             </div>
         </div>
     </Model>
 
-    <DeleteModel model_title="Delete Toll Plaza" model_subtitle="Are you sure you want to delete this Toll Plaza?"
-        v-if="deleteToll" @close_model="deleteToll = false" @delete_item="deletTollPlaza()" />
+
+    <DeleteModel model_title="Delete Lane" model_subtitle="Are you sure you want to delete this Lane?" v-if="deletelane"
+        @close_model="deletelane = false" @delete_item="deletTollPlaza()" />
 
 
-    <Drawer drawer_title="Edit Toll Plaza" v-if="editTollPlaza" @close_drawer="editTollPlaza = false"
-        @drawebtn_clicked="editToll()">
+    <Drawer drawer_title="Edit Lane" v-if="editLaneModel" @close_drawer="editLaneModel = false"
+        @drawebtn_clicked="editLane()">
         <div class="space-y-24px">
             <div class="space-y-8px">
-                <Label label="Plaza Name" />
-                <Input placeholder="Enter Plazz Name" id="Plaza Name" :value="plazzName1"
-                    @input="event => plazzName1 = event.target.value" />
-
+                <Label label="Lane number" />
+                <Input placeholder="Enter Plazz Name" id="Plaza Name" :value="laneNumber1"
+                    @input="event => laneNumber1 = event.target.value" />
             </div>
             <div class="space-y-8px">
-                <Label label="Plaza Address" />
-                <Textarea placeholder="Enter Plazz Address" id="Plaza Address" :value="plazzAddress1"
-                    @input="event => plazzAddress1 = event.target.value" />
+                <Label label="Lane Name" />
+                <Input placeholder="Enter Plazz Address" id="Plaza Address" :value="laneName2"
+                    @input="event => laneName2 = event.target.value" />
+            </div>
+            <div class="space-y-8px">
+                <Label label="Lane Name" />
+                <Select :options="tollArray" @option-selected="onOptionSelected" />
             </div>
         </div>
     </Drawer>
 </template>
+
 
 
 <style scoped>

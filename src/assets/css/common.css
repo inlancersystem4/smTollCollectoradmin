@@ -1650,6 +1650,7 @@ input[type=number] {
     font-weight: 500;
     line-height: 24px;
     color: var(--Grey-90);
+    font-family: 'Quicksand', sans-serif;
 }
 
 .input_error {
