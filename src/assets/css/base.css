@@ -211,6 +211,10 @@ body {
     background-color: var(--Grey-10) !important;
 }
 
+.link_active svg path {
+    stroke: #111827;
+}
+
 .link_active .link-title {
     color: var(--Grey-90) !important;
 }

@@ -66,7 +66,23 @@ export default {
                     <li class="list-items">
                         <router-link to="/toll-crud" class="list-link" :class="{ link_active: isTollCrudActive }">
                             <div class="link-items">
-                                <img src="../assets/img/icons/bell.svg" class="img-not-selected">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path d="M2.25 9H21.75L12 3L2.25 9Z" stroke="#6B7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M5.25 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M9.75 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M14.25 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M18.75 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M3 16.5H21" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M1.5 19.5H22.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
                                 <p class="link-title">Toll Plaza Crud</p>
                             </div>
                         </router-link>
@@ -75,7 +91,23 @@ export default {
                     <li class="list-items">
                         <router-link to="/lane-crud" class="list-link" :class="{ link_active: islaneCrudActive }">
                             <div class="link-items">
-                                <img src="../assets/img/icons/bell.svg" class="img-not-selected">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M21 6.75H3C2.58579 6.75 2.25 7.08579 2.25 7.5V14.25C2.25 14.6642 2.58579 15 3 15H21C21.4142 15 21.75 14.6642 21.75 14.25V7.5C21.75 7.08579 21.4142 6.75 21 6.75Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M7.875 6.75L16.125 15" stroke="#6B7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M14.625 6.75L21.75 13.875" stroke="#6B7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M2.25 7.875L9.375 15" stroke="#6B7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M18 15V18.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M6 15V18.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
                                 <p class="link-title">Lane Crud</p>
                             </div>
                         </router-link>
@@ -84,7 +116,27 @@ export default {
                     <li class="list-items">
                         <router-link to="/vehicle-crud" class="list-link" :class="{ link_active: isvehicleCrudActive }">
                             <div class="link-items">
-                                <img src="../assets/img/icons/bell.svg" class="img-not-selected">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path d="M1.5 11.25H22.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M21 17.25V19.5C21 19.6989 20.921 19.8897 20.7803 20.0303C20.6397 20.171 20.4489 20.25 20.25 20.25H18C17.8011 20.25 17.6103 20.171 17.4697 20.0303C17.329 19.8897 17.25 19.6989 17.25 19.5V17.25"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M6.75 17.25V19.5C6.75 19.6989 6.67098 19.8897 6.53033 20.0303C6.38968 20.171 6.19891 20.25 6 20.25H3.75C3.55109 20.25 3.36032 20.171 3.21967 20.0303C3.07902 19.8897 3 19.6989 3 19.5V17.25"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M6 14.25H7.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M16.5 14.25H18" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M21 11.25L18.1969 4.95C18.1387 4.81672 18.043 4.70322 17.9215 4.62333C17.8 4.54343 17.6579 4.50058 17.5125 4.5H6.4875C6.34208 4.50058 6.19997 4.54343 6.07846 4.62333C5.95695 4.70322 5.86129 4.81672 5.80313 4.95L3 11.25V17.25H21V11.25Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
                                 <p class="link-title">Vehicle Crud</p>
                             </div>
                         </router-link>
@@ -93,7 +145,21 @@ export default {
                     <li class="list-items">
                         <router-link to="/shift-crud" class="list-link" :class="{ link_active: isshiftCrudActive }">
                             <div class="link-items">
-                                <img src="../assets/img/icons/bell.svg" class="img-not-selected">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M12 12L6.3 7.725C6.20738 7.65464 6.13217 7.56395 6.08016 7.45992C6.02814 7.35589 6.00072 7.24131 6 7.125V3.75C6 3.55109 6.07902 3.36032 6.21967 3.21967C6.36032 3.07902 6.55109 3 6.75 3H17.25C17.4489 3 17.6397 3.07902 17.7803 3.21967C17.921 3.36032 18 3.55109 18 3.75V7.0875C17.9993 7.20381 17.9719 7.31839 17.9198 7.42242C17.8678 7.52645 17.7926 7.61714 17.7 7.6875L12 12Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M12 12L6.3 16.275C6.20738 16.3454 6.13217 16.436 6.08016 16.5401C6.02814 16.6441 6.00072 16.7587 6 16.875V20.25C6 20.4489 6.07902 20.6397 6.21967 20.7803C6.36032 20.921 6.55109 21 6.75 21H17.25C17.4489 21 17.6397 20.921 17.7803 20.7803C17.921 20.6397 18 20.4489 18 20.25V16.9125C17.9993 16.7962 17.9719 16.6816 17.9198 16.5776C17.8678 16.4735 17.7926 16.3829 17.7 16.3125L12 12Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M7.00293 8.25H16.9592" stroke="#6B7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M12 15.75V12" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
                                 <p class="link-title">Shirt Crud</p>
                             </div>
                         </router-link>

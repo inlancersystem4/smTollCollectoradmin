@@ -80,6 +80,12 @@ export default {
     background-color: var(--Grey-5);
 }
 
+
+.w20 {
+    width: 20px;
+}
+
+
 .list .options .icon-btn {
     border: 1px solid transparent;
     display: flex;

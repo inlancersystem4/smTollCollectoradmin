@@ -1,6 +1,13 @@
 <script>
 export default {
-
+    methods: {
+        goToPreviousPage() {
+            this.$router.go(-1);
+        },
+        goToNextPage() {
+            this.$router.go(1);
+        },
+    },
 }
 </script>
 
@@ -11,10 +18,10 @@ export default {
             <button class="layout-buttons" id="Close_mini_sidebar" style="display: none;">
                 <img src="../assets/img/icons/close-icon.svg" class="img-not-selected">
             </button>
-            <button class="layout-buttons">
+            <button class="layout-buttons" @click="goToPreviousPage">
                 <img src="../assets/img/icons/arrow-left.svg" class="img-not-selected">
             </button>
-            <button class="layout-buttons">
+            <button class="layout-buttons" @click="goToNextPage">
                 <img src="../assets/img/icons/arrow-right.svg" class="img-not-selected">
             </button>
             <button class="layout-buttons">

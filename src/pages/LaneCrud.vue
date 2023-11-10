@@ -19,7 +19,6 @@ import Drawer from '../subcomponents/Drawer.vue';
 import Select from '../subcomponents/Select.vue';
 
 
-
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {

@@ -8,7 +8,7 @@ export default {
         Header,
     },
     created() {
-        // this.checkUser()
+        this.checkUser()
     },
     methods: {
         checkUser() {

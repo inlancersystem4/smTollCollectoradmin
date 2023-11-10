@@ -115,6 +115,25 @@ export default {
             console.log(this.trollId)
             this.getTollPlazadata();
         },
+
+        async statusUpdate(id) {
+            var status_up = new FormData();
+
+            status_up.append("t_id", id);
+
+            try {
+                const data = await fetchWrapper.post(`${baseUrl}/admin/toll-plaza-status`, status_up);
+
+                if (data.success === 1) {
+                    this.tollData();
+                }
+
+            } catch (error) {
+                const alertStore = useAlertStore()
+                alertStore.error(error)
+            }
+        },
+
         async deletTollPlaza() {
             var Delete_Toll = new FormData();
 
@@ -249,7 +268,8 @@ export default {
 
                 <ul class="list" :class="{ 'list-row': listView }">
 
-                    <List :list="list" @delete_toll_plaza="getTollplazaId" @edit_toll_plaza="editTollOpen" />
+                    <List :list="list" @delete_toll_plaza="getTollplazaId" @edit_toll_plaza="editTollOpen"
+                        @edit_status="statusUpdate" />
 
                 </ul>
 

@@ -13,7 +13,12 @@ export default {
         value(newValue) {
             this.inputValue = newValue;
         }
-    }
+    },
+    methods: {
+        clearInput() {
+            this.inputValue = ""
+        }
+    },
 }
 </script>
 
@@ -24,7 +29,7 @@ export default {
             <img src="../assets/img/icons/search.svg" class="img-not-selected">
         </button>
         <input type="text" class=" w-100" :placeholder="placeholder" v-model="inputValue">
-        <button class="icon val_clear" style="cursor: pointer;" v-if="inputValue">
+        <button class="icon val_clear" style="cursor: pointer;" v-if="inputValue" @click="clearInput">
             <img src="../assets/img/icons/close-icon.svg" class="img-not-selected">
         </button>
     </div>

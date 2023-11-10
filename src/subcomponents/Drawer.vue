@@ -7,7 +7,7 @@ export default {
         closeDrawer() {
             this.$emit('close_drawer')
         },
-        drawerBtn(){
+        drawerBtn() {
             this.$emit('drawebtn_clicked')
         }
     },
@@ -43,4 +43,17 @@ export default {
 
 
     </div>
+    <div class="overlay"> </div>
 </template>
+
+<style scoped>
+.overlay {
+    position: fixed;
+    z-index: 99;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    background: #111827;
+}
+</style>
