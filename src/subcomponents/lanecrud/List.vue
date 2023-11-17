@@ -11,6 +11,10 @@ export default {
     props: {
         list: Array
     },
+    data() {
+        return {
+        }
+    },
     methods: {
         deleteToll(id) {
             this.$emit('delete_lane', id)
@@ -18,13 +22,8 @@ export default {
         editToll(id) {
             this.$emit('edit_lane', id)
         },
-        async tollData() {
-            var toll_data = new FormData();
-            toll_data.append("t_id", "");
-            toll_data.append("sort", "asc");
-            toll_data.append("search", "");
-            toll_data.append("page", "1");
-
+        editStatus(id) {
+            this.$emit('edit_status', id)
         },
     },
 }
@@ -37,10 +36,21 @@ export default {
 
         <div class="space-y-4px">
             <h2 class="text-large_semibold color-Grey_90">{{ items.l_name }}</h2>
-            <p class="text-small_regular color-Grey_50">{{ items.l_toll_plaza }}</p>
+
+
+            <p class="text-small_regular color-Grey_50">{{ items.l_toll_plaza }} </p>
+
         </div>
 
         <div class="options">
+            <button class="btn-regular display-flex align-center gap-8px" v-if="items.status === true">
+                <div class="ellipse-dot bg-emerald"></div>
+                <p class="text-sm_medium color-Grey_60">Enable</p>
+            </button>
+            <button class="btn-regular display-flex align-center gap-8px" v-if="items.status === false">
+                <div class="ellipse-dot bg-rose"></div>
+                <p class="text-sm_medium color-Grey_60">Disable</p>
+            </button>
             <div class="icon-btn icon-btn_32px  custom-dropdown">
                 <img src="../../assets/img/icons/dots-icon.svg">
                 <ul class="custom-dropdown-list leftside icon-dropdown">
@@ -54,6 +64,18 @@ export default {
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/trash.svg">
                             <p class="dropdown-link-title required"> Delete Lane </p>
+                        </div>
+                    </li>
+                    <li class="dropdown-item" @click="editStatus(items.l_id)" v-if="items.status === false">
+                        <div class="dropdown-link">
+                            <p class="w20"></p>
+                            <p class="dropdown-link-title"> Enable </p>
+                        </div>
+                    </li>
+                    <li class="dropdown-item" @click="editStatus(items.l_id)" v-if="items.status === true">
+                        <div class="dropdown-link">
+                            <p class="w20"></p>
+                            <p class="dropdown-link-title"> Disable </p>
                         </div>
                     </li>
                 </ul>
@@ -102,6 +124,9 @@ export default {
     position: absolute;
     right: 8px;
     top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .list .options:hover .custom-dropdown-list {

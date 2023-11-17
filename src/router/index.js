@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/login',
+      path: '/login ',
       name: 'Login',
       component: () => import('../auth/Login.vue')
     },
@@ -33,6 +33,11 @@ const router = createRouter({
       path: '/shift-crud',
       name: 'ShiftCrud',
       component: () => import('../pages/ShiftCrud.vue'),
+    },
+    {
+      path: '/user-crud',
+      name: 'UserCrud',
+      component: () => import('../pages/UserCrud.vue'),
     }
   ]
 })

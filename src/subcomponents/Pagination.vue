@@ -20,21 +20,21 @@ export default {
 
         <div class="table-resuits-count custom-dropdown">
 
-            <p class="all-items-list-count">
+            <!-- <p class="all-items-list-count">
 
-                <span>1</span>
+                                        <span>1</span>
 
-                -
+                                        -
 
-                <span>13</span>
+                                        <span>13</span>
 
-                of
+                                        of
 
-                <span>200</span>
+                                        <span>200</span>
 
-                results
+                                        results
 
-            </p>
+                                    </p> -->
 
         </div>
 

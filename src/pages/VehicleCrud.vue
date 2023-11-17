@@ -42,7 +42,8 @@ export default {
             deleteVehicle: false,
             vehicleId: "",
             selectedImg: "",
-            editVehicle: false
+            editVehicle: false,
+            editVehicleimg: "",
         }
     },
     computed: {
@@ -110,6 +111,9 @@ export default {
                 if (data.success === 1) {
                     this.addVehicleModal = false
                     this.vehicleData();
+                    this.vehicleName = ""
+                    this.vehicleprice = ""
+                    this.vehicleimg = ""
                 }
 
             } catch (error) {
@@ -194,7 +198,12 @@ export default {
             edit_vehicle.append("v_id", this.vehicleId);
             edit_vehicle.append("v_name", this.vehicleName1);
             edit_vehicle.append("v_price", this.vehicleprice1);
-            edit_vehicle.append("v_image", this.vehicleimg1);
+
+            if (this.editVehicleimg) {
+                edit_vehicle.append("v_image", this.editVehicleimg);
+            } else {
+                edit_vehicle.append("v_image", this.vehicleimg1);
+            }
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-vehical`, edit_vehicle);
@@ -216,10 +225,8 @@ export default {
             if (selectedFile.type === "image/png") {
 
                 this.vehicleimg = selectedFile
-                this.vehicleimg1 = selectedFile;
 
                 this.selectedImg = URL.createObjectURL(selectedFile)
-                this.selectedImg1 = URL.createObjectURL(selectedFile)
 
             }
 
@@ -228,6 +235,22 @@ export default {
             }
 
         },
+
+        selectVehicleImg2(event) {
+            const selectedFile = event.target.files[0]
+
+            if (selectedFile.type === "image/png") {
+
+                this.editVehicleimg = selectedFile
+
+                this.selectedImg1 = URL.createObjectURL(selectedFile)
+
+            }
+
+            if (selectedFile.type === "image/gif", selectedFile.type === "video/mp4", selectedFile.type === "audio/mpeg") {
+                console.log("not ok")
+            }
+        }
 
     },
 }
@@ -345,7 +368,7 @@ export default {
                         :width="this.selectedImg1 || this.vehicleimg1 ? '90' : null"
                         :height="this.selectedImg1 || this.vehicleimg1 ? '90' : null" class="object-contain">
                 </div>
-                <Input type="file" placeholder="Enter vehicleprice Name" id="Vehicle Name" @change="selectVehicleImg"
+                <Input type="file" placeholder="Enter vehicleprice Name" id="Vehicle Name" @change="selectVehicleImg2"
                     accept="image/*" />
 
             </div>

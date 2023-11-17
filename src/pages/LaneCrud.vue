@@ -43,6 +43,7 @@ export default {
             laneNumber1: "",
             laneName2: "",
             laneId: "",
+            laneTollPlaza: "",
         }
     },
 
@@ -65,7 +66,7 @@ export default {
 
         onOptionSelected(option) {
             this.tollSelected = option.t_name
-            console.log(this.tollSelected)
+            this.laneTollPlaza = option.t_name
         },
 
         async laneData() {
@@ -128,9 +129,9 @@ export default {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-lane`, add_lane);
                 console.log(data)
 
-                this.addlaneModal = false;
 
                 if (data.success === 1) {
+                    this.addlaneModal = false;
                     this.laneData();
                     this.laneName = ""
                     this.laneNumber = ""
@@ -161,8 +162,10 @@ export default {
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/lane-list`, lane_data);
 
-                this.laneNumber1 = data.data.l_name
-                this.laneName2 = data.data.l_number
+                this.laneNumber1 = data.data.l_number
+                this.laneName2 = data.data.l_name
+                this.laneTollPlaza = data.data.l_toll_plaza
+
 
             } catch (error) {
                 const alertStore = useAlertStore()
@@ -189,12 +192,30 @@ export default {
             }
         },
 
+        async statusUpdate(id) {
+            var status_up = new FormData();
+
+            status_up.append("l_id", id);
+
+            try {
+                const data = await fetchWrapper.post(`${baseUrl}/admin/lane-status`, status_up);
+
+                if (data.success === 1) {
+                    this.laneData();
+                }
+
+            } catch (error) {
+                const alertStore = useAlertStore()
+                alertStore.error(error)
+            }
+        },
+
         async editLane() {
             var edit_lane = new FormData();
             edit_lane.append("l_id", this.laneId);
             edit_lane.append("l_name", this.laneName2);
             edit_lane.append("l_number", this.laneNumber1);
-            edit_lane.append("l_toll_plaza", this.tollSelected);
+            edit_lane.append("l_toll_plaza", this.laneTollPlaza);
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-lane`, edit_lane);
@@ -288,7 +309,7 @@ export default {
 
                 <ul class="list" :class="{ 'list-row': listView }">
 
-                    <List :list="list" @delete_lane="getLaneId" @edit_lane="editLaneOpen" />
+                    <List :list="list" @delete_lane="getLaneId" @edit_lane="editLaneOpen" @edit_status="statusUpdate" />
 
                 </ul>
 
@@ -312,17 +333,17 @@ export default {
             <div class="address-form">
                 <div class="space-y-8px">
                     <Label label="Lane number" />
-                    <Input placeholder="Enter Plazz Name" id="Plaza Name" :value="laneNumber"
+                    <Input placeholder="Enter Lane number" id="Plaza Name" :value="laneNumber"
                         @input="event => laneNumber = event.target.value" />
                 </div>
             </div>
             <div class="space-y-8px">
                 <Label label="Lane Name" />
-                <Input placeholder="Enter Plazz Address" id="Plaza Address" :value="laneName"
+                <Input placeholder="Enter Lane Name" id="Plaza Address" :value="laneName"
                     @input="event => laneName = event.target.value" />
             </div>
             <div class="space-y-8px">
-                <Label label="Lane Name" />
+                <Label label="Lane Toll" />
                 <Select :options="tollArray" @option-selected="onOptionSelected" />
             </div>
         </div>
@@ -347,13 +368,12 @@ export default {
                     @input="event => laneName2 = event.target.value" />
             </div>
             <div class="space-y-8px">
-                <Label label="Lane Name" />
-                <Select :options="tollArray" @option-selected="onOptionSelected" />
+                <Label label="Lane Toll" />
+                <Select :options="tollArray" @option-selected="onOptionSelected" :responseData="laneTollPlaza" />
             </div>
         </div>
     </Drawer>
 </template>
-
 
 
 <style scoped>
