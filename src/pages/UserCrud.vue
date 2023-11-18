@@ -42,15 +42,21 @@ export default {
             typePassword: true,
             typePassword2: true,
             userName: "",
+            userNameEdit: "",
             userNumber: "",
+            userNumberEdit: "",
             userPass: "",
             userCoPass: "",
             tollSelected: "",
+            tollSelectedEdit: "",
             laneSelected: "",
+            laneSelectedEdit: "",
             shiftSelected: "",
+            shiftSelectedEdit: "",
             profilePic: "",
             selectedImg: "",
             passwordNotMatch: false,
+            editUserDrawer: false,
         }
     },
     created() {
@@ -132,6 +138,7 @@ export default {
             this.deleteuser = true
             this.userId = id
         },
+
 
         async deleteUser() {
             var delete_user = new FormData();
@@ -223,17 +230,17 @@ export default {
 
         getTollPlaza(option) {
             this.tollSelected = option.t_name
-            // this.laneTollPlaza = option.t_name
+            this.tollSelectedEdit = option.t_name
         },
 
         getLane(option) {
             this.laneSelected = option.l_name
-            // this.laneTollPlaza = option.t_name
+            this.laneSelectedEdit = option.l_name
         },
 
         getShift(option) {
             this.shiftSelected = option.s_name
-            // this.laneTollPlaza = option.t_name
+            this.shiftSelectedEdit = option.s_name
         },
 
         selectPofilePic(event) {
@@ -280,6 +287,59 @@ export default {
             }
 
         },
+
+        editUserData(id) {
+            this.editUserDrawer = true
+            this.userId = id
+            this.getUserdata();
+        },
+
+        async getUserdata() {
+            var user_data = new FormData();
+            user_data.append("user_id", this.userId);
+
+            try {
+                const response = await fetchWrapper.post(`${baseUrl}/admin/users-list`, user_data);
+
+
+                this.userNameEdit = response.data.user_name
+                this.userNumberEdit = response.data.user_phone_number
+                this.tollSelectedEdit = response.data.user_toll_plaza
+                this.laneSelectedEdit = response.data.user_lane_select
+                this.shiftSelectedEdit = response.data.user_shift_select
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        },
+
+
+        async editUser() {
+            var user_data = new FormData();
+            user_data.append("user_id", this.userId);
+            user_data.append("user_name", this.userNameEdit);
+            user_data.append("user_phone_number", this.userNumberEdit);
+            user_data.append("user_toll_plaza", this.tollSelectedEdit);
+            user_data.append("user_lane_select", this.laneSelectedEdit);
+            user_data.append("user_shift_select", this.shiftSelectedEdit);
+            user_data.append("user_profile_pic", this.profilePic);
+
+            try {
+                const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-user`, user_data);
+
+
+                if (data.success === 1) {
+                    this.editUserDrawer = false
+                    this.userData();
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        },
+
 
     },
 }
@@ -362,7 +422,7 @@ export default {
 
                 <ul class="list" :class="{ 'list-row': listView }">
 
-                    <List :list="list" @delete_user="getUserId" @edit_user="editVehicleOpen" @edit_status="statusUpdate" />
+                    <List :list="list" @delete_user="getUserId" @edit_user="editUserData" @edit_status="statusUpdate" />
 
                 </ul>
 
@@ -502,6 +562,46 @@ export default {
 
         </div>
     </Model>
+
+
+    <Drawer drawer_title="Edit User" v-if="editUserDrawer" @close_drawer="editUserDrawer = false"
+        @drawebtn_clicked="editUser()">
+
+        <div class="space-y-24px ">
+            <div class="space-y-8px">
+                <Label label="Enter User Name" />
+                <Input placeholder="Enter User Name" id="Enter User Name" :value="userNameEdit"
+                    @input="event => userNameEdit = event.target.value" />
+            </div>
+
+            <div class=""></div>
+
+            <div class="space-y-8px">
+                <Label label="User Number" />
+                <Input type="number" placeholder="Enter User Number" id="User Number" :value="userNumberEdit"
+                    @input="event => userNumberEdit = event.target.value" required />
+            </div>
+
+            <div class="space-y-8px">
+                <Label label="Add Toll Plaza" />
+                <Select :options="tollArray" @option-selected="getTollPlaza" :responseData="tollSelectedEdit" />
+            </div>
+
+
+            <div class="space-y-8px">
+                <Label label="Add Toll Lane" />
+                <Select :options="tollLaneArray" @option-selected="getLane" :responseData="laneSelectedEdit" />
+            </div>
+
+            <div class="space-y-8px">
+                <Label label="Add Shift" />
+                <Select :options="shiftArray" @option-selected="getShift" :responseData="shiftSelectedEdit" />
+            </div>
+
+        </div>
+
+
+    </Drawer>
 </template>
 
 

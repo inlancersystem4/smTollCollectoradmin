@@ -16,13 +16,11 @@ import Label from '../subcomponents/Label.vue';
 import Textarea from '../../../vuejsProject/vuedashboard/src/subcomponents/Textarea.vue';
 import DeleteModel from '../subcomponents/DeleteModel.vue';
 import Drawer from '../subcomponents/Drawer.vue';
-import SuccessBox from '../subcomponents/SuccessBox.vue';
-import ErrorBox from '../subcomponents/ErrorBox.vue';
 
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
-    components: { Layout, SearchBox, List, OverLaye, Pagination, Model, Input, Label, Textarea, DeleteModel, Drawer, useAuthStore, SuccessBox, ErrorBox },
+    components: { Layout, SearchBox, List, OverLaye, Pagination, Model, Input, Label, Textarea, DeleteModel, Drawer, useAuthStore },
     data() {
         return {
             list: [],
@@ -41,10 +39,6 @@ export default {
             deleteToll: false,
             trollId: "",
             editTollPlaza: false,
-            sucMessage: "",
-            errorMessage: "",
-            successModal: false,
-            errorModal: false,
         };
     },
     created() {
@@ -74,20 +68,6 @@ export default {
                 this.list = response.data;
                 this.totalPages = response.total_pages;
 
-                if (response.success === 1) {
-                    this.successModal = true
-                    this.sucMessage = response.message
-                    setTimeout(() => {
-                        this.successModal = false;
-                    }, 2000);
-                }
-                else {
-                    this.errorModal = true
-                    this.errorMessage = response.message
-                    setTimeout(() => {
-                        this.errorModal = false;
-                    }, 2000);
-                }
 
             } catch (error) {
                 console.log(error);
@@ -116,19 +96,9 @@ export default {
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-toll-plaza`, Add_toll_data);
-                console.log(data)
 
                 this.addPlazaModal = false;
                 this.tollData();
-
-                if (data.success === 1) {
-                    this.successModal = true
-                    this.sucMessage = data.message
-                }
-                else {
-                    this.errorModal = true
-                    this.errorMessage = data.message
-                }
 
             } catch (error) {
                 const alertStore = useAlertStore()
@@ -362,9 +332,6 @@ export default {
             </div>
         </div>
     </Drawer>
-
-    <SuccessBox :Message="sucMessage" v-if="successModal" />
-    <ErrorBox :Message="errorMessage" v-if="errorModal" />
 </template>
 
 

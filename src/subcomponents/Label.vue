@@ -8,7 +8,7 @@ export default {
 
 
 <template>
-    <label :for="label">{{ label }}</label>
+    <label :for="label">{{ label }} <span class="required">*</span> </label>
 </template>
 
 <style scoped>

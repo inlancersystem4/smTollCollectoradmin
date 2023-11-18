@@ -126,6 +126,7 @@ export default {
     margin-top: 0.5rem;
     max-height: 180px;
     overflow-y: auto;
+    z-index: 99;
 }
 
 

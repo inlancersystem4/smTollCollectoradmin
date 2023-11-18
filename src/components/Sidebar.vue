@@ -197,48 +197,6 @@ export default {
                 </ul>
 
 
-                <div>
-
-                    <div class="sidebar-section-heading">
-
-                        <p class="section-title">Favorites</p>
-
-                        <div class="add-new-flied-btn">
-                            <img src="../assets/img/icons/plus.svg">
-                        </div>
-
-
-                    </div>
-
-
-                    <ul class="favorites-pages-list">
-
-                        <li class="list-items">
-                            <router-link to="/" class="list-link">
-
-                                <div class="list-icon">💸</div>
-
-                                <p class="link-title">Tax Rules</p>
-
-                            </router-link>
-                        </li>
-
-
-                        <li class="list-items">
-                            <router-link to="/" class="list-link">
-
-                                <div class="list-icon">🏝</div>
-
-                                <p class="link-title">Summer ‘21</p>
-
-                            </router-link>
-                        </li>
-
-                    </ul>
-
-
-
-                </div>
 
             </div>
 

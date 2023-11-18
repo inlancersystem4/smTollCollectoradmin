@@ -199,10 +199,10 @@ export default {
             edit_vehicle.append("v_name", this.vehicleName1);
             edit_vehicle.append("v_price", this.vehicleprice1);
 
-            if (this.editVehicleimg) {
-                edit_vehicle.append("v_image", this.editVehicleimg);
-            } else {
+            if (!this.editVehicleimg) {
                 edit_vehicle.append("v_image", this.vehicleimg1);
+            } else {
+                edit_vehicle.append("v_image", this.editVehicleimg);
             }
 
             try {
