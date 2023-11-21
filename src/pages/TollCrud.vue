@@ -90,7 +90,7 @@ export default {
 
             var Add_toll_data = new FormData();
 
-            Add_toll_data.append("t_id", this.trollId);
+            Add_toll_data.append("t_id", "");
             Add_toll_data.append("t_name", this.plazzName);
             Add_toll_data.append("t_address", this.plazzAddress);
 

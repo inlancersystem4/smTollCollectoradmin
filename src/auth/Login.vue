@@ -40,6 +40,7 @@ export default {
 
         },
 
+
         getInputError(fieldName) {
             return {
                 'input_error': !fieldName && this.fromSubmited,
