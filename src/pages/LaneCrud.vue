@@ -70,14 +70,14 @@ export default {
         },
 
         async laneData() {
-            var toll_data = new FormData();
-            toll_data.append("l_id", "");
-            toll_data.append("sort", this.sort);
-            toll_data.append("search", this.searchText);
-            toll_data.append("page", this.currentPage);
+            var lane_data = new FormData();
+            lane_data.append("l_id", "");
+            lane_data.append("sort", this.sort);
+            lane_data.append("search", this.searchText);
+            lane_data.append("page", this.currentPage);
 
             try {
-                const response = await fetchWrapper.post(`${baseUrl}/admin/lane-list`, toll_data);
+                const response = await fetchWrapper.post(`${baseUrl}/admin/lane-list`, lane_data);
 
                 this.list = response.data
 

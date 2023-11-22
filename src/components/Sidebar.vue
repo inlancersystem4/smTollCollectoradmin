@@ -16,6 +16,9 @@ export default {
         },
         isuserCrudActive() {
             return this.$route.matched.some(route => route.path === '/user-crud');
+        },
+        isReceiptsCrudActive() {
+            return this.$route.matched.some(route => route.path === '/receipt-crud');
         }
     }
 }
@@ -67,6 +70,32 @@ export default {
                     </li>
 
                     <li class="list-items">
+                        <router-link to="/user-crud" class="list-link" :class="{ link_active: isuserCrudActive }">
+                            <div class="link-items">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M8.25 15C10.9424 15 13.125 12.8174 13.125 10.125C13.125 7.43261 10.9424 5.25 8.25 5.25C5.55761 5.25 3.375 7.43261 3.375 10.125C3.375 12.8174 5.55761 15 8.25 15Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-miterlimit="10" />
+                                    <path
+                                        d="M14.5684 5.42813C14.9993 5.31124 15.4437 5.25136 15.8902 5.25C17.1832 5.25 18.4231 5.76361 19.3374 6.67785C20.2516 7.59209 20.7652 8.83207 20.7652 10.125C20.7652 11.4179 20.2516 12.6579 19.3374 13.5721C18.4231 14.4864 17.1832 15 15.8902 15"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M1.5 18.5066C2.2612 17.4234 3.27191 16.5393 4.44676 15.9289C5.6216 15.3186 6.92608 15 8.25 15C9.57392 15 10.8784 15.3186 12.0532 15.9289C13.2281 16.5393 14.2388 17.4234 15 18.5066"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M15.8906 15C17.2147 14.9992 18.5194 15.3174 19.6944 15.9277C20.8693 16.5381 21.8799 17.4225 22.6406 18.5063"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <p class="link-title">Users</p>
+                            </div>
+                        </router-link>
+                    </li>
+
+                    <li class="list-items">
                         <router-link to="/toll-crud" class="list-link" :class="{ link_active: isTollCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -86,7 +115,7 @@ export default {
                                     <path d="M1.5 19.5H22.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-                                <p class="link-title">Toll Plaza Crud</p>
+                                <p class="link-title">Toll Plaza</p>
                             </div>
                         </router-link>
                     </li>
@@ -111,7 +140,7 @@ export default {
                                     <path d="M6 15V18.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-                                <p class="link-title">Lane Crud</p>
+                                <p class="link-title">Lane</p>
                             </div>
                         </router-link>
                     </li>
@@ -140,7 +169,7 @@ export default {
                                         stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-                                <p class="link-title">Vehicle Crud</p>
+                                <p class="link-title">Vehicle</p>
                             </div>
                         </router-link>
                     </li>
@@ -163,36 +192,31 @@ export default {
                                     <path d="M12 15.75V12" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-                                <p class="link-title">Shirt Crud</p>
+                                <p class="link-title">Shirt</p>
                             </div>
                         </router-link>
                     </li>
 
+
                     <li class="list-items">
-                        <router-link to="/user-crud" class="list-link" :class="{ link_active: isuserCrudActive }">
+                        <router-link to="/receipt-crud" class="list-link" :class="{ link_active: isReceiptsCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none">
                                     <path
-                                        d="M8.25 15C10.9424 15 13.125 12.8174 13.125 10.125C13.125 7.43261 10.9424 5.25 8.25 5.25C5.55761 5.25 3.375 7.43261 3.375 10.125C3.375 12.8174 5.55761 15 8.25 15Z"
-                                        stroke="#6B7280" stroke-width="1.5" stroke-miterlimit="10" />
-                                    <path
-                                        d="M14.5684 5.42813C14.9993 5.31124 15.4437 5.25136 15.8902 5.25C17.1832 5.25 18.4231 5.76361 19.3374 6.67785C20.2516 7.59209 20.7652 8.83207 20.7652 10.125C20.7652 11.4179 20.2516 12.6579 19.3374 13.5721C18.4231 14.4864 17.1832 15 15.8902 15"
+                                        d="M3 19.5V5.25C3 5.05109 3.07902 4.86032 3.21967 4.71967C3.36032 4.57902 3.55109 4.5 3.75 4.5H20.25C20.4489 4.5 20.6397 4.57902 20.7803 4.71967C20.921 4.86032 21 5.05109 21 5.25V19.5L18 18L15 19.5L12 18L9 19.5L6 18L3 19.5Z"
                                         stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path
-                                        d="M1.5 18.5066C2.2612 17.4234 3.27191 16.5393 4.44676 15.9289C5.6216 15.3186 6.92608 15 8.25 15C9.57392 15 10.8784 15.3186 12.0532 15.9289C13.2281 16.5393 14.2388 17.4234 15 18.5066"
-                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M7.125 9.75H16.875" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path
-                                        d="M15.8906 15C17.2147 14.9992 18.5194 15.3174 19.6944 15.9277C20.8693 16.5381 21.8799 17.4225 22.6406 18.5063"
-                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M7.125 12.75H16.875" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-                                <p class="link-title">User Crud</p>
+                                <p class="link-title">Receipts</p>
                             </div>
                         </router-link>
                     </li>
+
 
                 </ul>
 

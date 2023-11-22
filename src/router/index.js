@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/login ',
+      path: '/login',
       name: 'Login',
       component: () => import('../auth/Login.vue')
     },
@@ -38,6 +38,20 @@ const router = createRouter({
       path: '/user-crud',
       name: 'UserCrud',
       component: () => import('../pages/UserCrud.vue'),
+    },
+    {
+      path: '/receipt-crud',
+      name: 'ReceiptCrud',
+      component: () => import('../pages/ReceiptCrud.vue'),
+    },
+    {
+      path: '/page-not-found',
+      name: '404',
+      component: () => import('../pages/404.vue'),
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/page-not-found'
     }
   ]
 })

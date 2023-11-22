@@ -446,10 +446,6 @@ export default {
     <Model model_title="Add User" Btn_text="Add User" @modelbtn_clicked="userAdd" :isButtonDisabled="modelSubmitBtn"
         v-if="addUserModal" @model_close="addUserModal = false">
 
-        <div class="user_pic">
-            <input type="file" @change="selectPofilePic">
-            <img :src="this.selectedImg">
-        </div>
 
         <div class="address-form">
             <div class="space-y-8px">
@@ -458,7 +454,11 @@ export default {
                     @input="event => userName = event.target.value" />
             </div>
 
-            <div class=""></div>
+
+            <div class="user_pic">
+                <input type="file" @change="selectPofilePic">
+                <img :src="this.selectedImg">
+            </div>
 
             <div class="space-y-8px">
                 <Label label="User Number" />
