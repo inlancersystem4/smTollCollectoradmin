@@ -19,9 +19,9 @@ export const useAuthStore = defineStore({
             form_data.append('user_password', password);
             try {
                 const user = await fetchWrapper.post(`${baseUrl}/admin/sign-in`, form_data);
-
+                console.log(user);
                 var new_user = {
-                    token: user.data.session_token
+                    token: user.session_token
                 }
                 // update pinia state
                 this.user = new_user;

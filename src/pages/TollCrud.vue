@@ -166,7 +166,6 @@ export default {
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/toll-plaza-list`, toll_data);
-                console.log("this is data", data)
 
                 this.plazzName1 = data.data.t_name
                 this.plazzAddress1 = data.data.t_address

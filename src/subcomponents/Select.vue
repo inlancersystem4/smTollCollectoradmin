@@ -7,7 +7,8 @@ export default {
             type: Array,
             required: true,
         },
-        responseData: Object
+        responseData: Object,
+        value: String
     },
 
     data() {
@@ -16,6 +17,12 @@ export default {
             selectedOption: null,
             selectedOptionVal: null,
             responseOption: "",
+            inputValue: this.value || ''
+        }
+    },
+    watch: {
+        value(newValue) {
+            this.inputValue = newValue;
         }
     },
     methods: {
@@ -32,8 +39,10 @@ export default {
             this.selectedOption = null;
             this.selectDropdownOpen = false;
         },
+        clearInput() {
+            this.inputValue = ""
+        }
     },
-
 }
 
 </script>
@@ -46,6 +55,7 @@ export default {
 
 
         <div @click="toggleDropdown" class="cursor-pointer">
+
             <p v-if="!responseData" class="w-100 capitalize color-Grey_90 font-medium"
                 :class="{ 'color-Grey_50': selectedOption !== null }">
                 {{ selectedOption ? selectedOption : 'Select Option' }}
@@ -56,6 +66,7 @@ export default {
             </p>
 
         </div>
+
 
         <div class="select-icon cursor-pointer">
             <div @click="clearSelection" v-if="selectedOption">
@@ -77,7 +88,25 @@ export default {
             </div>
         </div>
         <div v-if="selectDropdownOpen" class="select-option">
+
+            <div class="padding-x_24px padding-y_12px">
+                <div class="search-wrraper w-100">
+                    <button class="icon">
+                        <img src="../assets/img/icons/search.svg" class="img-not-selected">
+                    </button>
+                    <input type="text" class=" w-100" placeholder="Search Something" v-model="inputValue">
+                    <button class="icon val_clear" style="cursor: pointer;" v-if="inputValue" @click="clearInput">
+                        <img src="../assets/img/icons/close-icon.svg" class="img-not-selected">
+                    </button>
+                </div>
+            </div>
+
             <ul class="w-100">
+
+                <p class="no-conetnt-show-section" v-if="!options">
+                    Oops No data Found !!
+                </p>
+
                 <li v-for="(option, index) in options" :key="index" @click="selectOption(option)" class="capitalize">
                     <div v-if="option.t_name">
                         {{ option.t_name }}
@@ -133,7 +162,7 @@ export default {
     border-radius: 0.375rem;
     left: 0;
     margin-top: 0.5rem;
-    max-height: 180px;
+    max-height: 240px;
     overflow-y: auto;
     z-index: 99;
 }
@@ -154,6 +183,14 @@ export default {
     cursor: pointer;
     text-transform: capitalize;
     border-bottom: 1px solid var(--Grey-20);
+}
+
+.search-wrraper {
+    border: 1px solid var(--Grey-20);
+}
+
+.search-wrraper:focus {
+    box-shadow: none;
 }
 
 .select-option li:hover {

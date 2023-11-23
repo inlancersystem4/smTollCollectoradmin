@@ -12,7 +12,7 @@ export default {
     },
     methods: {
         checkUser() {
-            const User = localStorage.getItem('userToken')
+            const User = localStorage.getItem('user')
 
             if (!User) {
                 this.$router.push({ name: 'Login' });

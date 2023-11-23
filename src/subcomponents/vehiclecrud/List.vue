@@ -12,7 +12,7 @@ export default {
         },
         editStatus(id) {
             this.$emit('edit_status', id)
-        }
+        },
     },
 }
 </script>
@@ -21,7 +21,7 @@ export default {
     <li class="list" v-for="(items, index) in list" :key="index">
 
         <div class="img">
-            <img :src="items.v_image" :alt="items.v_image">
+            <img :src="items.v_image" :alt="items.v_image" @load="imageLoaded">
         </div>
 
         <div class="space-y-4px display-flex align-center text-center justify-center" style="flex-direction: column;">

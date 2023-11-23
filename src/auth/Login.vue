@@ -1,9 +1,9 @@
-<script>
-
+<script  >
+import { Field, Form, ErrorMessage } from "vee-validate";
 import axios from 'axios';
 
 import OverLaye from '../subcomponents/OverLaye.vue';
-import ErrorMessage from '../subcomponents/ErrorMessage.vue';
+// import ErrorMessage from '../subcomponents/ErrorMessage.vue';
 
 import { useAuthStore } from "../stores";
 
@@ -14,6 +14,9 @@ const baseUrl = `${import.meta.env.VITE_API_URL}`;
 export default {
     components: {
         OverLaye,
+        Field,
+        Form,
+        // ErrorMessage,
         ErrorMessage,
         useAuthStore,
     },
@@ -30,7 +33,11 @@ export default {
         this.checkUser()
     },
     methods: {
-
+        async onSubmit(values) {
+            const authStore = useAuthStore();
+            const { email, password } = values;
+            await authStore.login(email, password);
+        },
         checkUser() {
             const User = localStorage.getItem('userToken')
 
@@ -47,58 +54,58 @@ export default {
             };
         },
 
-        async login() {
+        // async login() {
 
-            this.fromSubmited = true
-
-
-            const requiredFields = [
-                { field: this.email, name: 'email' },
-                { field: this.password, name: 'password' },
-            ];
-
-            for (const { field, name } of requiredFields) {
-                if (!field) {
-                    return;
-                }
-            }
-
-            var login_data = new FormData();
-            login_data.append("user_email", this.email);
-            login_data.append("user_password", this.password);
-
-            try {
-
-                this.overlay = true
-
-                const loginUser = await axios.post(`${baseUrl}/admin/sign-in`, login_data);
+        //     this.fromSubmited = true
 
 
+        //     const requiredFields = [
+        //         { field: this.email, name: 'email' },
+        //         { field: this.password, name: 'password' },
+        //     ];
 
-                if (loginUser.data.success === 1) {
+        //     for (const { field, name } of requiredFields) {
+        //         if (!field) {
+        //             return;
+        //         }
+        //     }
 
-                    localStorage.setItem('userToken', JSON.stringify(loginUser.data.session_token))
+        //     var login_data = new FormData();
+        //     login_data.append("user_email", this.email);
+        //     login_data.append("user_password", this.password);
 
-                    this.$router.push({ name: 'home' });
+        //     try {
 
-                    this.overlay = false
+        //         this.overlay = true
 
-                }
-
-                else {
-
-                    this.overlay = false
-
-                    location.reload();
-
-                }
+        //         const loginUser = await axios.post(`${baseUrl}/admin/sign-in`, login_data);
 
 
-            } catch (error) {
-                console.log(error);
-            }
 
-        },
+        //         if (loginUser.data.success === 1) {
+
+        //             localStorage.setItem('userToken', JSON.stringify(loginUser.data.session_token))
+
+        //             this.$router.push({ name: 'home' });
+
+        //             this.overlay = false
+
+        //         }
+
+        //         else {
+
+        //             this.overlay = false
+
+        //             location.reload();
+
+        //         }
+
+
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+
+        // },
 
         // async login(values) {
         //     const authStore = useAuthStore();
@@ -129,14 +136,16 @@ export default {
 
 
             <div class="auth-from-section">
-                <form @submit.prevent="login()" class="from space-y-24px">
+                <Form @submit="onSubmit" class="from space-y-24px">
 
 
                     <div class="input-group">
-
                         <label for="">Email</label>
-                        <input type="email" class="input-1" :class="getInputError(email)" v-model="email">
-                        <ErrorMessage msg="Email Is reqired" v-if="!email && fromSubmited" />
+                        <Field name="email" :rules="validateEmail" class="input-1" type="email"
+                            placeholder="Enter Email id" />
+                        <ErrorMessage name="email" class="text-red-600 block mt-2" />
+                        <!-- <input type="email" class="input-1" :class="getInputError(email)" v-model="email">
+                                <ErrorMessage msg="Email Is reqired" v-if="!email && fromSubmited" /> -->
 
                     </div>
 
@@ -145,7 +154,9 @@ export default {
 
                         <label for="">Password</label>
                         <div class="search-wrraper w-100 border-Grey_20" :class="getInputError(password)">
-                            <input class="w-100" :type="typePassword ? 'password' : 'text'" v-model="password">
+                            <!-- <input class="w-100" :type="typePassword ? 'password' : 'text'" v-model="password"> -->
+                            <Field name="password" class="w-100" :type="typePassword ? 'password' : 'text'"
+                                placeholder="Password" />
                             <div class="icon togglePassword">
                                 <span v-if="typePassword" @click="typePassword = false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -185,7 +196,8 @@ export default {
                                 </span>
                             </div>
                         </div>
-                        <ErrorMessage msg="Password Is reqired" v-if="!email && fromSubmited" />
+                        <ErrorMessage name="password" class="text-red-600 block mt-2" />
+                        <!-- <ErrorMessage msg="Password Is reqired" v-if="!email && fromSubmited" /> -->
 
                     </div>
 

@@ -57,6 +57,9 @@ export default {
             selectedImg: "",
             passwordNotMatch: false,
             editUserDrawer: false,
+            searchToll: "",
+            searchLane: "",
+            searchShift: "",
         }
     },
     created() {
@@ -94,6 +97,21 @@ export default {
         searchTextFun(event) {
             this.searchText = event.target.value.trim();
             this.userData();
+        },
+
+        searchTollFun(event) {
+            this.searchToll = event.target.value.trim();
+            this.tollData();
+        },
+
+        searchLaneFun(event) {
+            this.searchLane = event.target.value.trim();
+            this.laneData();
+        },
+
+        searchShiftFun(event) {
+            this.searchShift = event.target.value.trim();
+            this.shiftData();
         },
 
         async userData() {
@@ -165,7 +183,7 @@ export default {
             var toll_data = new FormData();
             toll_data.append("t_id", "");
             toll_data.append("sort", this.sort);
-            toll_data.append("search", this.searchText);
+            toll_data.append("search", this.searchToll);
             toll_data.append("page", this.currentPage);
 
             try {
@@ -183,7 +201,7 @@ export default {
             var toll_data = new FormData();
             toll_data.append("l_id", "");
             toll_data.append("sort", this.sort);
-            toll_data.append("search", this.searchText);
+            toll_data.append("search", this.searchLane);
             toll_data.append("page", this.currentPage);
 
             try {
@@ -202,7 +220,7 @@ export default {
             var shift_data = new FormData();
             shift_data.append("s_id", "");
             shift_data.append("sort", this.sort);
-            shift_data.append("search", this.searchText);
+            shift_data.append("search", this.searchShift);
             shift_data.append("page", this.currentPage);
 
             try {
@@ -468,7 +486,7 @@ export default {
 
             <div class="space-y-8px">
                 <Label label="Add Toll Plaza" />
-                <Select :options="tollArray" @option-selected="getTollPlaza" />
+                <Select :options="tollArray" @option-selected="getTollPlaza" :value="searchToll" @input="searchTollFun" />
             </div>
 
             <div class="space-y-8px">
@@ -551,12 +569,12 @@ export default {
 
             <div class="space-y-8px">
                 <Label label="Add Toll Lane" />
-                <Select :options="tollLaneArray" @option-selected="getLane" />
+                <Select :options="tollLaneArray" @option-selected="getLane" :value="searchLane" @input="searchLaneFun" />
             </div>
 
             <div class="space-y-8px">
                 <Label label="Add Shift" />
-                <Select :options="shiftArray" @option-selected="getShift" />
+                <Select :options="shiftArray" @option-selected="getShift" :value="searchShift" @input="searchShiftFun" />
             </div>
 
         </div>
@@ -583,18 +601,21 @@ export default {
 
             <div class="space-y-8px">
                 <Label label="Add Toll Plaza" />
-                <Select :options="tollArray" @option-selected="getTollPlaza" :responseData="tollSelectedEdit" />
+                <Select :options="tollArray" @option-selected="getTollPlaza" :responseData="tollSelectedEdit"
+                    :value="searchToll" @input="searchTollFun" />
             </div>
 
 
             <div class="space-y-8px">
                 <Label label="Add Toll Lane" />
-                <Select :options="tollLaneArray" @option-selected="getLane" :responseData="laneSelectedEdit" />
+                <Select :options="tollLaneArray" @option-selected="getLane" :responseData="laneSelectedEdit"
+                    :value="searchLane" @input="searchLaneFun" />
             </div>
 
             <div class="space-y-8px">
                 <Label label="Add Shift" />
-                <Select :options="shiftArray" @option-selected="getShift" :responseData="shiftSelectedEdit" />
+                <Select :options="shiftArray" @option-selected="getShift" :responseData="shiftSelectedEdit"
+                    :value="searchShift" @input="searchShiftFun" />
             </div>
 
         </div>

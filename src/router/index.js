@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
+import { useAuthStore, useAlertStore } from '@/stores';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -45,6 +46,11 @@ const router = createRouter({
       component: () => import('../pages/ReceiptCrud.vue'),
     },
     {
+      path: '/profile',
+      name: 'Profile',
+      component: () => import('../pages/Profile.vue'),
+    },
+    {
       path: '/page-not-found',
       name: '404',
       component: () => import('../pages/404.vue'),
@@ -54,6 +60,20 @@ const router = createRouter({
       redirect: '/page-not-found'
     }
   ]
-})
+});
+
+
+router.beforeEach(async (to) => {
+  const alertStore = useAlertStore();
+  alertStore.clear();
+
+  const publicPages = ['/login'];
+  const authRequired = !publicPages.includes(to.path);
+  const authStore = useAuthStore();
+  if (authRequired && !authStore.user) {
+    authStore.returnUrl = to.fullPath;
+    return '/login';
+  }
+});
 
 export default router

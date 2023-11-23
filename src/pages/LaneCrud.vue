@@ -44,6 +44,7 @@ export default {
             laneName2: "",
             laneId: "",
             laneTollPlaza: "",
+            searchToll: "",
         }
     },
 
@@ -93,7 +94,7 @@ export default {
             var toll_data = new FormData();
             toll_data.append("t_id", "");
             toll_data.append("sort", this.sort);
-            toll_data.append("search", this.searchText);
+            toll_data.append("search", this.searchToll);
             toll_data.append("page", this.currentPage);
 
             try {
@@ -104,6 +105,11 @@ export default {
                 console.log(error);
             }
 
+        },
+
+        searchTollFun(event) {
+            this.searchToll = event.target.value.trim();
+            this.tollData();
         },
 
         updatePage(Number) {
@@ -344,7 +350,8 @@ export default {
             </div>
             <div class="space-y-8px">
                 <Label label="Lane Toll" />
-                <Select :options="tollArray" @option-selected="onOptionSelected" />
+                <Select :options="tollArray" @option-selected="onOptionSelected" :value="searchToll"
+                    @input="searchTollFun" />
             </div>
         </div>
     </Model>
@@ -369,7 +376,8 @@ export default {
             </div>
             <div class="space-y-8px">
                 <Label label="Lane Toll" />
-                <Select :options="tollArray" @option-selected="onOptionSelected" :responseData="laneTollPlaza" />
+                <Select :options="tollArray" @option-selected="onOptionSelected" :responseData="laneTollPlaza"
+                    :value="searchToll" @input="searchTollFun" />
             </div>
         </div>
     </Drawer>

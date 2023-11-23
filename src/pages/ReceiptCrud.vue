@@ -27,7 +27,7 @@ export default {
             searchText: "",
             gridView: true,
             listView: false,
-            sort: "asc",
+            sort: "desc",
             pagination: "",
             currentPage: 1,
             totalPages: 1,
@@ -49,6 +49,11 @@ export default {
             vNumber: "",
             rtype: "",
             setVehiclePrice: "",
+            searchUser: "",
+            searchToll: "",
+            searchLane: "",
+            searchShift: "",
+            searchVehicle: "",
         }
     },
     created() {
@@ -143,6 +148,31 @@ export default {
             this.vehicleData();
         },
 
+        searchUserFun(event) {
+            this.searchUser = event.target.value.trim();
+            this.userData();
+        },
+
+        searchTollFun(event) {
+            this.searchToll = event.target.value.trim();
+            this.tollData();
+        },
+
+        searchLaneFun(event) {
+            this.searchLane = event.target.value.trim();
+            this.laneData();
+        },
+
+        searchShiftFun(event) {
+            this.searchShift = event.target.value.trim();
+            this.shiftData();
+        },
+
+        searchVehicleFun(event) {
+            this.searchVehicle = event.target.value.trim();
+            this.vehicleData();
+        },
+
         async getReceipdata() {
             var receipt_data = new FormData();
             receipt_data.append("r_id", this.receiptId);
@@ -171,7 +201,7 @@ export default {
             var toll_data = new FormData();
             toll_data.append("t_id", "");
             toll_data.append("sort", "asc");
-            toll_data.append("search", "");
+            toll_data.append("search", this.searchToll);
             toll_data.append("page", "1");
 
             try {
@@ -188,7 +218,7 @@ export default {
             var lane_data = new FormData();
             lane_data.append("l_id", "");
             lane_data.append("sort", "asc");
-            lane_data.append("search", "");
+            lane_data.append("search", this.searchLane);
             lane_data.append("page", "1");
 
             try {
@@ -207,7 +237,7 @@ export default {
             var shift_data = new FormData();
             shift_data.append("s_id", "");
             shift_data.append("sort", "asc");
-            shift_data.append("search", "");
+            shift_data.append("search", this.searchShift);
             shift_data.append("page", "1");
 
             try {
@@ -226,7 +256,7 @@ export default {
             var user_data = new FormData();
             user_data.append("user_id", "");
             user_data.append("sort", "asc");
-            user_data.append("search", "");
+            user_data.append("search", this.searchUser);
             user_data.append("page", "1");
 
             try {
@@ -244,7 +274,7 @@ export default {
             var vehicle_data = new FormData();
             vehicle_data.append("v_id", "");
             vehicle_data.append("sort", "asc");
-            vehicle_data.append("search", "");
+            vehicle_data.append("search", this.searchVehicle);
             vehicle_data.append("page", "1");
 
             try {
@@ -282,7 +312,7 @@ export default {
 
         async receiptsave() {
 
-            if (this.setVehiclePrice) {
+            if (this.setVehiclePrice || this.quantity) {
                 this.totalPrice = this.setVehiclePrice * this.quantity
             }
 
@@ -391,27 +421,32 @@ export default {
 
             <div class="space-y-8px">
                 <Label label="Select User" />
-                <Select :options="userArray" @option-selected="getUser" :responseData="setUser" />
+                <Select :options="userArray" @option-selected="getUser" :responseData="setUser" :value="searchUser"
+                    @input="searchUserFun" />
             </div>
 
             <div class="space-y-8px">
                 <Label label="Select Toll" />
-                <Select :options="tollArray" @option-selected="getTollPlaza" :responseData="setTollPlaza" />
+                <Select :options="tollArray" @option-selected="getTollPlaza" :responseData="setTollPlaza"
+                    :value="searchToll" @input="searchTollFun" />
             </div>
 
             <div class="space-y-8px">
                 <Label label="Select Lane" />
-                <Select :options="laneArray" @option-selected="getLane" :responseData="setLane" />
+                <Select :options="laneArray" @option-selected="getLane" :responseData="setLane" :value="searchLane"
+                    @input="searchLaneFun" />
             </div>
 
             <div class="space-y-8px">
                 <Label label="Select Shift" />
-                <Select :options="shiftArray" @option-selected="getShift" :responseData="setShift" />
+                <Select :options="shiftArray" @option-selected="getShift" :responseData="setShift" :value="searchShift"
+                    @input="searchShiftFun" />
             </div>
 
             <div class="space-y-8px">
                 <Label label="Select Vehicle" />
-                <Select :options="vehicleArray" @option-selected="getVehicle" :responseData="setVehicle" />
+                <Select :options="vehicleArray" @option-selected="getVehicle" :responseData="setVehicle"
+                    :value="searchVehicle" @input="searchVehicleFun" />
             </div>
 
             <div class="space-y-8px">

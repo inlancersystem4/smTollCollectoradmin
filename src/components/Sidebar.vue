@@ -30,25 +30,6 @@ export default {
 
         <div class="sidebar-content">
 
-            <div class="sidebar-avatar-header">
-
-                <div class="user-profile-avatar">
-                    <img
-                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&amp;fit=crop&amp;q=80&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&amp;w=1374">
-                </div>
-
-                <div class="user-profile-btn" id="Open_mini_sidebar">
-                    <img src="../assets/img/icons/burger-menu.svg" class="img-not-selected">
-                </div>
-
-                <div class="user-profile-btn" id="Responsive_Close_sidebar">
-                    <img src="../assets/img/icons/close-icon.svg" class="img-not-selected close-menu">
-                </div>
-
-            </div>
-
-
-
             <div class="user-details">
                 <p class="user-owernship">Store</p>
                 <h5 class="user-name">Tekla Fabrics</h5>

@@ -41,4 +41,14 @@ export default {
     height: 100%;
     background: rgb(17, 24, 39, 0.4)
 }
+
+.btn-danger{
+    transition: background-color .1s;
+}
+
+.btn-danger:hover{
+    background-color: transparent;
+    color: red;
+}
+
 </style>
