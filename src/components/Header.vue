@@ -26,12 +26,6 @@ export default {
         toggleDropdown() {
             this.personal_optionDrop = !this.personal_optionDrop;
         },
-        handleClickOutside(event) {
-            const dropdownContainer = this.$refs.dropdownContainer;
-            if (!dropdownContainer.contains(event.target)) {
-                this.personal_optionDrop = false;
-            }
-        },
         goToProfile() {
             this.$router.push({ name: "Profile" })
         },
@@ -56,10 +50,6 @@ export default {
             <button class="layout-buttons" @click="goToNextPage">
                 <img src="../assets/img/icons/arrow-right.svg" class="img-not-selected">
             </button>
-            <button class="layout-buttons">
-                <img src="../assets/img/icons/clock.svg" class="img-not-selected">
-            </button>
-
         </div>
 
 

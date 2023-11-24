@@ -12,3 +12,9 @@ export default {
 <template>
     <input type="text" :placeholder="placeholder" :value="value" :id="id" class="input-1">
 </template>
+
+<style scoped>
+.input-1:disabled {
+    opacity: 0.6;
+}
+</style>

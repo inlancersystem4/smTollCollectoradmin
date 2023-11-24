@@ -222,7 +222,9 @@ export default {
         selectVehicleImg(event) {
             const selectedFile = event.target.files[0]
 
-            if (selectedFile.type === "image/png") {
+            console.log(selectedFile.type)
+
+            if (selectedFile.type === "image/png" || selectedFile.type === "image/jpeg") {
 
                 this.vehicleimg = selectedFile
 
@@ -239,7 +241,7 @@ export default {
         selectVehicleImg2(event) {
             const selectedFile = event.target.files[0]
 
-            if (selectedFile.type === "image/png") {
+            if (selectedFile.type === "image/png" || selectedFile.type === "image/jpeg") {
 
                 this.editVehicleimg = selectedFile
 

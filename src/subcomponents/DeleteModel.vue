@@ -9,7 +9,7 @@ export default {
         closeModel() {
             this.$emit('close_model')
         },
-        delectItem(){
+        delectItem() {
             this.$emit('delete_item')
         }
     },
@@ -42,13 +42,12 @@ export default {
     background: rgb(17, 24, 39, 0.4)
 }
 
-.btn-danger{
+.btn-danger {
     transition: background-color .1s;
 }
 
-.btn-danger:hover{
+.delete-model .btn-danger:hover {
     background-color: transparent;
     color: red;
 }
-
 </style>
