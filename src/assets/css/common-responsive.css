@@ -5577,6 +5577,10 @@
 
     /* Flex Classes */
 
+    .Mobile_display-none{
+        display: none !important;
+    }
+
     .Mobile_display-flex {
         display: flex !important;
     }

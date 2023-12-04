@@ -165,6 +165,8 @@ export default {
     position: relative;
 }
 
+
+
 .w20 {
     width: 20px;
 }
@@ -324,5 +326,21 @@ export default {
     border-radius: 999px;
     border: 2px solid #c5c5c7;
     padding: 10px;
+}
+
+@media (max-width:440px) {
+    .list {
+        padding: 16px 12px 24px;
+    }
+
+    .list .receipt {
+        max-width: 100%;
+        margin-top: 42px;
+    }
+
+    .list .receipt-hall_box {
+        display: none;
+    }
+
 }
 </style>

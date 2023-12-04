@@ -22,19 +22,19 @@ export default {
 
             <!-- <p class="all-items-list-count">
 
-                                        <span>1</span>
+                                                                    <span>1</span>
 
-                                        -
+                                                                    -
 
-                                        <span>13</span>
+                                                                    <span>13</span>
 
-                                        of
+                                                                    of
 
-                                        <span>200</span>
+                                                                    <span>200</span>
 
-                                        results
+                                                                    results
 
-                                    </p> -->
+                                                                </p> -->
 
         </div>
 
@@ -58,3 +58,19 @@ export default {
 
     </div>
 </template>
+
+
+
+<style scoped>
+@media (max-width:440px) {
+    .table-resuits-count {
+        display: none;
+    }
+}
+
+.table-resuits-count .custom-dropdown-list {
+    bottom: 100%;
+    left: 100%;
+    transform: none;
+}
+</style>

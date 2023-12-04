@@ -405,4 +405,17 @@ export default {
     color: var(--Grey-90);
     font-family: 'Quicksand', sans-serif;
 }
+
+@media (max-width:650px) {
+
+    .profile-details {
+        flex-direction: column;
+    }
+
+    .list {
+        width: 100%;
+        flex-wrap: wrap;
+        row-gap: 16px;
+    }
+}
 </style>

@@ -365,7 +365,8 @@ export default {
 
                         <button class="btn-regular display-flex align-center gap-8px" @click="chnageSort()">
                             <img src="../assets/img/icons/adjustments.svg">
-                            Filter
+                            <span v-if="sort === 'asc'">Newest</span>
+                            <span v-if="sort === 'desc'">Oddest</span>
                         </button>
 
                     </div>
@@ -384,7 +385,7 @@ export default {
 
             </div>
 
-            <div class="padding-y_24px padding-x_32px">
+            <div class="padding-y_24px padding-x_32px mobile-body">
 
                 <div class="no_data_section" v-if="!list">
                     <img src="../assets/img/oops_icon.png">
@@ -490,6 +491,18 @@ export default {
     align-items: center;
     justify-content: center;
 }
+
+@media (max-width:768px) {
+    .list {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .mobile-body {
+        padding: 16px 22px;
+    }
+
+}
+
 
 .no_data_section img {
     width: 224px;

@@ -383,9 +383,10 @@ export default {
 
                         <button class="btn-regular display-flex align-center gap-8px" @click="chnageSort()">
                             <img src="../assets/img/icons/adjustments.svg">
-                            Filter
+                            <span v-if="sort === 'asc'">Newest</span>
+                            <span v-if="sort === 'desc'">Oddest</span>
                         </button>
-                        <button class="icon-btn icon-btn_32px " @click="gridView = false, listView = true"
+                        <button class="icon-btn icon-btn_32px Mobile_display-none" @click="gridView = false, listView = true"
                             :class="{ 'bg-Grey_5': listView }">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                                 <path
@@ -396,7 +397,7 @@ export default {
                                     stroke="#191C1F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </button>
-                        <button class="icon-btn icon-btn_32px " @click="gridView = true, listView = false"
+                        <button class="icon-btn icon-btn_32px Mobile_display-none" @click="gridView = true, listView = false"
                             :class="{ 'bg-Grey_5': gridView }">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                                 <path d="M10.5 4.5H4.5V10.5H10.5V4.5Z" stroke="#191C1F" stroke-width="1.5"
@@ -432,7 +433,7 @@ export default {
 
             </div>
 
-            <div class="padding-y_24px padding-x_32px">
+            <div class="padding-y_24px padding-x_32px mobile-body">
 
                 <div class="no_data_section" v-if="!list">
                     <img src="../assets/img/oops_icon.png">
@@ -631,6 +632,17 @@ export default {
     display: grid;
     gap: 12px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width:768px) {
+    .list {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .mobile-body {
+        padding: 16px 22px;
+    }
+
 }
 
 .list-row {
