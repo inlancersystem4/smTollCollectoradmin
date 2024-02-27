@@ -386,8 +386,8 @@ export default {
                             <span v-if="sort === 'asc'">Newest</span>
                             <span v-if="sort === 'desc'">Oddest</span>
                         </button>
-                        <button class="icon-btn icon-btn_32px Mobile_display-none" @click="gridView = false, listView = true"
-                            :class="{ 'bg-Grey_5': listView }">
+                        <button class="icon-btn icon-btn_32px Mobile_display-none"
+                            @click="gridView = false, listView = true" :class="{ 'bg-Grey_5': listView }">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                                 <path
                                     d="M19.5 13.5H4.5C4.08579 13.5 3.75 13.8358 3.75 14.25V18C3.75 18.4142 4.08579 18.75 4.5 18.75H19.5C19.9142 18.75 20.25 18.4142 20.25 18V14.25C20.25 13.8358 19.9142 13.5 19.5 13.5Z"
@@ -397,8 +397,8 @@ export default {
                                     stroke="#191C1F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </button>
-                        <button class="icon-btn icon-btn_32px Mobile_display-none" @click="gridView = true, listView = false"
-                            :class="{ 'bg-Grey_5': gridView }">
+                        <button class="icon-btn icon-btn_32px Mobile_display-none"
+                            @click="gridView = true, listView = false" :class="{ 'bg-Grey_5': gridView }">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                                 <path d="M10.5 4.5H4.5V10.5H10.5V4.5Z" stroke="#191C1F" stroke-width="1.5"
                                     stroke-linecap="round" stroke-linejoin="round" />
