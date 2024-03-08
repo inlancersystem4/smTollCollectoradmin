@@ -35,6 +35,8 @@ export default {
             plazzName1: "",
             plazzAddress: "",
             plazzAddress1: "",
+            sectionName: "",
+            sectionName1: "",
             addPlazaModal: false,
             deleteToll: false,
             trollId: "",
@@ -93,6 +95,7 @@ export default {
 
             Add_toll_data.append("t_id", "");
             Add_toll_data.append("t_name", this.plazzName);
+            Add_toll_data.append("section", this.sectionName);
             Add_toll_data.append("t_address", this.plazzAddress);
 
             try {
@@ -170,6 +173,7 @@ export default {
 
                 this.plazzName1 = data.data.t_name
                 this.plazzAddress1 = data.data.t_address
+                this.sectionName1 = data.data.section
 
             } catch (error) {
                 const alertStore = useAlertStore()
@@ -181,6 +185,7 @@ export default {
 
             Add_toll_data.append("t_id", this.trollId);
             Add_toll_data.append("t_name", this.plazzName1);
+            Add_toll_data.append("section", this.sectionName1);
             Add_toll_data.append("t_address", this.plazzAddress1);
 
             try {
@@ -223,18 +228,22 @@ export default {
                         </button>
                         <button class="icon-btn icon-btn_32px Mobile_display-none"
                             @click="gridView = false, listView = true" :class="{ 'bg-Grey_5': listView }">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none">
                                 <path
                                     d="M19.5 13.5H4.5C4.08579 13.5 3.75 13.8358 3.75 14.25V18C3.75 18.4142 4.08579 18.75 4.5 18.75H19.5C19.9142 18.75 20.25 18.4142 20.25 18V14.25C20.25 13.8358 19.9142 13.5 19.5 13.5Z"
-                                    stroke="#191C1F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    stroke="#191C1F" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
                                 <path
                                     d="M19.5 5.25H4.5C4.08579 5.25 3.75 5.58579 3.75 6V9.75C3.75 10.1642 4.08579 10.5 4.5 10.5H19.5C19.9142 10.5 20.25 10.1642 20.25 9.75V6C20.25 5.58579 19.9142 5.25 19.5 5.25Z"
-                                    stroke="#191C1F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    stroke="#191C1F" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
                             </svg>
                         </button>
                         <button class="icon-btn icon-btn_32px Mobile_display-none"
                             @click="gridView = true, listView = false" :class="{ 'bg-Grey_5': gridView }">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none">
                                 <path d="M10.5 4.5H4.5V10.5H10.5V4.5Z" stroke="#191C1F" stroke-width="1.5"
                                     stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M19.5 4.5H13.5V10.5H19.5V4.5Z" stroke="#191C1F" stroke-width="1.5"
@@ -303,7 +312,11 @@ export default {
                 <Label label="Plaza Name" />
                 <Input placeholder="Enter Plazz Name" id="Plaza Name" :value="plazzName"
                     @input="event => plazzName = event.target.value" />
-
+            </div>
+            <div class="space-y-8px">
+                <Label label="Plaza Section" />
+                <Input placeholder="Enter Plazz Section" id="Plaza Section" :value="sectionName"
+                    @input="event => sectionName = event.target.value" />
             </div>
             <div class="space-y-8px">
                 <Label label="Plaza Address" />
@@ -324,7 +337,11 @@ export default {
                 <Label label="Plaza Name" />
                 <Input placeholder="Enter Plazz Name" id="Plaza Name" :value="plazzName1"
                     @input="event => plazzName1 = event.target.value" />
-
+            </div>
+            <div class="space-y-8px">
+                <Label label="Plaza Section" />
+                <Input placeholder="Enter Plazz Section" id="Plaza Section" :value="sectionName1"
+                    @input="event => sectionName1 = event.target.value" />
             </div>
             <div class="space-y-8px">
                 <Label label="Plaza Address" />
