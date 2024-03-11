@@ -13,7 +13,7 @@ import Pagination from '../subcomponents/Pagination.vue';
 import Model from '../subcomponents/Model.vue';
 import Input from '../subcomponents/Input.vue';
 import Label from '../subcomponents/Label.vue';
-import Textarea from '../../../vuejsProject/vuedashboard/src/subcomponents/Textarea.vue';
+import TextArea from '../subcomponents/TextArea.vue';
 import DeleteModel from '../subcomponents/DeleteModel.vue';
 import Drawer from '../subcomponents/Drawer.vue';
 import Select from '../subcomponents/Select.vue';
@@ -22,7 +22,7 @@ import Select from '../subcomponents/Select.vue';
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
-    components: { Layout, SearchBox, List, OverLaye, Pagination, Model, Input, Label, Textarea, DeleteModel, Drawer, Select },
+    components: { Layout, SearchBox, List, OverLaye, Pagination, Model, Input, Label, TextArea, DeleteModel, Drawer, Select },
     data() {
         return {
             list: [],

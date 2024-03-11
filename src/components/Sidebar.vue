@@ -245,7 +245,7 @@ export default {
                                     <path d="M12 15.75V12" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-                                <p class="link-title">Shirt</p>
+                                <p class="link-title">Shift</p>
                             </div>
                         </router-link>
                     </li>
