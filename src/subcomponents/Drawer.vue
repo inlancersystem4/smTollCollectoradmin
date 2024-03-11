@@ -43,7 +43,7 @@ export default {
 
 
     </div>
-    <div class="overlay"> </div>
+    <div class="overlay" @click="closeDrawer()"> </div>
 </template>
 
 <style scoped>

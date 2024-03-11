@@ -373,7 +373,7 @@ export default {
             <div class="table-header display-flex-wrap">
 
                 <div class="display-flex align-center gap-16px w-100">
-                    <p class="text-large_semibold color-Grey_90 cursor-pointer">User Crud</p>
+                    <p class="text-large_semibold color-Grey_90 cursor-pointer">User List</p>
                 </div>
 
                 <div
@@ -384,7 +384,7 @@ export default {
                         <button class="btn-regular display-flex align-center gap-8px" @click="chnageSort()">
                             <img src="../assets/img/icons/adjustments.svg">
                             <span v-if="sort === 'asc'">Newest</span>
-                            <span v-if="sort === 'desc'">Oddest</span>
+                            <span v-if="sort === 'desc'">Oldest</span>
                         </button>
                         <button class="icon-btn icon-btn_32px Mobile_display-none"
                             @click="gridView = false, listView = true" :class="{ 'bg-Grey_5': listView }">

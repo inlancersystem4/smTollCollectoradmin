@@ -75,7 +75,8 @@ export default {
             <div class="sidebar-avatar-header margin-bottom_24px">
 
                 <router-link to="/">
-                    <!-- <img src="../assets/img/logo.png" class="w-full" alt="logo" /> -->
+                    <img src="https://inlancer.in/assets/upload/images/original/63380d4d8dcc1-633572ab8819c-logo.svg"
+                        class="w-full" alt="logo" />
                 </router-link>
 
                 <div class="user-profile-btn" id="Open_mini_sidebar"
@@ -290,7 +291,7 @@ export default {
 
             <div class="w-[25px]">
                 <router-link to="/">
-                    <!-- <img src="../assets/img/logo.png" class="w-full h-auto"> -->
+                    <img src="https://inlancer.in/public/inlancer-template/img/favicon.png" class="w-full h-auto">
                 </router-link>
             </div>
 
