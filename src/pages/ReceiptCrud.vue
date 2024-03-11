@@ -11,7 +11,7 @@ import List from '../subcomponents/receiptcrud/List.vue';
 import Pagination from '../subcomponents/Pagination.vue';
 import Input from '../subcomponents/Input.vue';
 import Label from '../subcomponents/Label.vue';
-import Textarea from '../../../vuejsProject/vuedashboard/src/subcomponents/Textarea.vue';
+import TextArea from '../subcomponents/TextArea.vue';
 import DeleteModel from '../subcomponents/DeleteModel.vue';
 import Drawer from '../subcomponents/Drawer.vue';
 import Select from '../subcomponents/Select.vue';
@@ -20,7 +20,7 @@ import Select from '../subcomponents/Select.vue';
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
-    components: { Layout, SearchBox, List, OverLaye, Pagination, Input, Label, Textarea, DeleteModel, Drawer, useAuthStore, Select },
+    components: { Layout, SearchBox, List, OverLaye, Pagination, Input, Label, TextArea, DeleteModel, Drawer, useAuthStore, Select },
     data() {
         return {
             list: [],

@@ -7,14 +7,14 @@ import axios from 'axios';
 import Layout from '../components/Layout.vue';
 import Input from '../subcomponents/Input.vue';
 import Label from '../subcomponents/Label.vue';
-import Textarea from '../../../vuejsProject/vuedashboard/src/subcomponents/Textarea.vue';
+import TextArea from '../subcomponents/TextArea.vue';
 import Drawer from '../subcomponents/Drawer.vue';
 
 
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
-    components: { Layout, Input, Label, Textarea, useAuthStore, Drawer },
+    components: { Layout, Input, Label, TextArea, useAuthStore, Drawer },
     data() {
         return {
             adminData: "",
