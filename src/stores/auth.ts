@@ -20,16 +20,20 @@ export const useAuthStore = defineStore({
                 const user = await fetchWrapper.post(`${baseUrl}/admin/sign-in`, form_data);
                 console.log(user);
 
-                if (user) {
+                if (user.success == 1) {
                     var new_user = {
                         token: user.session_token
                     }
                     this.user = new_user;
                     localStorage.setItem('user', JSON.stringify(new_user));
 
+                    // const alertStore = useAlertStore();
+                    // alertStore.success('Login successfully !!');
+                    router.push({ name: 'home' });
+                }
+                else {
                     const alertStore = useAlertStore();
-                    alertStore.success('Login successfully !!');
-                    router.push(this.returnUrl || '/home');
+                    alertStore.success(user.message);
                 }
 
             } catch (error) {

@@ -126,7 +126,7 @@ export default {
 
 
     <DeleteModel model_title="Logout" model_subtitle="Are you sure you want to Logout?" v-if="logOutModal"
-        @close_model="logOutModal = false" @delete_item="logout()" />
+        @close_model="logOutModal = false" @delete_item="logout()" model_content="Log Out" />
 </template>
 
 

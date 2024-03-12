@@ -1,14 +1,9 @@
-<script  >
+<script>
 import { Field, Form, ErrorMessage } from "vee-validate";
-import axios from 'axios';
 
 import OverLaye from '../subcomponents/OverLaye.vue';
-// import ErrorMessage from '../subcomponents/ErrorMessage.vue';
 
 import { useAuthStore } from "../stores";
-
-
-const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 
 export default {
@@ -119,25 +114,24 @@ export default {
 </script>
 
 <template>
-    <div class="auth-page">
+    <div class="auth-page auth-page_center">
 
 
         <div class="auth-container">
-
-            <div class="space-y-4px auth-title">
-
-                <h1 class="color-Grey_90 text-2xl_semibold">Sign In</h1>
-                <h6 class="color-Grey_50 text-base_regular">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Quis commodi, beatae dolorem
-                    repellat reiciendis accusantium ut.</h6>
-
-            </div>
 
 
 
             <div class="auth-from-section">
                 <Form @submit="onSubmit" class="from space-y-24px">
 
+                    <div class="space-y-4px auth-title">
+
+                        <h1 class="color-Grey_90 text-2xl_semibold">Welcome 🙏🙏</h1>
+                        <h6 class="color-Grey_50 text-base_regular">
+                            Enter your email and password.
+                        </h6>
+
+                    </div>
 
                     <div class="input-group">
                         <label for="">Email</label>
@@ -225,3 +219,50 @@ export default {
 
     <OverLaye v-if="overlay" />
 </template>
+
+
+<style scoped>
+.search-wrraper input {
+    font-size: 14px;
+    line-height: 24px;
+    color: var(--Grey-90);
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+.auth-page_center .auth-title {
+    padding: 0;
+}
+
+.auth-page_center .auth-container {
+    display: block;
+}
+
+.auth-page_center .auth-from-section {
+    height: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.resentBtn:disabled {
+    color: var(--Grey-50) !important;
+    font-weight: bold;
+}
+
+.auth-page_center .auth-from-section .from {
+    margin: 0 auto;
+}
+
+.auth-page_center .logo {
+    height: auto;
+    margin: 0 auto;
+    min-width: 240px;
+    max-width: 240px;
+    display: block;
+}
+
+
+.auth-page_center .logo_mobile {
+    display: none;
+}
+</style>

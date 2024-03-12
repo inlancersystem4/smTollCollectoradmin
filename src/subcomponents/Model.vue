@@ -9,13 +9,24 @@ export default {
         return {
         };
     },
+    mounted() {
+        window.addEventListener('keydown', this.handleKeyPress);
+    },
+    beforeUnmount() {
+        window.removeEventListener('keydown', this.handleKeyPress);
+    },
     methods: {
         modelBtn() {
             this.$emit('modelbtn_clicked');
         },
         modelClose() {
             this.$emit('model_close')
-        }
+        },
+        handleKeyPress(event) {
+            if (event.key === 'Escape') {
+                this.modelClose();
+            }
+        },
     },
 }
 </script>

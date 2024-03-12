@@ -3110,6 +3110,7 @@
     border-radius: 8px;
     padding: 24px;
     width: 100%;
+    min-width: 520px;
     max-width: 520px;
     margin-left: auto;
     -webkit-border-radius: 8px;
