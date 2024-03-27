@@ -1,6 +1,6 @@
 {
-  "name": "sctollcollector",
-  "version": "0.0.1",
+  "name": "SMTOL - Inlancer Technologies",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "vite",
