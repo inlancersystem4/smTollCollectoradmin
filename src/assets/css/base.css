@@ -101,7 +101,7 @@ body {
 
 
 .sidebar-content {
-    padding: 48px 16px;
+    padding: 16px 16px;
 }
 
 .sidebar-avatar-header {
@@ -368,7 +368,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 32px;
-    padding: 42px 12px;
+    padding: 12px 12px;
 }
 
 .mini-main-sidebar .user-profile-avatar {
@@ -991,7 +991,7 @@ body {
     border-radius: 8px;
     border: 1px solid var(--Grey-20);
     padding: 6px 12px;
-    width: fit-content;
+    width: 100%;
     text-align: center;
     font-size: 13px;
     font-weight: 500;

@@ -1,9 +1,8 @@
 <script>
 
-import { useAuthStore, useAlertStore } from '../stores'
+import { useAlertStore } from '@/stores'
 import { fetchWrapper } from '../helpers/fetch-wrapper'
 
-import axios from 'axios';
 
 import Layout from '../components/Layout.vue';
 import OverLaye from '../subcomponents/OverLaye.vue';
@@ -60,6 +59,7 @@ export default {
             searchToll: "",
             searchLane: "",
             searchShift: "",
+            isLoading: false,
         }
     },
     created() {
@@ -129,7 +129,8 @@ export default {
                 this.totalPages = response.total_pages;
 
             } catch (error) {
-                console.log(error);
+                const alertStore = useAlertStore()
+                alertStore.error(error)
             }
 
         },
@@ -144,6 +145,9 @@ export default {
 
                 if (data.success === 1) {
                     this.userData();
+                } else {
+                    const alertStore = useAlertStore()
+                    alertStore.error(data.message)
                 }
 
             } catch (error) {
@@ -170,6 +174,9 @@ export default {
 
                 if (data.success === 1) {
                     this.userData();
+                } else {
+                    const alertStore = useAlertStore()
+                    alertStore.error(data.message)
                 }
 
             } catch (error) {
@@ -191,7 +198,8 @@ export default {
                 this.tollArray = response.data;
 
             } catch (error) {
-                console.log(error);
+                const alertStore = useAlertStore()
+                alertStore.error(error)
             }
 
         },
@@ -210,7 +218,8 @@ export default {
                 this.tollLaneArray = response.data
 
             } catch (error) {
-                console.log(error);
+                const alertStore = useAlertStore()
+                alertStore.error(error)
             }
 
         },
@@ -229,7 +238,8 @@ export default {
                 this.shiftArray = response.data
 
             } catch (error) {
-                console.log(error);
+                const alertStore = useAlertStore()
+                alertStore.error(error)
             }
 
         },
@@ -264,7 +274,7 @@ export default {
         selectPofilePic(event) {
             const selectedFile = event.target.files[0]
 
-            if (selectedFile.type === "image/png") {
+            if (selectedFile.type === "image/png" || selectedFile.type === "image/webp"  || selectedFile.type === "image/jpeg" || selectedFile.type === "image/jfif" || selectedFile.type === "image/jpg") {
 
                 this.profilePic = selectedFile
 
@@ -272,14 +282,16 @@ export default {
 
             }
 
-            if (selectedFile.type === "image/gif", selectedFile.type === "video/mp4", selectedFile.type === "audio/mpeg") {
-                console.log("not ok")
+            if (selectedFile.type === "image/gif" || selectedFile.type === "video/mp4" || selectedFile.type === "audio/mpeg") {
+                const alertStore = useAlertStore()
+                alertStore.error("Image format png/jpeg/jpg")
             }
 
         },
 
 
         async userAdd() {
+            this.isLoading = true
             var user_data = new FormData();
             user_data.append("user_id", "");
             user_data.append("user_name", this.userName);
@@ -294,14 +306,30 @@ export default {
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-user`, user_data);
 
-                this.addUserModal = false
 
                 if (data.success === 1) {
+                    this.addUserModal = false
                     this.userData();
+                    this.userName = ''
+                    this.userNumber = ''
+                    this.userPass = ''
+                    this.userCoPass = ''
+                    this.tollSelected = ''
+                    this.laneSelected = ''
+                    this.shiftSelected = ''
+                    this.selectedImg = ''
+                    this.isLoading = false
+                } else {
+                    this.addUserModal = true;
+                    this.isLoading = false
+                    const alertStore = useAlertStore();
+                    alertStore.error(data.message);
                 }
 
             } catch (error) {
-                console.log(error);
+                const alertStore = useAlertStore();
+                alertStore.error(error);
+                this.isLoading = false
             }
 
         },
@@ -325,15 +353,19 @@ export default {
                 this.tollSelectedEdit = response.data.user_toll_plaza
                 this.laneSelectedEdit = response.data.user_lane_select
                 this.shiftSelectedEdit = response.data.user_shift_select
+                this.profilePic = response.data.profile_pic
 
             } catch (error) {
-                console.log(error);
+                const alertStore = useAlertStore()
+                alertStore.error(error)
             }
 
         },
 
 
         async editUser() {
+            this.isLoading = true
+
             var user_data = new FormData();
             user_data.append("user_id", this.userId);
             user_data.append("user_name", this.userNameEdit);
@@ -350,10 +382,18 @@ export default {
                 if (data.success === 1) {
                     this.editUserDrawer = false
                     this.userData();
+                    this.isLoading = false
+                }
+                else {
+                    const alertStore = useAlertStore();
+                    alertStore.error(data.message);
+                    this.isLoading = false
                 }
 
             } catch (error) {
-                console.log(error);
+                const alertStore = useAlertStore();
+                alertStore.error(error);
+                this.isLoading = false
             }
 
         },
@@ -421,7 +461,7 @@ export default {
                         <SearchBox placeholder="Serch Something" :value="searchText" @input="searchTextFun" />
 
 
-                        <button class="btn-regular display-flex align-center  gap-8px text-no-wrap"
+                        <button class="btn-regular display-flex align-center gap-8px text-no-wrap"
                             @click="addUserModal = true">
                             <img src="../assets/img/icons/plus-3.svg">
                             New User</button>
@@ -462,27 +502,28 @@ export default {
         @close_model="deleteuser = false" @delete_item="deleteUser()" />
 
 
-    <Model model_title="Add User" Btn_text="Add User" @modelbtn_clicked="userAdd" :isButtonDisabled="modelSubmitBtn"
-        v-if="addUserModal" @model_close="addUserModal = false">
+    <Drawer drawer_title="Add User" Btn_text="Add User" @drawebtn_clicked="userAdd()" :isButtonDisabled="modelSubmitBtn"
+        v-if="addUserModal" @close_drawer="addUserModal = false" :loading="isLoading">
 
 
-        <div class="address-form">
-            <div class="space-y-8px">
-                <Label label="Enter User Name" />
-                <Input placeholder="Enter User Name" id="Enter User Name" :value="userName"
-                    @input="event => userName = event.target.value" />
-            </div>
+        <div class="space-y-8">
 
-
+            
             <div class="user_pic">
                 <input type="file" @change="selectPofilePic">
                 <img :src="this.selectedImg">
             </div>
 
             <div class="space-y-8px">
+                <Label label="Enter User Name" />
+                <Input placeholder="Enter User Name" id="Enter User Name" :value="userName"
+                    @input="event => userName = event.target.value" />
+            </div>
+
+            <div class="space-y-8px">
                 <Label label="User Number" />
                 <Input type="number" placeholder="Enter User Number" id="User Number" :value="userNumber"
-                    @input="event => userNumber = event.target.value" />
+                @input="event => userNumber = event.target.value" />
             </div>
 
             <div class="space-y-8px">
@@ -579,13 +620,18 @@ export default {
             </div>
 
         </div>
-    </Model>
+    </Drawer>
 
 
     <Drawer drawer_title="Edit User" v-if="editUserDrawer" @close_drawer="editUserDrawer = false"
-        @drawebtn_clicked="editUser()">
+        @drawebtn_clicked="editUser()" :loading="isLoading">
 
         <div class="space-y-24px ">
+            <div class="user_pic">
+                <input type="file" @change="selectPofilePic">
+                <img v-if="this.selectedImg" :src="this.selectedImg">
+                <img v-if="this.profilePic" :src="this.profilePic">
+            </div>
             <div class="space-y-8px">
                 <Label label="Enter User Name" />
                 <Input placeholder="Enter User Name" id="Enter User Name" :value="userNameEdit"

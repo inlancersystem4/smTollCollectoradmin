@@ -1,4 +1,4 @@
-// import './assets/main.css'
+import './assets/main.css'
 import './assets/css/style.css'
 import './assets/css/base.css'
 import './assets/css/common.css'
@@ -10,10 +10,12 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
+import Notifications from 'notiwind'
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+app.use(Notifications)
 
 app.mount('#app')

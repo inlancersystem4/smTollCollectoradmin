@@ -1,21 +1,34 @@
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
+import { notify } from 'notiwind'
 
 export const useAlertStore = defineStore({
-    id: 'alert',
-    state: () => ({
-        alert: null
-    }),
-    actions: {
-        success(message) {
-            alert(message);
-            this.alert = { message, type: 'alert-success' };
+  id: 'alert',
+  state: () => ({
+    alert: null
+  }),
+  actions: {
+    success(message) {
+      notify(
+        {
+          group: 'foo',
+          title: 'Success',
+          text: message
         },
-        error(message) {
-            alert(message);
-            this.alert = { message, type: 'alert-danger' };
+        2000
+      )
+    },
+    error(message) {
+      notify(
+        {
+          group: 'error',
+          title: 'Error',
+          text: message
         },
-        clear() {
-            this.alert = null;
-        }
+        2000
+      )
+    },
+    clear() {
+      this.alert = null
     }
-});
+  }
+})
