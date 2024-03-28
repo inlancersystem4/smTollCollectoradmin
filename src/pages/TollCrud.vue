@@ -1,9 +1,7 @@
 <script>
 
-import { useAuthStore, useAlertStore } from '../stores'
+import { useAlertStore } from '../stores'
 import { fetchWrapper } from '../helpers/fetch-wrapper'
-
-import axios from 'axios';
 
 import Layout from '../components/Layout.vue';
 import OverLaye from '../subcomponents/OverLaye.vue';
@@ -20,7 +18,7 @@ import Drawer from '../subcomponents/Drawer.vue';
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
-    components: { Layout, SearchBox, List, OverLaye, Pagination, Model, Input, Label, TextArea, DeleteModel, Drawer, useAuthStore },
+    components: { Layout, SearchBox, List, OverLaye, Pagination, Model, Input, Label, TextArea, DeleteModel, Drawer },
     data() {
         return {
             list: [],
@@ -41,6 +39,7 @@ export default {
             deleteToll: false,
             trollId: "",
             editTollPlaza: false,
+            isLoading: false,
         };
     },
     created() {
@@ -77,7 +76,6 @@ export default {
 
         },
 
-
         updatePage(Number) {
             this.currentPage = Number
             this.tollData();
@@ -88,9 +86,8 @@ export default {
             this.tollData();
         },
 
-
         async addTollPlaza() {
-
+            this.isLoading = true
             var Add_toll_data = new FormData();
 
             Add_toll_data.append("t_id", "");
@@ -100,13 +97,22 @@ export default {
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-toll-plaza`, Add_toll_data);
-
-                this.addPlazaModal = false;
-                this.tollData();
-
+                if (data.success === 1) {
+                    this.isLoading = false;
+                    this.addPlazaModal = false;
+                    this.tollData();
+                    this.plazzName = ''
+                    this.sectionName = ''
+                    this.plazzAddress = ''
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore();
+                    alertStore.error(data.message);
+                }
             } catch (error) {
-                const alertStore = useAlertStore()
-                alertStore.error(error)
+                this.isLoading = false;
+                const alertStore = useAlertStore();
+                alertStore.error(error);
             }
         },
 
@@ -164,6 +170,7 @@ export default {
                 alertStore.error(error)
             }
         },
+
         async getTollPlazadata() {
             var toll_data = new FormData();
             toll_data.append("t_id", this.trollId);
@@ -180,7 +187,9 @@ export default {
                 alertStore.error(error)
             }
         },
+
         async editToll() {
+            this.isLoading = true
             var Add_toll_data = new FormData();
 
             Add_toll_data.append("t_id", this.trollId);
@@ -190,14 +199,19 @@ export default {
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-toll-plaza`, Add_toll_data);
-                console.log(data)
-
-                this.editTollPlaza = false;
-                this.tollData();
-
+                if (data.success === 1) {
+                    this.isLoading = false;
+                    this.editTollPlaza = false;
+                    this.tollData();
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore();
+                    alertStore.error(data.message);
+                }
             } catch (error) {
-                const alertStore = useAlertStore()
-                alertStore.error(error)
+                this.isLoading = false;
+                const alertStore = useAlertStore();
+                alertStore.error(error);
             }
         }
     },
@@ -305,8 +319,9 @@ export default {
     <OverLaye v-if="overalye" />
 
 
-    <Model model_title="Add Toll Plaza" Btn_text="Add Toll Plaza" @modelbtn_clicked="addTollPlaza"
-        :isButtonDisabled="modelSubmitBtn" v-if="addPlazaModal" @model_close="addPlazaModal = false">
+    <Drawer drawer_title="Add Toll Plaza" Btn_text="Add Toll Plaza" @drawebtn_clicked="addTollPlaza()"
+        :isButtonDisabled="modelSubmitBtn" v-if="addPlazaModal" @close_drawer="addPlazaModal = false"
+        :loading="isLoading">
         <div class="space-y-24px">
             <div class="space-y-8px">
                 <Label label="Plaza Name" />
@@ -324,14 +339,14 @@ export default {
                     @input="event => plazzAddress = event.target.value" />
             </div>
         </div>
-    </Model>
+    </Drawer>
 
     <DeleteModel model_title="Delete Toll Plaza" model_subtitle="Are you sure you want to delete this Toll Plaza?"
         v-if="deleteToll" @close_model="deleteToll = false" @delete_item="deletTollPlaza()" />
 
 
-    <Drawer drawer_title="Edit Toll Plaza" v-if="editTollPlaza" @close_drawer="editTollPlaza = false"
-        @drawebtn_clicked="editToll()">
+    <Drawer drawer_title="Edit Toll Plaza" Btn_text="Edit Toll Plaza" v-if="editTollPlaza" @close_drawer="editTollPlaza = false"
+        @drawebtn_clicked="editToll()" :loading="isLoading">
         <div class="space-y-24px">
             <div class="space-y-8px">
                 <Label label="Plaza Name" />

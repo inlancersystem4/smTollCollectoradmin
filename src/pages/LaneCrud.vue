@@ -1,9 +1,7 @@
 <script>
 
-import { useAuthStore, useAlertStore } from '../stores'
+import { useAlertStore } from '../stores'
 import { fetchWrapper } from '../helpers/fetch-wrapper'
-
-import axios from 'axios';
 
 import Layout from '../components/Layout.vue';
 import OverLaye from '../subcomponents/OverLaye.vue';
@@ -45,6 +43,7 @@ export default {
             laneId: "",
             laneTollPlaza: "",
             searchToll: "",
+            isLoading: false,
         }
     },
 
@@ -124,7 +123,7 @@ export default {
 
 
         async addLane() {
-
+            this.isLoading = true;
             var add_lane = new FormData();
             add_lane.append("l_id", "");
             add_lane.append("l_name", this.laneName);
@@ -133,18 +132,22 @@ export default {
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-lane`, add_lane);
-                console.log(data)
-
 
                 if (data.success === 1) {
+                    this.isLoading = false;
                     this.addlaneModal = false;
                     this.laneData();
                     this.laneName = ""
                     this.laneNumber = ""
                     this.tollSelected = ""
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore()
+                    alertStore.error(data.message)
                 }
 
             } catch (error) {
+                this.isLoading = false;
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
@@ -190,6 +193,9 @@ export default {
 
                 if (data.success === 1) {
                     this.laneData();
+                } else {
+                    const alertStore = useAlertStore()
+                    alertStore.error(data.message)
                 }
 
             } catch (error) {
@@ -217,6 +223,7 @@ export default {
         },
 
         async editLane() {
+            this.isLoading = true;
             var edit_lane = new FormData();
             edit_lane.append("l_id", this.laneId);
             edit_lane.append("l_name", this.laneName2);
@@ -225,9 +232,15 @@ export default {
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-lane`, edit_lane);
-
-                this.editLaneModel = false;
-                this.laneData();
+                if (data.success === 1) {
+                    this.isLoading = false;
+                    this.editLaneModel = false;
+                    this.laneData();
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore()
+                    alertStore.error(data.message)
+                }
 
             } catch (error) {
                 const alertStore = useAlertStore()
@@ -338,10 +351,10 @@ export default {
     <OverLaye v-if="overalye" />
 
 
-    <Model model_title="Add Lane" Btn_text="Add Lane" @modelbtn_clicked="addLane()" :isButtonDisabled="modelSubmitBtn"
-        v-if="addlaneModal" @model_close="addlaneModal = false">
+    <Drawer drawer_title="Add Lane" Btn_text="Add Lane" @drawebtn_clicked="addLane()" :isButtonDisabled="modelSubmitBtn"
+        v-if="addlaneModal" @close_drawer="addlaneModal = false" :loading="isLoading" >
         <div class="space-y-24px">
-            <div class="address-form">
+            <div class="">
                 <div class="space-y-8px">
                     <Label label="Lane number" />
                     <Input placeholder="Enter Lane number" id="Plaza Name" :value="laneNumber"
@@ -359,15 +372,15 @@ export default {
                     @input="searchTollFun" />
             </div>
         </div>
-    </Model>
+    </Drawer>
 
 
     <DeleteModel model_title="Delete Lane" model_subtitle="Are you sure you want to delete this Lane?" v-if="deletelane"
         @close_model="deletelane = false" @delete_item="deletTollPlaza()" />
 
 
-    <Drawer drawer_title="Edit Lane" v-if="editLaneModel" @close_drawer="editLaneModel = false"
-        @drawebtn_clicked="editLane()">
+    <Drawer drawer_title="Edit Lane" Btn_text="Edit Lane" v-if="editLaneModel" @close_drawer="editLaneModel = false"
+        @drawebtn_clicked="editLane()" :loading="isLoading">
         <div class="space-y-24px">
             <div class="space-y-8px">
                 <Label label="Lane number" />

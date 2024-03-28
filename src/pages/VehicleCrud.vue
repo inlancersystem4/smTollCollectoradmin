@@ -1,9 +1,7 @@
 <script>
 
-import { useAuthStore, useAlertStore } from '../stores'
+import { useAlertStore } from '../stores'
 import { fetchWrapper } from '../helpers/fetch-wrapper'
-
-import axios from 'axios';
 
 import Layout from '../components/Layout.vue';
 import OverLaye from '../subcomponents/OverLaye.vue';
@@ -26,6 +24,7 @@ export default {
     data() {
         return {
             list: [],
+            tollArray: [],
             searchText: "",
             sort: "asc",
             pagination: "",
@@ -37,6 +36,8 @@ export default {
             vehicleprice1: "",
             vehicleimg: "",
             vehicleimg1: "",
+            vehiclesubclass: "",
+            vehiclesubclass1: "",
             addVehicleModal: false,
             selectedImg1: "",
             deleteVehicle: false,
@@ -44,6 +45,10 @@ export default {
             selectedImg: "",
             editVehicle: false,
             editVehicleimg: "",
+            searchToll: "",
+            tollSelectedEdit: "",
+            tollSelected: "",
+            isLoading: false,
         }
     },
     computed: {
@@ -53,8 +58,13 @@ export default {
     },
     created() {
         this.vehicleData();
+        this.tollData();
     },
     methods: {
+        searchTollFun(event) {
+            this.searchToll = event.target.value.trim();
+            this.tollData();
+        },
 
         searchTextFun(event) {
             this.searchText = event.target.value.trim();
@@ -95,28 +105,61 @@ export default {
             this.vehicleData();
         },
 
+        async tollData() {
+            var toll_data = new FormData();
+            toll_data.append("t_id", "");
+            toll_data.append("sort", this.sort);
+            toll_data.append("search", this.searchToll);
+            toll_data.append("page", this.currentPage);
+
+            try {
+                const response = await fetchWrapper.post(`${baseUrl}/admin/toll-plaza-list`, toll_data);
+                this.tollArray = response.data;
+
+            } catch (error) {
+                const alertStore = useAlertStore()
+                alertStore.error(error)
+            }
+
+        },
+
+        getTollPlaza(option) {
+            this.tollSelected = option.t_name
+            this.tollSelectedEdit = option.t_name
+        },
 
 
         async addvehicle() {
+            this.isLoading = true;
 
             var add_vehicle = new FormData();
             add_vehicle.append("v_id", "");
             add_vehicle.append("v_name", this.vehicleName);
             add_vehicle.append("v_price", this.vehicleprice);
             add_vehicle.append("v_image", this.vehicleimg);
+            add_vehicle.append("v_subclass", this.vehiclesubclass);
+            add_vehicle.append("v_toll_plaza", this.tollSelected);
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-vehical`, add_vehicle);
 
                 if (data.success === 1) {
-                    this.addVehicleModal = false
+                    this.isLoading = false;
                     this.vehicleData();
+                    this.addVehicleModal = false
                     this.vehicleName = ""
                     this.vehicleprice = ""
                     this.vehicleimg = ""
+                    this.vehiclesubclass = ""
+                    this.searchToll = ""
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore()
+                    alertStore.error(data.message)
                 }
 
             } catch (error) {
+                this.isLoading = false;
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
@@ -183,6 +226,8 @@ export default {
                 this.vehicleName1 = data.data.v_name
                 this.vehicleprice1 = data.data.v_price
                 this.vehicleimg1 = data.data.v_image
+                this.vehiclesubclass1 = data.data.v_subclass
+                this.tollSelectedEdit = data.data.v_toll_plaza
 
 
             } catch (error) {
@@ -193,11 +238,14 @@ export default {
 
 
         async editVehicleData() {
+            this.isLoading = true;
             var edit_vehicle = new FormData();
 
             edit_vehicle.append("v_id", this.vehicleId);
             edit_vehicle.append("v_name", this.vehicleName1);
             edit_vehicle.append("v_price", this.vehicleprice1);
+            edit_vehicle.append("v_subclass", this.vehiclesubclass1);
+            edit_vehicle.append("v_toll_plaza", this.tollSelectedEdit);
 
             if (!this.editVehicleimg) {
                 edit_vehicle.append("v_image", this.vehicleimg1);
@@ -209,11 +257,18 @@ export default {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-vehical`, edit_vehicle);
 
                 if (data.success === 1) {
+                    this.isLoading = false;
                     this.editVehicle = false
                     this.vehicleData();
                 }
+                else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore()
+                    alertStore.error(data.message)
+                }
 
             } catch (error) {
+                this.isLoading = false;
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
@@ -328,9 +383,8 @@ export default {
 
     <OverLaye v-if="overalye" />
 
-
-    <Model model_title="Add Vehicle" Btn_text="Add Vehicle" @modelbtn_clicked="addvehicle()"
-        :isButtonDisabled="modelSubmitBtn" v-if="addVehicleModal" @model_close="addVehicleModal = false">
+    <Drawer drawer_title="Add Vehicle" Btn_text="Add Vehicle" @drawebtn_clicked="addvehicle()"
+        :isButtonDisabled="modelSubmitBtn" v-if="addVehicleModal" @close_drawer="addVehicleModal = false" :loading="isLoading">
         <div class="space-y-24px">
             <div class="space-y-8px">
                 <div class="display-flex align-end justify-between w-100">
@@ -341,7 +395,7 @@ export default {
                 <Input type="file" placeholder="Enter vehicleprice Name" id="Vehicle Name" @change="selectVehicleImg" />
 
             </div>
-            <div class="address-form">
+            <div class="">
                 <div class="space-y-8px">
                     <Label label="Vehicle Name" />
                     <Input placeholder="Ex. Truck" id="Vehicle Name" :value="vehicleName"
@@ -353,16 +407,26 @@ export default {
                 <Input type="number" placeholder="Ex. 160Rs." id="Plaza Address" :value="vehicleprice"
                     @input="event => vehicleprice = event.target.value" />
             </div>
+            <div class="space-y-8px">
+                <Label label="Add Toll Plaza" />
+                <Select :options="tollArray" @option-selected="getTollPlaza" :value="searchToll"
+                    @input="searchTollFun" />
+            </div>
+            <div class="space-y-8px">
+                <Label label="Vehicle Subclass" />
+                <TextArea type="text" placeholder="Ex. Subclass1,Subclass2,Subclass3" id="Vehicle Subclass"
+                    :value="vehiclesubclass" @input="event => vehiclesubclass = event.target.value" />
+            </div>
         </div>
-    </Model>
+    </Drawer>
 
 
     <DeleteModel model_title="Delete Vehicle" model_subtitle="Are you sure you want to delete this Vehicle?"
         v-if="deleteVehicle" @close_model="deleteVehicle = false" @delete_item="deletVehicle()" />
 
 
-    <Drawer drawer_title="Edit Vehicle" v-if="editVehicle" @close_drawer="editVehicle = false"
-        @drawebtn_clicked="editVehicleData()">
+    <Drawer drawer_title="Edit Vehicle" Btn_text="Edit Vehicle Details" v-if="editVehicle" @close_drawer="editVehicle = false"
+        @drawebtn_clicked="editVehicleData()" :loading="isLoading">
         <div class="space-y-24px">
             <div class="space-y-8px">
                 <div class="display-flex align-end justify-between w-100">
@@ -382,8 +446,18 @@ export default {
             </div>
             <div class="space-y-8px">
                 <Label label="Vehicle Price" />
-                <Input type="number" placeholder="Ex. 160Rs." id="Plaza Address" :value="vehicleprice1"
+                <Input type="number" placeholder="Ex. 160Rs." id="Vehicle Price" :value="vehicleprice1"
                     @input="event => vehicleprice1 = event.target.value" />
+            </div>
+            <div class="space-y-8px">
+                <Label label="Add Toll Plaza" />
+                <Select :options="tollArray" @option-selected="getTollPlaza" :responseData="tollSelectedEdit"
+                    :value="searchToll" @input="searchTollFun" />
+            </div>
+            <div class="space-y-8px">
+                <Label label="Vehicle Subclass" />
+                <TextArea type="text" placeholder="Ex. Subclass1,Subclass2,Subclass3" id="Vehicle Subclass"
+                    :value="vehiclesubclass1" @input="event => vehiclesubclass1 = event.target.value" />
             </div>
         </div>
     </Drawer>

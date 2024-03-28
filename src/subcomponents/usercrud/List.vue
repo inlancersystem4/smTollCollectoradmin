@@ -29,7 +29,7 @@ export default {
 
             <div class="">
                 <div class="display-flex align-end gap-8px">
-                    <h6 class="text-large_semibold color-Grey_90 line-clamp-1">{{ items.user_name }}</h6>
+                    <h6 class="text-large_semibold color-Grey_90 line-clamp-1 max-w-[60%]">{{ items.user_name }}</h6>
                     <h6 class="text-sm_semibold color-Grey_50 line-clamp-1">{{ items.user_unique_id }}</h6>
                 </div>
                 <a :href="'tel:' + items.user_phone_number" class="text-sm_medium color-Grey_50">

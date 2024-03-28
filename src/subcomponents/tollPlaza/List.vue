@@ -26,8 +26,8 @@ export default {
 
         <h6 class="text-large_semibold color-Grey_90">{{ items.t_id }}.</h6>
 
-        <div class="space-y-4px">
-            <h2 class="text-large_semibold color-Grey_90">{{ items.t_name }}</h2>
+        <div class="space-y-4px w-full">
+            <h2 class="text-large_semibold color-Grey_90  max-w-[80%]">{{ items.t_name }}</h2>
             <p class="text-small_regular color-Grey_50">{{ items.t_address }}</p>
         </div>
 

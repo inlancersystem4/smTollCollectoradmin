@@ -1,6 +1,6 @@
 <script>
 
-import { useAuthStore, useAlertStore } from "@/stores";
+import { useAuthStore } from "@/stores";
 import DeleteModel from '../subcomponents/DeleteModel.vue';
 
 export default {
@@ -14,6 +14,7 @@ export default {
         return {
             personal_optionDrop: false,
             logOutModal: false,
+            profilePic: "",
         }
     },
     mounted() {
@@ -72,7 +73,8 @@ export default {
         <div class="header-btn-group">
             <div class="user-avtar" @click="toggleDropdown()" ref="dropdownContainer">
                 <div class="avtar">
-                    <img src="./../assets/img/avatar.png">
+                    <img :src="this.profilePic" v-if="this.profilePic">
+                    <img src="./../assets/img/avatar.png" v-if="!this.profilePic">
                 </div>
                 <ul class="user-personal-option" v-show="personal_optionDrop">
                     <li>

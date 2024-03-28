@@ -43,7 +43,8 @@ export default {
             selectedImg1: "",
             deleteshiftModel: false,
             shiftId: "",
-            editshift: false
+            editshift: false,
+            isLoading: false,
         }
     },
     computed: {
@@ -94,6 +95,7 @@ export default {
 
 
         async addShift() {
+            this.isLoading = true;
 
             var add_shift = new FormData();
             add_shift.append("s_id", "");
@@ -105,11 +107,17 @@ export default {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-shift`, add_shift);
 
                 if (data.success === 1) {
+                    this.isLoading = false;
                     this.addShiftModal = false
                     this.shiftData();
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore()
+                    alertStore.error(data.message)
                 }
 
             } catch (error) {
+                this.isLoading = false;
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
@@ -185,6 +193,7 @@ export default {
 
 
         async editshiftData() {
+            this.isLoading = true;
             var edit_shift = new FormData();
 
             edit_shift.append("s_id", this.shiftId);
@@ -196,11 +205,17 @@ export default {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/add-or-edit-shift`, edit_shift);
 
                 if (data.success === 1) {
-                    this.editshift = false
+                    this.isLoading = false;
+                    this.editshift = false;
                     this.shiftData();
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore()
+                    alertStore.error(data.message)
                 }
 
             } catch (error) {
+                this.isLoading = false;
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
@@ -305,17 +320,17 @@ export default {
     <OverLaye v-if="overalye" />
 
 
-    <Model model_title="Add Shift" Btn_text="Add Shift" @modelbtn_clicked="addShift()" :isButtonDisabled="modelSubmitBtn"
-        v-if="addShiftModal" @model_close="addShiftModal = false">
+    <Drawer drawer_title="Add Shift" Btn_text="Add Shift" @drawebtn_clicked="addShift()" :isButtonDisabled="modelSubmitBtn"
+        v-if="addShiftModal" @close_drawer="addShiftModal = false" :loading="isLoading">
         <div class="space-y-24px">
-            <div class="address-form">
+            <div class="">
                 <div class="space-y-8px">
                     <Label label="Shift Name" />
                     <Input placeholder="Ex. Truck" id="Shift Name" :value="shiftName"
                         @input="event => shiftName = event.target.value" />
                 </div>
             </div>
-            <div class="address-form">
+            <div class="">
                 <div class="space-y-8px">
                     <Label label="Shift From Time" />
                     <Input type="time" placeholder="Ex. 160Rs." id="Shift From Time" :value="shiftFromTime"
@@ -328,15 +343,15 @@ export default {
                 </div>
             </div>
         </div>
-    </Model>
+    </Drawer>
 
 
     <DeleteModel model_title="Delete Shift" model_subtitle="Are you sure you want to delete this Shift?"
         v-if="deleteshiftModel" @close_model="deleteshiftModel = false" @delete_item="deletShift()" />
 
 
-    <Drawer drawer_title="Edit Shift" v-if="editshift" @close_drawer="editshift = false"
-        @drawebtn_clicked="editshiftData()">
+    <Drawer drawer_title="Edit Shift" Btn_text="Edit Shift" v-if="editshift" @close_drawer="editshift = false"
+        @drawebtn_clicked="editshiftData()" :loading="isLoading">
         <div class="space-y-24px">
             <div class="space-y-8px">
                 <Label label="Shift Name" />

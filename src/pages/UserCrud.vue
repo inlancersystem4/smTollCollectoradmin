@@ -365,7 +365,6 @@ export default {
 
         async editUser() {
             this.isLoading = true
-
             var user_data = new FormData();
             user_data.append("user_id", this.userId);
             user_data.append("user_name", this.userNameEdit);
