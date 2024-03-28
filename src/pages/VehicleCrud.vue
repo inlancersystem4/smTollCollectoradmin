@@ -152,6 +152,7 @@ export default {
                     this.vehicleimg = ""
                     this.vehiclesubclass = ""
                     this.searchToll = ""
+                    this.selectedImg = ""
                 } else {
                     this.isLoading = false;
                     const alertStore = useAlertStore()
