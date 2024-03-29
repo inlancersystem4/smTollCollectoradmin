@@ -32,7 +32,8 @@ export default {
             passwordNotMatch: false,
             profilePic: "",
             selectedImg: "",
-            bgCover: "https://www.motorbeam.com/wp-content/uploads/Toll-Plaza-Traffic.jpg"
+            bgCover: "https://www.motorbeam.com/wp-content/uploads/Toll-Plaza-Traffic.jpg",
+            isLoading: false,
         }
     },
     created() {
@@ -50,6 +51,7 @@ export default {
                 this.name = response.data.user_name
                 this.email = response.data.user_email
                 this.number = response.data.user_phone_number
+                this.profilePic = response.data.profile_pic
 
             } catch (error) {
                 console.log(error);
@@ -57,6 +59,7 @@ export default {
 
         },
         async editProfile() {
+            this.isLoading = true
             var chnage_password = new FormData();
             chnage_password.append("user_name", this.name)
             chnage_password.append("user_email", this.email)
@@ -67,12 +70,18 @@ export default {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/profile`, chnage_password);
 
                 if (data.success === 1) {
+                    this.isLoading = false;
                     this.editProfileModel = false;
                     this.profileData();
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore();
+                    alertStore.error(data.message);
                 }
-
             } catch (error) {
-                console.log(error);
+                this.isLoading = false;
+                const alertStore = useAlertStore();
+                alertStore.error(error);
             }
 
         },
@@ -88,6 +97,7 @@ export default {
             }
         },
         async changePassword() {
+            this.isLoading = true
             var profile_data = new FormData();
             profile_data.append("old_password", this.oldPassword)
             profile_data.append("new_password", this.userNewPass)
@@ -97,12 +107,21 @@ export default {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/change-password`, profile_data);
 
                 if (data.success === 1) {
-                    this.editProfileModel = false;
+                    this.isLoading = false;
+                    this.changePasswordModel = false;
                     this.profileData();
+                    this.oldPassword = ""
+                    this.userNewPass = ""
+                    this.userCoPass = ""
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore();
+                    alertStore.error(data.message)
                 }
-
             } catch (error) {
-                console.log(error);
+                this.isLoading = false;
+                const alertStore = useAlertStore();
+                alertStore.error(error)
             }
 
         },
@@ -161,7 +180,7 @@ export default {
                             </li>
                             <li class="dropdown-item" @click="changePasswordModel = !changePasswordModel">
                                 <div class="dropdown-link">
-                                    <img src="../assets/img/icons/trash.svg">
+                                    <img src="../assets/img/password.svg">
                                     <p class="dropdown-link-title"> Change Password </p>
                                 </div>
                             </li>
@@ -177,12 +196,14 @@ export default {
 
 
     <Drawer drawer_title="Edit Profile" v-if="editProfileModel" @close_drawer="editProfileModel = false"
-        @drawebtn_clicked="editProfile()">
+        @drawebtn_clicked="editProfile()" :loading="isLoading">
         <div class="space-y-24px">
             <div class="space-y-8px">
                 <div class="gap-4px display-flex justify-between w-100 align-end">
                     <Label label="Admin Img" />
-                    <img :src="this.selectedImg" width="32" height="32" class="object-contain">
+                    <img v-if="this.selectedImg" :src="this.selectedImg" width="32" height="32" class="object-contain">
+                    <img v-if="this.profilePic && !this.selectedImg" :src="this.profilePic" width="32" height="32"
+                        class="object-contain">
                 </div>
                 <Input type="file" id="Admin Img" @change="selectPofilePic" />
             </div>
@@ -206,7 +227,7 @@ export default {
 
 
     <Drawer drawer_title="Change Password" v-if="changePasswordModel" @close_drawer="changePasswordModel = false"
-        @drawebtn_clicked="changePassword()">
+        @drawebtn_clicked="changePassword()" :loading="isLoading">
         <div class="space-y-24px">
             <div class="space-y-8px">
                 <Label label="Old Password" />

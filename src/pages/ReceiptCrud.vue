@@ -54,6 +54,7 @@ export default {
             searchLane: "",
             searchShift: "",
             searchVehicle: "",
+            isLoading: false,
         }
     },
     created() {
@@ -311,7 +312,7 @@ export default {
 
 
         async receiptsave() {
-
+            this.isLoading = true
             if (this.setVehiclePrice || this.quantity) {
                 this.totalPrice = this.setVehiclePrice * this.quantity
             }
@@ -331,11 +332,18 @@ export default {
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/receipt-edit`, edit_receipt);
-
-                this.editReceipt = false;
-                this.receiptData();
+                if(data.success === 1) {
+                    this.isLoading = false;
+                    this.editReceipt = false;
+                    this.receiptData();
+                } else {
+                    this.isLoading = false;
+                    const alertStore = useAlertStore();
+                    alertStore.error(data.message)
+                }
 
             } catch (error) {
+                this.isLoading = false;
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
@@ -415,7 +423,7 @@ export default {
 
 
     <Drawer drawer_title="Edit Receipt" v-if="editReceipt" @close_drawer="editReceipt = false"
-        @drawebtn_clicked="receiptsave()">
+        @drawebtn_clicked="receiptsave()" :loading="isLoading">
 
 
         <div class="space-y-24px">
