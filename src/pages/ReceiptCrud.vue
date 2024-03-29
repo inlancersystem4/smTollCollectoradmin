@@ -180,16 +180,16 @@ export default {
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/receipt-list`, receipt_data);
 
-                this.setTollPlaza = data.data.r_toll_plaza
-                this.setLane = data.data.r_lane_select
-                this.setShift = data.data.r_shift_select
-                this.setUser = data.data.r_user_job
-                this.setVehicle = data.data.r_vehical_type
-                this.quantity = data.data.r_qty
-                this.vWeight = data.data.r_vehical_weight
-                this.vNumber = data.data.r_vehical_number
-                this.rtype = data.data.r_ticket_type
-                this.totalPrice = data.data.r_price
+                this.setTollPlaza = data.data.receipt_toll_plaza
+                this.setLane = data.data.receipt_lane_select
+                this.setShift = data.data.receipt_shift_select
+                this.setUser = data.data.receipt_user_job
+                this.setVehicle = data.data.receipt_vehical_type
+                this.quantity = data.data.receipt_qty
+                this.vWeight = data.data.receipt_vehical_weight
+                this.vNumber = data.data.receipt_vehical_number
+                this.rtype = data.data.receipt_ticket_type
+                this.totalPrice = data.data.receipt_price
 
             } catch (error) {
                 const alertStore = useAlertStore()
@@ -289,15 +289,15 @@ export default {
         },
 
         getTollPlaza(option) {
-            this.setTollPlaza = option.t_name
+            this.setTollPlaza = option.tollplaza_name
         },
 
         getLane(option) {
-            this.setLane = option.l_name
+            this.setLane = option.lane_name
         },
 
         getShift(option) {
-            this.setShift = option.s_name
+            this.setShift = option.shift_name
         },
 
         getUser(option) {
@@ -305,8 +305,8 @@ export default {
         },
 
         getVehicle(option) {
-            this.setVehicle = option.v_name
-            this.setVehiclePrice = option.v_price
+            this.setVehicle = option.vehicle_name
+            this.setVehiclePrice = option.vehicle_price
         },
 
 

@@ -32,13 +32,13 @@ export default {
 <template>
     <li class="list" v-for="(items, index) in list" :key="index">
 
-        <h6 class="text-large_semibold color-Grey_90">{{ items.l_number }}.</h6>
+        <h6 class="text-large_semibold color-Grey_90">{{ items.lane_number }}.</h6>
 
         <div class="space-y-4px">
-            <h2 class="text-large_semibold color-Grey_90">{{ items.l_name }}</h2>
+            <h2 class="text-large_semibold color-Grey_90">{{ items.lane_name }}</h2>
 
 
-            <p class="text-small_regular color-Grey_50">{{ items.l_toll_plaza }} </p>
+            <p class="text-small_regular color-Grey_50">{{ items.lane_toll_plaza }} </p>
 
         </div>
 
@@ -54,25 +54,25 @@ export default {
             <div class="icon-btn icon-btn_32px  custom-dropdown">
                 <img src="../../assets/img/icons/dots-icon.svg">
                 <ul class="custom-dropdown-list leftside icon-dropdown">
-                    <li class="dropdown-item" @click="editToll(items.l_id)">
+                    <li class="dropdown-item" @click="editToll(items.lane_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/edit.svg">
                             <p class="dropdown-link-title"> Edit Lane </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="deleteToll(items.l_id)">
+                    <li class="dropdown-item" @click="deleteToll(items.lane_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/trash.svg">
                             <p class="dropdown-link-title required"> Delete Lane </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.l_id)" v-if="items.status === false">
+                    <li class="dropdown-item" @click="editStatus(items.lane_id)" v-if="items.status === false">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Enable </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.l_id)" v-if="items.status === true">
+                    <li class="dropdown-item" @click="editStatus(items.lane_id)" v-if="items.status === true">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Disable </p>

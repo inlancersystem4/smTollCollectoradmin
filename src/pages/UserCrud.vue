@@ -257,18 +257,18 @@ export default {
         },
 
         getTollPlaza(option) {
-            this.tollSelected = option.t_name
-            this.tollSelectedEdit = option.t_name
+            this.tollSelected = option.tollplaza_name
+            this.tollSelectedEdit = option.tollplaza_name
         },
 
         getLane(option) {
-            this.laneSelected = option.l_name
-            this.laneSelectedEdit = option.l_name
+            this.laneSelected = option.lane_name
+            this.laneSelectedEdit = option.lane_name
         },
 
         getShift(option) {
-            this.shiftSelected = option.s_name
-            this.shiftSelectedEdit = option.s_name
+            this.shiftSelected = option.shift_name
+            this.shiftSelectedEdit = option.shift_name
         },
 
         selectPofilePic(event) {

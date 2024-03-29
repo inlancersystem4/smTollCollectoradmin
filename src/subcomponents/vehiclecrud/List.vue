@@ -21,12 +21,12 @@ export default {
     <li class="list" v-for="(items, index) in list" :key="index">
 
         <div class="img">
-            <img :src="items.v_image" :alt="items.v_image" @load="imageLoaded">
+            <img :src="items.vehicle_image" :alt="items.vehicle_image" @load="imageLoaded">
         </div>
 
         <div class="space-y-4px display-flex align-center text-center justify-center" style="flex-direction: column;">
-            <h2 class="text-xl_semibold color-Grey_90">{{ items.v_name }}</h2>
-            <p class="text-md_regular color-Grey_50">₹ {{ items.v_price }}</p>
+            <h2 class="text-xl_semibold color-Grey_90">{{ items.vehicle_name }}</h2>
+            <p class="text-md_regular color-Grey_50">₹ {{ items.vehicle_price }}</p>
         </div>
 
         <div class="options">
@@ -41,25 +41,25 @@ export default {
             <div class="icon-btn icon-btn_32px  custom-dropdown">
                 <img src="../../assets/img/icons/dots-icon.svg">
                 <ul class="custom-dropdown-list leftside icon-dropdown">
-                    <li class="dropdown-item" @click="editToll(items.v_id)">
+                    <li class="dropdown-item" @click="editToll(items.vehicle_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/edit.svg">
                             <p class="dropdown-link-title"> Edit Vehicle </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="deleteToll(items.v_id)">
+                    <li class="dropdown-item" @click="deleteToll(items.vehicle_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/trash.svg">
                             <p class="dropdown-link-title required"> Delete Vehicle </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.v_id)" v-if="items.status === false">
+                    <li class="dropdown-item" @click="editStatus(items.vehicle_id)" v-if="items.status === false">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Enable </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.v_id)" v-if="items.status === true">
+                    <li class="dropdown-item" @click="editStatus(items.vehicle_id)" v-if="items.status === true">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Disable </p>

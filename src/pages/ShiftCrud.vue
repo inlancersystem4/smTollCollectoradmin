@@ -181,9 +181,9 @@ export default {
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/shift-list`, shift_data);
 
-                this.shiftName1 = data.data.s_name
-                this.shiftFromTime1 = data.data.s_from_time
-                this.shiftToTime1 = data.data.s_to_time
+                this.shiftName1 = data.data.shift_name
+                this.shiftFromTime1 = data.data.shift_from_time
+                this.shiftToTime1 = data.data.shift_to_time
 
             } catch (error) {
                 const alertStore = useAlertStore()

@@ -178,9 +178,9 @@ export default {
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/toll-plaza-list`, toll_data);
 
-                this.plazzName1 = data.data.t_name
-                this.plazzAddress1 = data.data.t_address
-                this.sectionName1 = data.data.section
+                this.plazzName1 = data.data.tollplaza_name
+                this.plazzAddress1 = data.data.tollplaza_address
+                this.sectionName1 = data.data.tollplaza_section
 
             } catch (error) {
                 const alertStore = useAlertStore()

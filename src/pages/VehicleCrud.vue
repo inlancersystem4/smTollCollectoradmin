@@ -124,8 +124,8 @@ export default {
         },
 
         getTollPlaza(option) {
-            this.tollSelected = option.t_name
-            this.tollSelectedEdit = option.t_name
+            this.tollSelected = option.tollplaza_name
+            this.tollSelectedEdit = option.tollplaza_name
         },
 
 
@@ -224,11 +224,11 @@ export default {
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/vehical-list`, vehicle_data);
 
-                this.vehicleName1 = data.data.v_name
-                this.vehicleprice1 = data.data.v_price
-                this.vehicleimg1 = data.data.v_image
-                this.vehiclesubclass1 = data.data.v_subclass
-                this.tollSelectedEdit = data.data.v_toll_plaza
+                this.vehicleName1 = data.data.vehicle_name
+                this.vehicleprice1 = data.data.vehicle_price
+                this.vehicleimg1 = data.data.vehicle_image
+                this.vehiclesubclass1 = data.data.vehicle_subclass
+                this.tollSelectedEdit = data.data.vehicle_toll_plaza
 
 
             } catch (error) {

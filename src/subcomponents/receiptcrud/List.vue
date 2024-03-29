@@ -34,7 +34,7 @@ export default {
             <div class="receipt-header">
                 <div class="border"></div>
                 <div class="border"></div>
-                <h1 class="title"> #{{ items.r_id }} Receipt</h1>
+                <h1 class="title"> #{{ items.receipt_id }} Receipt</h1>
                 <div class="border"></div>
                 <div class="border"></div>
             </div>
@@ -45,19 +45,19 @@ export default {
 
                     <li>
                         <div class="data">user name</div>
-                        <div class="data_ans">{{ items.r_user_job }}</div>
+                        <div class="data_ans">{{ items.receipt_user_job }}</div>
                     </li>
                     <li>
                         <div class="data">Toll</div>
-                        <div class="data_ans">{{ items.r_toll_plaza }}</div>
+                        <div class="data_ans">{{ items.receipt_toll_plaza }}</div>
                     </li>
                     <li>
                         <div class="data">Lane</div>
-                        <div class="data_ans">{{ items.r_lane_select }}</div>
+                        <div class="data_ans">{{ items.receipt_lane_select }}</div>
                     </li>
                     <li>
                         <div class="data">Shift</div>
-                        <div class="data_ans">{{ items.r_shift_select }}</div>
+                        <div class="data_ans">{{ items.receipt_shift_select }}</div>
                     </li>
 
                 </ul>
@@ -69,16 +69,16 @@ export default {
                 <ul class="receipt_data-list">
 
                     <li>
-                        <div class="data">vehical</div>
-                        <div class="data_ans">{{ items.r_vehical_type }}</div>
+                        <div class="data">Vehicle</div>
+                        <div class="data_ans">{{ items.receipt_vehical_type }}</div>
                     </li>
                     <li>
-                        <div class="data">vehical No.</div>
-                        <div class="data_ans">{{ items.r_vehical_number }}</div>
+                        <div class="data">Vehicle No.</div>
+                        <div class="data_ans">{{ items.receipt_vehical_number }}</div>
                     </li>
                     <li>
-                        <div class="data">vehical weight</div>
-                        <div class="data_ans">{{ items.r_vehical_weight }}</div>
+                        <div class="data">Vehicle weight</div>
+                        <div class="data_ans">{{ items.receipt_vehical_weight }}</div>
                     </li>
                 </ul>
 
@@ -90,7 +90,7 @@ export default {
 
                     <li>
                         <div class="data">quantity</div>
-                        <div class="data_ans">{{ items.r_qty }}</div>
+                        <div class="data_ans">{{ items.receipt_qty }}</div>
                     </li>
 
                 </ul>
@@ -102,7 +102,7 @@ export default {
                 <ul class="receipt_data-list">
                     <li>
                         <div class="data"><b> Total </b></div>
-                        <div class="data_ans"><b>₹{{ items.r_price }}</b></div>
+                        <div class="data_ans"><b>₹{{ items.receipt_price }}</b></div>
                     </li>
                 </ul>
 
@@ -124,25 +124,25 @@ export default {
             <div class="icon-btn icon-btn_32px  custom-dropdown">
                 <img src="../../assets/img/icons/dots-icon.svg">
                 <ul class="custom-dropdown-list leftside icon-dropdown">
-                    <li class="dropdown-item" @click="editToll(items.r_id)">
+                    <li class="dropdown-item" @click="editToll(items.receipt_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/edit.svg">
                             <p class="dropdown-link-title"> Edit Receipt </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="deleteToll(items.r_id)">
+                    <li class="dropdown-item" @click="deleteToll(items.receipt_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/trash.svg">
                             <p class="dropdown-link-title required"> Delete Receipt </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.r_id)" v-if="items.status === false">
+                    <li class="dropdown-item" @click="editStatus(items.receipt_id)" v-if="items.status === false">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Enable </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.r_id)" v-if="items.status === true">
+                    <li class="dropdown-item" @click="editStatus(items.receipt_id)" v-if="items.status === true">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Disable </p>

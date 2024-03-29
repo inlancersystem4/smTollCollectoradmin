@@ -24,11 +24,11 @@ export default {
 <template>
     <li class="list" v-for="(items, index) in list" :key="index">
 
-        <h6 class="text-large_semibold color-Grey_90">{{ items.t_id }}.</h6>
+        <h6 class="text-large_semibold color-Grey_90">{{ items.tollplaza_id }}.</h6>
 
         <div class="space-y-4px w-full">
-            <h2 class="text-large_semibold color-Grey_90  max-w-[80%]">{{ items.t_name }}</h2>
-            <p class="text-small_regular color-Grey_50">{{ items.t_address }}</p>
+            <h2 class="text-large_semibold color-Grey_90  max-w-[80%]">{{ items.tollplaza_name }}</h2>
+            <p class="text-small_regular color-Grey_50">{{ items.tollplaza_address }}</p>
         </div>
 
         <div class="options">
@@ -43,25 +43,25 @@ export default {
             <div class="icon-btn icon-btn_32px  custom-dropdown">
                 <img src="../../assets/img/icons/dots-icon.svg">
                 <ul class="custom-dropdown-list leftside icon-dropdown">
-                    <li class="dropdown-item" @click="editToll(items.t_id)">
+                    <li class="dropdown-item" @click="editToll(items.tollplaza_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/edit.svg">
                             <p class="dropdown-link-title"> Edit Toll Plaza </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="deleteToll(items.t_id)">
+                    <li class="dropdown-item" @click="deleteToll(items.tollplaza_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/trash.svg">
                             <p class="dropdown-link-title required"> Delete Toll Plaza </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.t_id)" v-if="items.status === false">
+                    <li class="dropdown-item" @click="editStatus(items.tollplaza_id)" v-if="items.status === false">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Enable </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.t_id)" v-if="items.status === true">
+                    <li class="dropdown-item" @click="editStatus(items.tollplaza_id)" v-if="items.status === true">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Disable </p>

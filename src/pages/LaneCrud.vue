@@ -65,8 +65,8 @@ export default {
         },
 
         onOptionSelected(option) {
-            this.tollSelected = option.t_name
-            this.laneTollPlaza = option.t_name
+            this.tollSelected = option.tollplaza_name
+            this.laneTollPlaza = option.tollplaza_name
         },
 
         async laneData() {
@@ -171,9 +171,9 @@ export default {
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/admin/lane-list`, lane_data);
 
-                this.laneNumber1 = data.data.l_number
-                this.laneName2 = data.data.l_name
-                this.laneTollPlaza = data.data.l_toll_plaza
+                this.laneNumber1 = data.data.lane_number
+                this.laneName2 = data.data.lane_name
+                this.laneTollPlaza = data.data.lane_toll_plaza
 
 
             } catch (error) {

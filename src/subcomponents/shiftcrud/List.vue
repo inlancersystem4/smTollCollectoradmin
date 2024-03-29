@@ -20,13 +20,13 @@ export default {
 <template>
     <li class="list" v-for="(items, index) in list" :key="index">
 
-        <h6 class="text-large_semibold color-Grey_90">{{ items.s_id }}.</h6>
+        <h6 class="text-large_semibold color-Grey_90">{{ items.shift_id }}.</h6>
 
         <div class="space-y-4px">
-            <h2 class="text-large_semibold color-Grey_90 text-capitalize">{{ items.s_name }}</h2>
+            <h2 class="text-large_semibold color-Grey_90 text-capitalize">{{ items.shift_name }}</h2>
             <div class="display-flex gap-12px">
-                <p class="text-base_regular color-Grey_50"> <span class="font-600">From:-</span> {{ items.s_from_time }}</p>
-                <p class="text-base_regular color-Grey_50"> <span class="font-600">To:-</span> {{ items.s_to_time }}</p>
+                <p class="text-base_regular color-Grey_50"> <span class="font-600">From:-</span> {{ items.shift_from_time }}</p>
+                <p class="text-base_regular color-Grey_50"> <span class="font-600">To:-</span> {{ items.shift_to_time }}</p>
             </div>
         </div>
 
@@ -42,25 +42,25 @@ export default {
             <div class="icon-btn icon-btn_32px  custom-dropdown">
                 <img src="../../assets/img/icons/dots-icon.svg">
                 <ul class="custom-dropdown-list leftside icon-dropdown">
-                    <li class="dropdown-item" @click="editToll(items.s_id)">
+                    <li class="dropdown-item" @click="editToll(items.shift_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/edit.svg">
                             <p class="dropdown-link-title"> Edit Toll Plaza </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="deleteToll(items.s_id)">
+                    <li class="dropdown-item" @click="deleteToll(items.shift_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/trash.svg">
                             <p class="dropdown-link-title required"> Delete Toll Plaza </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.s_id)" v-if="items.status === false">
+                    <li class="dropdown-item" @click="editStatus(items.shift_id)" v-if="items.status === false">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Enable </p>
                         </div>
                     </li>
-                    <li class="dropdown-item" @click="editStatus(items.s_id)" v-if="items.status === true">
+                    <li class="dropdown-item" @click="editStatus(items.shift_id)" v-if="items.status === true">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Disable </p>

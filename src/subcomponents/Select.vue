@@ -30,7 +30,7 @@ export default {
             this.selectDropdownOpen = !this.selectDropdownOpen;
         },
         selectOption(option) {
-            this.selectedOption = option.t_name || option.l_name || option.s_name || option.v_name || option.user_name || option.v_image;
+            this.selectedOption = option.tollplaza_name || option.lane_name || option.shift_name || option.vehicle_name || option.user_name || option.vehicle_image;
             this.selectedOptionVal = option;
             this.selectDropdownOpen = false;
             this.$emit('option-selected', this.selectedOptionVal);
@@ -108,22 +108,22 @@ export default {
                 </p>
 
                 <li v-for="(option, index) in options" :key="index" @click="selectOption(option)" class="capitalize">
-                    <div v-if="option.t_name">
-                        {{ option.t_name }}
+                    <div v-if="option.tollplaza_name">
+                        {{ option.tollplaza_name }}
                     </div>
-                    <div v-if="option.l_name">
-                        {{ option.l_name }}
+                    <div v-if="option.lane_name">
+                        {{ option.lane_name }}
                     </div>
-                    <div v-if="option.s_name">
-                        {{ option.s_name }}
+                    <div v-if="option.shift_name">
+                        {{ option.shift_name }}
                     </div>
                     <div v-if="option.user_name">
                         {{ option.user_name }}
                     </div>
-                    <div class="display-flex gap-12px align-center" v-if="option.v_name">
-                        <img :src="option.v_image" width="42" height="42" class="object-contain">
+                    <div class="display-flex gap-12px align-center" v-if="option.vehicle_name">
+                        <img :src="option.vehicle_image" width="42" height="42" class="object-contain">
                         <div>
-                            {{ option.v_name }}
+                            {{ option.vehicle_name }}
                         </div>
                     </div>
                 </li>
