@@ -1,8 +1,7 @@
 <script>
 import { useAuthStore, useAlertStore } from '../stores'
+import { useProfileImgStore } from '../stores/profileImg'
 import { fetchWrapper } from '../helpers/fetch-wrapper'
-
-import axios from 'axios';
 
 import Layout from '../components/Layout.vue';
 import Input from '../subcomponents/Input.vue';
@@ -47,6 +46,9 @@ export default {
                 const response = await fetchWrapper.post(`${baseUrl}/admin/details`, data);
 
                 this.adminData = response.data
+                const profileStore = useProfileImgStore();
+                profileStore.setProfilePic(response.data.profile_pic);
+                localStorage.setItem('profile_img', response.data.profile_pic)
 
                 this.name = response.data.user_name
                 this.email = response.data.user_email
