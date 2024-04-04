@@ -2,8 +2,6 @@
 import { useAuthStore, useAlertStore } from '../stores'
 import { fetchWrapper } from '../helpers/fetch-wrapper'
 
-import axios from 'axios';
-
 import Layout from '../components/Layout.vue';
 import OverLaye from '../subcomponents/OverLaye.vue';
 import SearchBox from '../subcomponents/SearchBox.vue';

@@ -56,6 +56,11 @@ const router = createRouter({
       component: () => import('../pages/404.vue'),
     },
     {
+      path: '/full-report',
+      name: 'Full Report',
+      component: () => import('../pages/FullReportCrud.vue'),
+    },
+    {
       path: '/:catchAll(.*)',
       redirect: '/page-not-found'
     }

@@ -33,7 +33,7 @@ export const useAuthStore = defineStore({
                 }
                 else {
                     const alertStore = useAlertStore();
-                    alertStore.success(user.message);
+                    alertStore.error(user.message);
                 }
 
             } catch (error) {
