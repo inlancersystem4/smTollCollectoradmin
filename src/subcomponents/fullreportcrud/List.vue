@@ -15,8 +15,8 @@ export default {
         editToll(id) {
             this.$emit('edit_lane', id)
         },
-        editStatus(id) {
-            this.$emit('edit_status', id)
+        editStatus(id , status_id) {
+            this.$emit('edit_status', id , status_id)
         },
         formatDate(timestamp) {
             const date = new Date(timestamp);
@@ -49,11 +49,55 @@ export default {
         <div>{{ items.r_qty }}</div>
         <div>{{ items.r_price }}</div>
         <div>{{ formatDate(items.created_at) }}</div>
-        <div>
+        <!-- <div>
             <button class="btn-regular display-flex align-center" @click="deleteToll(items.r_id)">
                 <p class="text-sm_medium text-red-600">Delete</p>
             </button>
+        </div> -->
+        <div class="">
+            <button class="btn-regular display-flex align-center gap-8px" v-if="items.r_iscancel === 0">
+                <div class="ellipse-dot bg-emerald"></div>
+                <p class="text-sm_medium color-Grey_60">Not Cancel</p>
+            </button>
+            <button class="btn-regular display-flex align-center gap-8px" v-if="items.r_iscancel === 1">
+                <div class="ellipse-dot bg-rose"></div>
+                <p class="text-sm_medium color-Grey_60">Cancel</p>
+            </button>
+            <button class="btn-regular display-flex align-center gap-8px" v-if="items.r_iscancel === 2">
+                <div class="ellipse-dot bg-rose"></div>
+                <p class="text-sm_medium color-Grey_60">Panding</p>
+            </button>
+            <div class="icon-btn icon-btn_32px  custom-dropdown">
+                <img src="../../assets/img/icons/dots-icon.svg">
+                <ul class=" absolute right-0  top-full">
+                    <!-- <li class="dropdown-item" @click="deleteToll(items.r_id)">
+                        <div class="dropdown-link">
+                            <img src="../../assets/img/icons/trash.svg">
+                            <p class="dropdown-link-title required"> Delete </p>
+                        </div>
+                    </li> -->
+                    <!-- <li class="dropdown-item" @click="editStatus(items.r_id , 0)">
+                        <div class="dropdown-link">
+                            <p class="w20"></p>
+                            <p class="dropdown-link-title"> Not Cancel </p>
+                        </div>
+                    </li> -->
+                    <li class="dropdown-item" @click="editStatus(items.r_id , 1)">
+                        <div class="dropdown-link">
+                            <p class="w20"></p>
+                            <p class="dropdown-link-title"> Cancel </p>
+                        </div>
+                    </li>
+                    <li class="dropdown-item" @click="editStatus(items.r_id , 2)">
+                        <div class="dropdown-link">
+                            <p class="w20"></p>
+                            <p class="dropdown-link-title"> Panding </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
+
     </li>
 </template>
 

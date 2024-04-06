@@ -360,6 +360,25 @@ export default {
             this.fullReport();
         },
 
+        async UpdateIsCancelStatus(id , status_id) {
+            var status_up = new FormData();
+
+            status_up.append("r_id", id);
+            status_up.append("r_iscancel", status_id);
+
+            try {
+                const data = await fetchWrapper.post(`${baseUrl}/admin/report-cancel`, status_up);
+
+                if (data.success === 1) {
+                    this.fullReport();
+                }
+
+            } catch (error) {
+                const alertStore = useAlertStore()
+                alertStore.error(error)
+            }
+        },
+
     }
 }
 </script>
@@ -464,7 +483,7 @@ export default {
             </div>
 
             <ul class="list" :class="{ 'list-row': listView }">
-                <List :list="fullreportArray" @delete_lane="getReceiptId" />
+                <List :list="fullreportArray" @delete_lane="getReceiptId"  @edit_status="UpdateIsCancelStatus" />
             </ul>
 
             <div class="stable-footer">

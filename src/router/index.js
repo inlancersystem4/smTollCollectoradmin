@@ -61,6 +61,11 @@ const router = createRouter({
       component: () => import('../pages/FullReportCrud.vue'),
     },
     {
+      path: '/daily-report',
+      name: 'Daily Report',
+      component: () => import('../pages/DailyReport.vue'),
+    },
+    {
       path: '/:catchAll(.*)',
       redirect: '/page-not-found'
     }
