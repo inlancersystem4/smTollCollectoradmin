@@ -7,6 +7,8 @@ import Select from '../subcomponents/Select.vue';
 import List from '../subcomponents/fullreportcrud/List.vue';
 import Pagination from '../subcomponents/Pagination.vue';
 import SearchBox from '../subcomponents/SearchBox.vue';
+import Input from '../subcomponents/Input.vue';
+import DeleteModel from '../subcomponents/DeleteModel.vue';
 
 
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
@@ -18,7 +20,9 @@ export default {
         Select,
         List,
         SearchBox,
-        Pagination
+        Pagination,
+        Input,
+        DeleteModel
     },
     data() {
         return {
@@ -34,8 +38,8 @@ export default {
             searchUser: "",
             searchVehicle: "",
             currentPage: 1,
-            totalPages: "",
-            limit: 20,
+            totalPage: "",
+            limit: "10",
             sort: "desc",
             reportSearch: "",
             reportTollPlaza: "",
@@ -46,7 +50,12 @@ export default {
             reportTicketType: "",
             reportStartDate: "",
             reportEndDate: "",
-
+            isdeleteReceipt: false,
+            receiptId: "",
+            sortByTicketNumber: "",
+            sortByVehicleNumber: "",
+            sortByAmount: "",
+            sortByCreatedAt: "",
         }
     },
     created() {
@@ -58,10 +67,33 @@ export default {
         this.fullReport();
     },
     methods: {
+        handleTicketTypeInput(event) {
+            this.reportTicketType = event.target.value.trim();
+            clearTimeout(this.reportTicketType);
+            this.reportTicketType = setTimeout(() => {
+                this.fullReport();
+            }, 1000);
+        },
+
+        handleStartDateInput(event) {
+            this.reportStartDate = event.target.value;
+            this.fullReport();
+        },
+
+        handleEndDateInput(event) {
+            this.reportEndDate = event.target.value;
+            this.fullReport();
+        },
+
+        handleLimitChange() {
+            this.fullReport();
+        },
+
         searchTextFun(event) {
             this.reportSearch = event.target.value.trim();
             this.fullReport();
         },
+
         searchTollFun(event) {
             this.searchToll = event.target.value.trim();
             this.tollData();
@@ -88,31 +120,52 @@ export default {
         },
 
         getTollPlaza(option) {
-            this.reportTollPlaza = option.t_id
+            if (option) {
+                this.reportTollPlaza = option.t_id
+            }
+            else {
+                this.reportTollPlaza = ""
+            }
             this.tollSelected = option.t_name
             this.fullReport();
         },
 
         getLane(option) {
-            this.reportLane = option.l_id
+            if (option) {
+                this.reportLane = option.l_id
+            } else {
+                this.reportLane = ""
+            }
             this.laneSelected = option.l_name
             this.fullReport();
         },
 
         getShift(option) {
-            this.reportShift = option.s_id
+            if (option) {
+                this.reportShift = option.s_id
+            } else {
+                this.reportShift = ""
+            }
             this.shiftSelected = option.s_name
             this.fullReport();
         },
 
         getUser(option) {
-            this.reportUser = option.user_id
+            if (option) {
+                this.reportUser = option.user_id
+            } else {
+                this.reportUser = ""
+            }
             this.setUser = option.user_name
             this.fullReport();
         },
 
         getVehicle(option) {
-            this.reportVehicleType = option.v_id
+            if (option) {
+                this.reportVehicleType = option.v_id
+            } else {
+                this.reportVehicleType = ""
+            }
             this.setVehicle = option.v_name
             this.fullReport();
         },
@@ -229,11 +282,22 @@ export default {
             vehicle_data.append("start_date", this.reportStartDate);
             vehicle_data.append("end_date", this.reportEndDate);
 
+            vehicle_data.append("sort_by_ticket_number", this.sortByTicketNumber);
+            vehicle_data.append("sort_by_vehicle_number", this.sortByVehicleNumber);
+            vehicle_data.append("sort_by_amount", this.sortByAmount);
+            vehicle_data.append("sort_by_created_at", this.sortByCreatedAt);
+
             try {
                 const response = await fetchWrapper.post(`${baseUrl}/admin/full-report`, vehicle_data);
 
-                this.fullreportArray = response.data
-                this.totalPages = response.data.total_pages
+                if (response.success === 1) {
+
+                    this.fullreportArray = response.data
+                    this.totalPage = response.total_pages
+                } else {
+                    const alertStore = useAlertStore()
+                    alertStore.error(response.message)
+                }
 
             } catch (error) {
                 const alertStore = useAlertStore()
@@ -241,6 +305,61 @@ export default {
             }
 
         },
+
+        getReceiptId(id) {
+            this.isdeleteReceipt = true
+            this.receiptId = id
+        },
+
+        async deleteReceipt() {
+            var delete_receipt = new FormData();
+
+            delete_receipt.append("r_id", this.receiptId);
+            this.isdeleteReceipt = false
+
+            try {
+                const data = await fetchWrapper.post(`${baseUrl}/admin/remove-receipt`, delete_receipt);
+
+                if (data.success === 1) {
+                    this.fullReport();
+                }
+
+
+            } catch (error) {
+                const alertStore = useAlertStore()
+                alertStore.error(error)
+            }
+        },
+
+        changeSort(columnType) {
+            if (columnType !== "#") {
+                this.sortByTicketNumber = "";
+                this.sortByVehicleNumber = "";
+                this.sortByAmount = "";
+                this.sortByCreatedAt = "";
+
+                if (columnType === "ticket_number") {
+                    this.sortByTicketNumber = "ticket_number";
+                } else if (columnType === "vehicle") {
+                    this.sortByVehicleNumber = "vehicle";
+                } else if (columnType === "amount") {
+                    this.sortByAmount = "amount";
+                } else if (columnType === "created_at") {
+                    this.sortByCreatedAt = "created_at";
+                }
+
+                this.sort = this.sort === 'desc' ? 'asc' : 'desc';
+            } else {
+                this.sortByTicketNumber = "";
+                this.sortByVehicleNumber = "";
+                this.sortByAmount = "";
+                this.sortByCreatedAt = "";
+                this.sort = 'desc';
+            }
+
+            this.fullReport();
+        },
+
     }
 }
 </script>
@@ -250,68 +369,110 @@ export default {
         <div class="table-content">
 
             <div class="table-header display-flex-wrap">
-
                 <div class="display-flex align-center gap-16px w-100">
                     <p class="text-large_semibold color-Grey_90 cursor-pointer">Full Report</p>
                 </div>
+            </div>
 
-                <div class="display-flex align-center gap-8px Md_flex-wrap-reverse Md_align-end Md_justify-end">
 
-                    <SearchBox placeholder="Serch Something" :value="reportSearch" @input="searchTextFun" />
+
+            <div class="padding-y_24px padding-x_32px mobile-body">
+                <div class="grid grid-cols-3 gap-3 ">
+                    <div class="space-y-8px">
+                        <Label label="Toll Plaza" />
+                        <Select :options="tollArray" @option-selected="getTollPlaza" :value="searchToll"
+                            @input="searchTollFun" />
+                    </div>
+
+                    <div class="space-y-8px">
+                        <Label label="Lane" />
+                        <Select :options="tollLaneArray" @option-selected="getLane" :value="searchLane"
+                            @input="searchLaneFun" />
+                    </div>
+
+                    <div class="space-y-8px">
+                        <Label label="Shift" />
+                        <Select :options="shiftArray" @option-selected="getShift" :value="searchShift"
+                            @input="searchShiftFun" />
+                    </div>
+
+                    <div class="space-y-8px">
+                        <Label label="User" />
+                        <Select :options="userArray" @option-selected="getUser" :value="searchUser"
+                            @input="searchUserFun" />
+                    </div>
+
+                    <div class="space-y-8px">
+                        <Label label="Vehicle Type" />
+                        <Select :options="vehicleArray" @option-selected="getVehicle" :value="searchVehicle"
+                            @input="searchVehicleFun" />
+                    </div>
+                    <div class="space-y-8px">
+                        <Label label="Ticket Type" />
+                        <Input type="text" placeholder="Ticket Type" id="Ticket Type" :value="reportTicketType"
+                            @input="handleTicketTypeInput" />
+                    </div>
+                    <div class="space-y-8px">
+                        <Label label="Start Date" />
+                        <Input type="date" placeholder="Ex. 160Rs." id="Start Date" :value="reportStartDate"
+                            @input="handleStartDateInput" />
+                    </div>
+                    <div class="space-y-8px">
+                        <Label label="End Date" />
+                        <Input type="date" placeholder="Ex. 160Rs." id="End Date" :value="reportEndDate"
+                            @input="handleEndDateInput" />
+                    </div>
 
                 </div>
-
             </div>
-
 
         </div>
 
-        <div class="padding-y_24px padding-x_32px mobile-body">
-            <div class="space-y-8px">
-                <Label label="Add Toll Plaza" />
-                <Select :options="tollArray" @option-selected="getTollPlaza" :value="searchToll"
-                    @input="searchTollFun" />
+        <div class="table-content mt-6">
+            <div class="table-header">
+                <div class="flex gap-2">
+                    <p>Show</p>
+                    <select v-model="limit" @change="handleLimitChange" name="" id=""
+                        class="text-large_semibold color-Grey_90 cursor-pointer border bg-gray-200 rounded-md">
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                    <p>entries</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <p>Search:</p>
+                    <div class="border rounded-lg">
+                        <SearchBox placeholder="Serch Something" :value="reportSearch" @input="searchTextFun" />
+                    </div>
+                </div>
             </div>
 
-            <div class="space-y-8px">
-                <Label label="Add Toll Lane" />
-                <Select :options="tollLaneArray" @option-selected="getLane" :value="searchLane"
-                    @input="searchLaneFun" />
+            <div class="table-header font-semibold grid grid-cols-12 bg-Grey_20 items-center">
+                <div class="cursor-pointer" @click="changeSort('#')">#</div>
+                <div class="cursor-pointer" @click="changeSort('ticket_number')">Ticket Number</div>
+                <div>User</div>
+                <div>Shift</div>
+                <div>Lane</div>
+                <div>Type</div>
+                <div>Ticket Type</div>
+                <div class="cursor-pointer" @click="changeSort('vehicle')">Vehicle</div>
+                <div>Qty</div>
+                <div class="cursor-pointer" @click="changeSort('amount')">Amount</div>
+                <div class="cursor-pointer" @click="changeSort('created_at')">Created At</div>
+                <div>Action</div>
             </div>
-
-            <div class="space-y-8px">
-                <Label label="Add Shift" />
-                <Select :options="shiftArray" @option-selected="getShift" :value="searchShift"
-                    @input="searchShiftFun" />
-            </div>
-
-            <div class="space-y-8px">
-                <Label label="Select User" />
-                <Select :options="userArray" @option-selected="getUser" :value="searchUser" @input="searchUserFun" />
-            </div>
-
-            <div class="space-y-8px">
-                <Label label="Select Vehicle" />
-                <Select :options="vehicleArray" @option-selected="getVehicle" :value="searchVehicle"
-                    @input="searchVehicleFun" />
-            </div>
-
-            <!-- <div class="no_data_section" v-if="!list">
-                <img src="../assets/img/oops_icon.png">
-            </div> -->
 
             <ul class="list" :class="{ 'list-row': listView }">
-
-                <List :list="fullreportArray" @delete_lane="getLaneId" @edit_lane="editLaneOpen"
-                    @edit_status="statusUpdate" />
-
+                <List :list="fullreportArray" @delete_lane="getReceiptId" />
             </ul>
 
-        </div>
-
-        <div class="border-t border-solid border-Grey_20">
-            <Pagination :currentPage="currentPage" :totalPages="totalPages" @update-page="updatePage" />
+            <div class="stable-footer">
+                <Pagination :currentPage="currentPage" :totalPages="totalPage" @update-page="updatePage" />
+            </div>
         </div>
 
     </Layout>
+    <DeleteModel model_title="Delete Receipt" model_subtitle="Are you sure you want to delete this Receipt?"
+        v-if="isdeleteReceipt" @close_model="isdeleteReceipt = false" @delete_item="deleteReceipt()" />
 </template>

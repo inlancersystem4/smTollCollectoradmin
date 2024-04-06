@@ -38,6 +38,8 @@ export default {
         clearSelection() {
             this.selectedOption = null;
             this.selectDropdownOpen = false;
+            this.selectedOptionVal = ""
+            this.$emit('option-selected', this.selectedOptionVal);
         },
         clearInput() {
             this.inputValue = ""

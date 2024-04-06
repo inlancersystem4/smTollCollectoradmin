@@ -18,63 +18,42 @@ export default {
         editStatus(id) {
             this.$emit('edit_status', id)
         },
+        formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            const seconds = date.getSeconds();
+
+            // Pad single digit numbers with leading zero
+            const pad = (num) => (num < 10 ? '0' : '') + num;
+
+            return `${pad(day)}-${pad(month)}-${year} ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        }
     },
 }
 </script>
 
 <template>
-    <li class="list" v-for="(items, index) in list" :key="index">
-
-        <h6 class="text-large_semibold color-Grey_90">{{ items.r_vehical_type }}.</h6>
-
-        <div class="space-y-4px">
-            <h2 class="text-large_semibold color-Grey_90">{{ items.r_user_job }}</h2>
-
-
-            <p class="text-small_regular color-Grey_50">{{ items.r_toll_plaza }} </p>
-
+    <li class="table-header grid grid-cols-12 space-y-2" v-for="(items, index) in list" :key="index">
+        <div>{{ index + 1 }}</div>
+        <div>{{ items.ticket_number }}</div>
+        <div>{{ items.r_user_job }}</div>
+        <div>{{ items.r_shift_select }}</div>
+        <div>{{ items.r_lane_select }}</div>
+        <div>{{ items.r_vehical_type }}</div>
+        <div>{{ items.r_ticket_type }}</div>
+        <div>{{ items.r_vehical_number }}</div>
+        <div>{{ items.r_qty }}</div>
+        <div>{{ items.r_price }}</div>
+        <div>{{ formatDate(items.created_at) }}</div>
+        <div>
+            <button class="btn-regular display-flex align-center" @click="deleteToll(items.r_id)">
+                <p class="text-sm_medium text-red-600">Delete</p>
+            </button>
         </div>
-<!-- 
-        <div class="options">
-            <button class="btn-regular display-flex align-center gap-8px" v-if="items.status === true">
-                <div class="ellipse-dot bg-emerald"></div>
-                <p class="text-sm_medium color-Grey_60">Enable</p>
-            </button>
-            <button class="btn-regular display-flex align-center gap-8px" v-if="items.status === false">
-                <div class="ellipse-dot bg-rose"></div>
-                <p class="text-sm_medium color-Grey_60">Disable</p>
-            </button>
-            <div class="icon-btn icon-btn_32px  custom-dropdown">
-                <img src="../../assets/img/icons/dots-icon.svg">
-                <ul class="custom-dropdown-list leftside icon-dropdown">
-                    <li class="dropdown-item" @click="editToll(items.l_id)">
-                        <div class="dropdown-link">
-                            <img src="../../assets/img/icons/edit.svg">
-                            <p class="dropdown-link-title"> Edit Lane </p>
-                        </div>
-                    </li>
-                    <li class="dropdown-item" @click="deleteToll(items.l_id)">
-                        <div class="dropdown-link">
-                            <img src="../../assets/img/icons/trash.svg">
-                            <p class="dropdown-link-title required"> Delete Lane </p>
-                        </div>
-                    </li>
-                    <li class="dropdown-item" @click="editStatus(items.l_id)" v-if="items.status === false">
-                        <div class="dropdown-link">
-                            <p class="w20"></p>
-                            <p class="dropdown-link-title"> Enable </p>
-                        </div>
-                    </li>
-                    <li class="dropdown-item" @click="editStatus(items.l_id)" v-if="items.status === true">
-                        <div class="dropdown-link">
-                            <p class="w20"></p>
-                            <p class="dropdown-link-title"> Disable </p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div> -->
-
     </li>
 </template>
 
