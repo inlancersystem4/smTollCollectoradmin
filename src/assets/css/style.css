@@ -1497,8 +1497,8 @@
     content: "";
     position: absolute;
     inset: 0;
-    width: 250px;
-    height: 150px;
+    width: 125px;
+    height: 1250px;
     background-color: rgba(0, 0, 0, 0.5);
     overflow: hidden;
     border-radius: 4px;
@@ -3128,4 +3128,106 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
+}
+
+
+
+.full-report tr {
+    display: flex;
+    align-items: center;
+}
+
+.full-report td {
+    font-size: 14px !important;
+}
+
+.full-report .id {
+    min-width: 75px;
+    max-width: 75px;
+    overflow: hidden;
+}
+
+.full-report .ticket-number {
+    min-width: 90px;
+    max-width: 90px;
+    overflow: hidden;
+}
+
+.full-report .user {
+    min-width: 125px;
+    max-width: 125px;
+    overflow: hidden;
+}
+
+.full-report .shift {
+    min-width: 150px;
+    max-width: 150px;
+    overflow: hidden;
+}
+
+.full-report .lane {
+    min-width: 150px;
+    max-width: 150px;
+    overflow: hidden;
+}
+
+.full-report .vehical {
+    min-width: 220px;
+    max-width: 220px;
+    overflow: hidden;
+}
+
+.full-report .ticket {
+    min-width: 100px;
+    max-width: 100px;
+    overflow: hidden;
+}
+
+.full-report .number {
+    min-width: 150px;
+    max-width: 150px;
+    overflow: hidden;
+}
+
+.full-report .qty {
+    min-width: 100px;
+    max-width: 100px;
+    overflow: hidden;
+}
+
+.full-report .price {
+    min-width: 100px;
+    max-width: 100px;
+    overflow: hidden;
+}
+
+.full-report .created {
+    min-width: 150px;
+    max-width: 150px;
+    overflow: hidden;
+}
+
+.full-report .action {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    min-width: 50px;
+}
+
+.full-report tr:hover .icon-btn {
+    background-color: var(--Grey);
+    border: 1px solid var(--Grey-20);
+}
+
+.full-report tr .icon-btn:hover .custom-dropdown-list {
+    display: block;
+}
+
+.full-report tr:nth-last-child(1) .custom-dropdown-list,
+.full-report tr:nth-last-child(2) .custom-dropdown-list,
+.full-report tr:nth-last-child(3) .custom-dropdown-list,
+.full-report tr:nth-last-child(4) .custom-dropdown-list {
+    top: auto;
+    bottom: 100%;
+    margin-bottom: 2px;
 }

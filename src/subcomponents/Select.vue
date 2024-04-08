@@ -56,7 +56,7 @@ export default {
     <div class="select">
 
 
-        <div @click="toggleDropdown" class="cursor-pointer">
+        <div @click="toggleDropdown" class="cursor-pointer w-full">
 
             <p v-if="!responseData" class="w-100 capitalize color-Grey_90 font-medium"
                 :class="{ 'color-Grey_50': selectedOption !== null }">
@@ -68,7 +68,6 @@ export default {
             </p>
 
         </div>
-
 
         <div class="select-icon cursor-pointer">
             <div @click="clearSelection" v-if="selectedOption">

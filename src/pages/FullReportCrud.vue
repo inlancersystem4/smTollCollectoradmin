@@ -360,7 +360,7 @@ export default {
             this.fullReport();
         },
 
-        async UpdateIsCancelStatus(id , status_id) {
+        async UpdateIsCancelStatus(id, status_id) {
             var status_up = new FormData();
 
             status_up.append("r_id", id);
@@ -467,24 +467,88 @@ export default {
                 </div>
             </div>
 
-            <div class="table-header font-semibold grid grid-cols-12 bg-Grey_20 items-center">
-                <div class="cursor-pointer" @click="changeSort('#')">#</div>
-                <div class="cursor-pointer" @click="changeSort('ticket_number')">Ticket Number</div>
-                <div>User</div>
-                <div>Shift</div>
-                <div>Lane</div>
-                <div>Type</div>
-                <div>Ticket Type</div>
-                <div class="cursor-pointer" @click="changeSort('vehicle')">Vehicle</div>
-                <div>Qty</div>
-                <div class="cursor-pointer" @click="changeSort('amount')">Amount</div>
-                <div class="cursor-pointer" @click="changeSort('created_at')">Created At</div>
-                <div>Action</div>
+            <div class="main-table full-report">
+                <table class="w-100">
+                    <tbody>
+                        <tr class="font-semibold">
+                            <td class="cursor-pointer id" @click="changeSort('#')">#</td>
+                            <td class="cursor-pointer ticket-number flex items-center gap-1"
+                                @click="changeSort('ticket_number')">
+                                <span class="line-clamp-1">Ticket No.</span>
+                                <span class="block">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.5 16.5L7.5 19.5L4.5 16.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M7.5 4.5V19.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M13.5 7.5L16.5 4.5L19.5 7.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M16.5 19.5V4.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </td>
+                            <td class="user pl-1">User</td>
+                            <td class="shift">Shift</td>
+                            <td class="lane">Lane</td>
+                            <td class="vehical">Type</td>
+                            <td class="ticket">cket Type</td>
+                            <td class="cursor-pointer number flex items-center gap-1" @click="changeSort('vehicle')">
+                                Vehicle
+                                <span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.5 16.5L7.5 19.5L4.5 16.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M7.5 4.5V19.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M13.5 7.5L16.5 4.5L19.5 7.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M16.5 19.5V4.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </td>
+                            <td class="qty">Qty</td>
+                            <td class="cursor-pointer price flex items-center gap-1" @click="changeSort('amount')">
+                                Amount
+                                <span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.5 16.5L7.5 19.5L4.5 16.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M7.5 4.5V19.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M13.5 7.5L16.5 4.5L19.5 7.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M16.5 19.5V4.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </td>
+                            <td class="cursor-pointer created flex items-center gap-1"
+                                @click="changeSort('created_at')">Created At
+                                <span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.5 16.5L7.5 19.5L4.5 16.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M7.5 4.5V19.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M13.5 7.5L16.5 4.5L19.5 7.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M16.5 19.5V4.5" stroke="#191C1F" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </td>
+                            <td class="action">Action</td>
+                        </tr>
+                        <List :list="fullreportArray" @delete_lane="getReceiptId" @edit_status="UpdateIsCancelStatus" />
+                    </tbody>
+                </table>
             </div>
-
-            <ul class="list" :class="{ 'list-row': listView }">
-                <List :list="fullreportArray" @delete_lane="getReceiptId"  @edit_status="UpdateIsCancelStatus" />
-            </ul>
 
             <div class="stable-footer">
                 <Pagination :currentPage="currentPage" :totalPages="totalPage" @update-page="updatePage" />

@@ -15,8 +15,8 @@ export default {
         editToll(id) {
             this.$emit('edit_lane', id)
         },
-        editStatus(id , status_id) {
-            this.$emit('edit_status', id , status_id)
+        editStatus(id, status_id) {
+            this.$emit('edit_status', id, status_id)
         },
         formatDate(timestamp) {
             const date = new Date(timestamp);
@@ -26,10 +26,7 @@ export default {
             const hours = date.getHours();
             const minutes = date.getMinutes();
             const seconds = date.getSeconds();
-
-            // Pad single digit numbers with leading zero
             const pad = (num) => (num < 10 ? '0' : '') + num;
-
             return `${pad(day)}-${pad(month)}-${year} ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
         }
     },
@@ -37,23 +34,54 @@ export default {
 </script>
 
 <template>
-    <li class="table-header grid grid-cols-12 space-y-2" v-for="(items, index) in list" :key="index">
-        <div>{{ index + 1 }}</div>
-        <div>{{ items.ticket_number }}</div>
-        <div>{{ items.r_user_job }}</div>
-        <div>{{ items.r_shift_select }}</div>
-        <div>{{ items.r_lane_select }}</div>
-        <div>{{ items.r_vehical_type }}</div>
-        <div>{{ items.r_ticket_type }}</div>
-        <div>{{ items.r_vehical_number }}</div>
-        <div>{{ items.r_qty }}</div>
-        <div>{{ items.r_price }}</div>
-        <div>{{ formatDate(items.created_at) }}</div>
-        <!-- <div>
+    <tr class="" v-for="(items, index) in list" :key="index">
+        <td class="id line-clamp-1">{{ index + 1 }}</td>
+        <td class="ticket-number line-clamp-1">{{ items.ticket_number }}</td>
+        <td class="user line-clamp-1">{{ items.r_user_job }}</td>
+        <td class="shift line-clamp-1">{{ items.r_shift_select }}</td>
+        <td class="lane line-clamp-1">{{ items.r_lane_select }}</td>
+        <td class="vehical line-clamp-1">{{ items.r_vehical_type }}</td>
+        <td class="ticket line-clamp-1">{{ items.r_ticket_type }}</td>
+        <td class="number line-clamp-1">{{ items.r_vehical_number }}</td>
+        <td class="qty line-clamp-1">{{ items.r_qty }}</td>
+        <td class="price line-clamp-1">{{ items.r_price }}</td>
+        <td class="created line-clamp-1">{{ formatDate(items.created_at) }}</td>
+        <td class="action">
+            <div class="icon-btn icon-btn_32px custom-dropdown">
+                <img src="/src/assets/img/icons/dots-icon.svg" />
+                <ul class="custom-dropdown-list leftside icon-dropdown">
+                    <li class="dropdown-item" @click="deleteToll(items.r_id)">
+                        <div class="dropdown-link">
+                            <img src="../../assets/img/icons/trash.svg">
+                            <p class="dropdown-link-title required"> Delete </p>
+                        </div>
+                    </li>
+                    <li class="dropdown-item" @click="editStatus(items.r_id, 0)">
+                        <div class="dropdown-link">
+                            <p class="w20"></p>
+                            <p class="dropdown-link-title"> Not Cancel </p>
+                        </div>
+                    </li>
+                    <li class="dropdown-item" @click="editStatus(items.r_id, 1)">
+                        <div class="dropdown-link">
+                            <p class="w20"></p>
+                            <p class="dropdown-link-title"> Cancel </p>
+                        </div>
+                    </li>
+                    <li class="dropdown-item" @click="editStatus(items.r_id, 2)">
+                        <div class="dropdown-link">
+                            <p class="w20"></p>
+                            <p class="dropdown-link-title"> Panding </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </td>
+        <!--  <div>
             <button class="btn-regular display-flex align-center" @click="deleteToll(items.r_id)">
                 <p class="text-sm_medium text-red-600">Delete</p>
             </button>
-        </div> -->
+        </div>
         <div class="">
             <button class="btn-regular display-flex align-center gap-8px" v-if="items.r_iscancel === 0">
                 <div class="ellipse-dot bg-emerald"></div>
@@ -70,18 +98,18 @@ export default {
             <div class="icon-btn icon-btn_32px  custom-dropdown">
                 <img src="../../assets/img/icons/dots-icon.svg">
                 <ul class=" absolute right-0  top-full">
-                    <!-- <li class="dropdown-item" @click="deleteToll(items.r_id)">
+                     <li class="dropdown-item" @click="deleteToll(items.r_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/trash.svg">
                             <p class="dropdown-link-title required"> Delete </p>
                         </div>
                     </li> -->
-                    <!-- <li class="dropdown-item" @click="editStatus(items.r_id , 0)">
+        <!-- <li class="dropdown-item" @click="editStatus(items.r_id , 0)">
                         <div class="dropdown-link">
                             <p class="w20"></p>
                             <p class="dropdown-link-title"> Not Cancel </p>
                         </div>
-                    </li> -->
+                    </li> 
                     <li class="dropdown-item" @click="editStatus(items.r_id , 1)">
                         <div class="dropdown-link">
                             <p class="w20"></p>
@@ -96,9 +124,9 @@ export default {
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
 
-    </li>
+    </tr>
 </template>
 
 <style scoped>
