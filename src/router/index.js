@@ -66,6 +66,11 @@ const router = createRouter({
       component: () => import('../pages/DailyReport.vue'),
     },
     {
+      path: '/shift-report',
+      name: 'Shift Report',
+      component: () => import('../pages/ShiftReport.vue'),
+    },
+    {
       path: '/:catchAll(.*)',
       redirect: '/page-not-found'
     }

@@ -45,13 +45,13 @@ export default {
                     <li class="dropdown-item" @click="editToll(items.s_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/edit.svg">
-                            <p class="dropdown-link-title"> Edit Toll Plaza </p>
+                            <p class="dropdown-link-title"> Edit Shift Plaza </p>
                         </div>
                     </li>
                     <li class="dropdown-item" @click="deleteToll(items.s_id)">
                         <div class="dropdown-link">
                             <img src="../../assets/img/icons/trash.svg">
-                            <p class="dropdown-link-title required"> Delete Toll Plaza </p>
+                            <p class="dropdown-link-title required"> Delete Shift Plaza </p>
                         </div>
                     </li>
                     <li class="dropdown-item" @click="editStatus(items.s_id)" v-if="items.status === false">
