@@ -134,25 +134,44 @@ export default {
 
 
             <div class="padding-y_24px padding-x_32px mobile-body">
-                <div class="grid grid-cols-4 gap-4">
-                    <div class="space-y-8px">
+                <div class="flex gap-x-4 gap-y-2 flex-wrap items-end">
+                    <div class="space-y-8px min-w-[250px]">
                         <Label label="Toll Plaza" />
                         <Select :options="tollArray" @option-selected="getTollPlaza" :value="searchToll"
                             @input="searchTollFun" />
                     </div>
-                    <div class="space-y-8px">
+                    <div class="space-y-8px min-w-[250px]">
                         <Label label="Start Date" />
                         <Input type="date" placeholder="Ex. 160Rs." id="Start Date" :value="reportStartDate"
                             @input="handleStartDateInput" />
                     </div>
-                    <div class="space-y-8px">
+                    <div class="space-y-8px min-w-[250px]">
                         <Label label="End Date" />
                         <Input type="date" placeholder="Ex. 160Rs." id="End Date" :value="reportEndDate"
                             @input="handleEndDateInput" />
                     </div>
-                    <div class=" flex gap-4 text-center justify-start mt-7">
-                        <button class=" bg-[#007BFF] p-2 rounded-md" @click="dailyReport">Generate</button>
-                        <button class=" bg-[#17A2B8] p-2 rounded-md">Print</button>
+                    <div class="flex gap-4 text-center justify-start">
+                        <button class="bg-[#007BFF] px-3.5 py-2 rounded-md text-white"
+                            @click="dailyReport">Generate</button>
+                        <button class="bg-[#17A2B8] px-3.5 py-2 rounded-md text-white flex items-center gap-1">
+                            <span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 7.5V3.75H18V7.5" stroke="currentcolor" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M18 14.25H6V20.625H18V14.25Z" stroke="currentcolor" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path
+                                        d="M6 16.5H2.625V9C2.625 8.175 3.35625 7.5 4.24687 7.5H19.7531C20.6437 7.5 21.375 8.175 21.375 9V16.5H18"
+                                        stroke="currentcolor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M17.625 12C18.2463 12 18.75 11.4963 18.75 10.875C18.75 10.2537 18.2463 9.75 17.625 9.75C17.0037 9.75 16.5 10.2537 16.5 10.875C16.5 11.4963 17.0037 12 17.625 12Z"
+                                        fill="currentcolor" />
+                                </svg>
+                            </span>
+                            Print
+                        </button>
                     </div>
 
                 </div>
@@ -165,125 +184,131 @@ export default {
                 </div>
                 <p v-else>No data available for the selected criteria.</p>
             </div>
-            <div class=" mt-6">
 
-                <div class=" grid grid-cols-6 border-y-2 gap-y-2">
-                    <th class="">
-                        Journey Type
-                    </th>
+            <div class="mt-6 border-t border-solid border-Grey_20">
 
-                    <th>
-                        Vehicle
-                    </th>
-
-                    <th>
-                        Rate
-                    </th>
-                    <div class=" grid grid-cols-2">
-
-                        <th class="col-span-2 border-b-4">
-                            Generate(A)
-                        </th>
-                        <th>
-                            Ticket
-                        </th>
-                        <th>Amount</th>
+                <div class="flex items-center gap-2 w-full border-b border-solid border-Grey_20">
+                    <div class="w-1/3 flex items-center px-2">
+                        <div class="w-1/3">
+                            <p class="color-Grey_90 font-bold text-base">Journey Type</p>
+                        </div>
+                        <div class="w-2/3 flex items-center justify-between gap-1.5">
+                            <p class="color-Grey_90 font-bold text-base">Vehicle</p>
+                            <p class="color-Grey_90 font-bold text-base">Rate</p>
+                        </div>
                     </div>
-                    <div class=" grid grid-cols-2">
-
-                        <th class="col-span-2 border-b-4">
-                            Cancelled(B)
-                        </th>
-                        <th>
-                            Ticket
-                        </th>
-                        <th>Amount</th>
+                    <div class="w-2/3 flex  flex-col items-stretch">
+                        <div class="flex items-stretch">
+                            <div class="w-1/3 py-1.5">
+                                <p class="color-Grey_90 font-bold text-base text-center">Generate(A)</p>
+                            </div>
+                            <div class="w-1/3 py-1.5">
+                                <p class="color-Grey_90 font-bold text-base text-center">Generate(B)</p>
+                            </div>
+                            <div class="w-1/3 py-1.5">
+                                <p class="color-Grey_90 font-bold text-base text-center">Total(A - B)</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-solid border-Grey_20 flex items-stretch">
+                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
+                                <p class="color-Grey_90 font-bold text-base text-center">Ticket</p>
+                                <p class="color-Grey_90 font-bold text-base text-center">Amount</p>
+                            </div>
+                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
+                                <p class="color-Grey_90 font-bold text-base text-center">Ticket</p>
+                                <p class="color-Grey_90 font-bold text-base text-center">Amount</p>
+                            </div>
+                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
+                                <p class="color-Grey_90 font-bold text-base text-center">Ticket</p>
+                                <p class="color-Grey_90 font-bold text-base text-center">Amount</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class=" grid grid-cols-2">
-
-                        <th class="col-span-2 border-b-4">
-                            Generate(A-B)
-                        </th>
-                        <th>
-                            Ticket
-                        </th>
-                        <th>Amount</th>
-                    </div>
-
                 </div>
-                <ul>
-                    <li v-for="(item, index) in dailyReportArray" :key="index"
-                        class=" grid grid-cols-6 border-y-2 gap-y-2">
-                        <td class="">
-                            Single
-                        </td>
 
-                        <td>
-                            {{ item.vehicle_name }}
-                        </td>
-
-                        <td>
-                            {{ item.vehicle_actual_price }}
-
-                        </td>
-                        <div class=" grid grid-cols-2">
-                            <td>
-                                {{ item.ticket_count }}
-                            </td>
-                            <td> {{ item.vehicle_price }}
-                            </td>
+                <div class="flex items-center gap-2 w-full border-b border-solid border-Grey_20"
+                    v-for="(item, index) in dailyReportArray" :key="index">
+                    <div class="w-1/3 flex items-center px-2">
+                        <div class="w-1/3">
+                            <p class="color-Grey_50  text-base">Single</p>
                         </div>
-                        <div class=" grid grid-cols-2">
-
-                            <td>
-                                {{ item.cancelled_ticket }}
-
-                            </td>
-                            <td> {{ item.cancelled_ticket_amount }}
-                            </td>
-                        </div>
-                        <div class=" grid grid-cols-2">
-
-                            <td>
-                                {{ item.total_ticket }}
-
-                            </td>
-                            <td>{{ item.total_amount }}</td>
-                        </div>
-
-                    </li>
-                    <div class="">
-
-                        <td class="">
-                        </td>
-
-                        <td class="row-span-2">
-                            total
-                        </td>
-                        <div class="">
-                            <td>
-                                {{ ticketCounts }}
-                            </td>
-                            <td> {{ AmountTotal }}
-                            </td>
-                        </div>
-                        <div class="">
-                            <td>
-                                {{ cancelTicketCounts }}
-                            </td>
-                            <td> {{ cancelTicketAmountTotal }}
-                            </td>
-                        </div>
-                        <div class="">
-
-                            <td>
-                                {{ totalTicket }}
-
-                            </td>
-                            <td>{{ totalAmount }}</td>
+                        <div class="w-2/3 flex items-center justify-between gap-1.5">
+                            <p class="color-Grey_50 line-clamp-1 text-base"> {{ item.vehicle_name }}</p>
+                            <p class="color-Grey_50 line-clamp-1  text-base"> {{ item.vehicle_actual_price }}</p>
                         </div>
                     </div>
-                </ul>
+                    <div class="w-2/3">
+                        <div class="flex items-stretch">
+                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
+                                <p class="color-Grey_50 line-clamp-1  text-base text-center"> {{ item.ticket_count }}
+                                </p>
+                                <p class="color-Grey_50 line-clamp-1  text-base text-center">Rs.{{ item.vehicle_price }}
+                                </p>
+                            </div>
+                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
+                                <p class="color-Grey_50  line-clamp-1 text-base text-center"> {{ item.cancelled_ticket
+                                    }}
+                                </p>
+                                <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{
+                                    item.cancelled_ticket_amount
+                                }}</p>
+                            </div>
+                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
+                                <p class="color-Grey_50  line-clamp-1 text-base text-center">{{ item.total_ticket }}</p>
+                                <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{ item.total_amount }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 w-full border-b border-solid border-Grey_20">
+                    <div class="w-1/3 flex items-center px-2">
+                        <div class="w-1/3">
+                        </div>
+                        <div class="w-2/3 flex items-center justify-center gap-1.5">
+                            <p class="color-Grey_90 line-clamp-1 font-bold text-base"> Total</p>
+                        </div>
+                    </div>
+                    <div class="w-2/3">
+                        <div class="flex items-stretch">
+                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
+                                <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">
+                                    {{ ticketCounts }}
+                                </p>
+                                <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">
+                                    Rs.{{ AmountTotal }}
+                                </p>
+                            </div>
+                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
+                                <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
+                                    {{ cancelTicketCounts }}
+                                </p>
+                                <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
+                                    Rs.{{ cancelTicketAmountTotal }}
+                                </p>
+                            </div>
+                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
+                                <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
+                                    {{ totalTicket }}
+                                </p>
+                                <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
+                                    Rs.{{ totalAmount }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-y border-solid border-Grey_20 w-full mt-6 py-1.5 flex items-center justify-evenly">
+                <p class="color-Grey_90  line-clamp-1 text-base font-bold">Grand Total</p>
+                <p class="color-Grey_90  line-clamp-1 text-base font-bold"> {{ ticketCounts }}</p>
+                <p class="color-Grey_90  line-clamp-1 text-base font-bold">{{ AmountTotal }}</p>
+                <p class="color-Grey_90  line-clamp-1 text-base font-bold">{{ cancelTicketCounts }}</p>
+                <p class="color-Grey_90  line-clamp-1 text-base font-bold">{{ cancelTicketAmountTotal }}</p>
+                <p class="color-Grey_90  line-clamp-1 text-base font-bold">{{ totalTicket }}</p>
+                <p class="color-Grey_90  line-clamp-1 text-base font-bold">{{ totalAmount }}</p>
             </div>
 
         </div>

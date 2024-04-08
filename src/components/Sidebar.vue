@@ -547,7 +547,7 @@ export default {
                     </li>
 
                     <li class="list-items">
-                        <router-link to="/daily-report" class="list-link" :class="{ link_active: isDailyReportActive }">
+                        <router-link to="/daily-report" class="list-link" :class="{ link_active: isdailyReportActive }">
                             <div class="link-items">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
