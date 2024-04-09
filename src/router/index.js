@@ -57,18 +57,23 @@ const router = createRouter({
     },
     {
       path: '/full-report',
-      name: 'Full Report',
+      name: 'FullReport',
       component: () => import('../pages/FullReportCrud.vue'),
     },
     {
       path: '/daily-report',
-      name: 'Daily Report',
+      name: 'DailyReport',
       component: () => import('../pages/DailyReport.vue'),
     },
     {
       path: '/shift-report',
-      name: 'Shift Report',
+      name: 'ShiftReport',
       component: () => import('../pages/ShiftReport.vue'),
+    },
+    {
+      path: '/lane-report',
+      name: 'LaneReport',
+      component: () => import('../pages/LaneReport.vue'),
     },
     {
       path: '/:catchAll(.*)',
