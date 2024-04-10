@@ -7,7 +7,15 @@ import Select from '../subcomponents/Select.vue';
 import Input from '../subcomponents/Input.vue';
 
 export default {
-    components: { Layout, Label, Select, Input }
+    components: { Layout, Label, Select, Input },
+    data() {
+        return {
+
+        }
+    },
+    methods: {
+
+    },
 }
 </script>
 
@@ -92,6 +100,62 @@ export default {
                     </button>
                 </div>
             </div>
+
+
+            <div>
+
+                <div class="w-full border-t border-solid border-Grey_20 mt-6">
+                    <div class="flex items-center border-b border-solid border-Grey_20">
+                        <div class="w-[12%] py-1.5 px-1.5">
+                            <p class="font-bold color-Grey_90 text-base">Journey Type</p>
+                        </div>
+                        <div class="flex-1 flex items-center w-full">
+                            <div class="w-1/4 px-1.5">
+                                <div class="flex items-center justify-between">
+                                    <p class="font-bold color-Grey_90 text-base">Vehicle</p>
+                                    <p class="font-bold color-Grey_90 text-base">Rate</p>
+                                </div>
+                            </div>
+                            <div class="w-3/4 flex-1">
+                                <div class="w-full flex items-center py-1.5 border-b border-solid border-Grey_20">
+                                    <div class="w-1/4 text-center ">
+                                        <p class="font-bold color-Grey_90 text-base">Generated(A)</p>
+                                    </div>
+                                    <div class="w-1/4 text-center">
+                                        <p class="font-bold color-Grey_90 text-base">Cancelled(B)</p>
+                                    </div>
+                                    <div class="w-1/4 text-center">
+                                        <p class="font-bold color-Grey_90 text-base">Manual(C)</p>
+                                    </div>
+                                    <div class="w-1/4 text-center">
+                                        <p class="font-bold color-Grey_90 text-base">Total(A - B + C)</p>
+                                    </div>
+                                </div>
+                                <div class="w-full flex items-center py-1.5">
+                                    <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
+                                        <p class="font-bold color-Grey_90 text-base">Ticket</p>
+                                        <p class="font-bold color-Grey_90 text-base">Amt.</p>
+                                    </div>
+                                    <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
+                                        <p class="font-bold color-Grey_90 text-base">Ticket</p>
+                                        <p class="font-bold color-Grey_90 text-base">Amt.</p>
+                                    </div>
+                                    <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
+                                        <p class="font-bold color-Grey_90 text-base">Ticket</p>
+                                        <p class="font-bold color-Grey_90 text-base">Amt.</p>
+                                    </div>
+                                    <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
+                                        <p class="font-bold color-Grey_90 text-base">Ticket</p>
+                                        <p class="font-bold color-Grey_90 text-base">Amt.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </Layout>
 </template>
