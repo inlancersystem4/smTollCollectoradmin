@@ -182,7 +182,6 @@ export default {
                         <p>Daily report - {{ reportStartDate }} to {{ reportEndDate }}</p>
                         <p>Toll Plaza: {{ tollSelected }}</p>
                     </div>
-                    <p v-else>No data available for the selected criteria.</p>
                 </div>
 
                 <div class="mt-6 border-t border-solid border-Grey_20">
@@ -317,6 +316,12 @@ export default {
                 </div>
 
             </div>
+
+            <div v-else>
+                <p class="text-center mt-9">First, select the required field, and after the available data</p>
+            </div>
+
+
         </div>
     </Layout>
 </template>

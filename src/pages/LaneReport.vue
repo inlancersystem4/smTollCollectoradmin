@@ -16,7 +16,7 @@ export default {
         <div class="table-content">
             <div class="table-header display-flex-wrap">
                 <div class="display-flex align-center gap-16px w-100">
-                    <p class="text-large_semibold color-Grey_90 cursor-pointer">Shift Report</p>
+                    <p class="text-large_semibold color-Grey_90 cursor-pointer">Lane Report</p>
                 </div>
             </div>
             <div class="padding-y_24px padding-x_32px mobile-body">
@@ -27,7 +27,7 @@ export default {
                             @input="searchTollFun" />
                     </div>
                     <div class="space-y-8px min-w-[250px]">
-                        <Label label="Date" />
+                        <Label label="Start Date" />
                         <Input type="date" id="Start Date" :value="reportStartDate" @input="handleStartDateInput" />
                     </div>
                     <div class="space-y-8px min-w-[250px]">

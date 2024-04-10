@@ -222,219 +222,145 @@ export default {
                     </div>
                 </div>
             </div>
-            <div class=" text-center mt-9">
-                <div v-if="shiftReportArray.length > 0">
+            <div class="text-center mt-9">
+                <div v-if="shiftReportArray.vehicle && shiftReportArray.vehicle.length > 0">
                     <p>Daily report - {{ reportStartDate }}</p>
                     <p>Shift - {{ shiftSelected }}</p>
                     <p>Toll Plaza: {{ tollSelected }}</p>
                 </div>
-                <p v-else>No data available for the selected criteria.</p>
+                <p v-else>First, select the required field, and after the available data</p>
             </div>
 
+            <div v-if="shiftReportArray.vehicle && shiftReportArray.vehicle.length > 0">
 
-            <div class="mt-6 border-t border-solid border-Grey_20 flex items-end">
-                <div class="w-[12%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
-                    <p class="color-Grey_90 font-bold text-base">Journey Type</p>
-                </div>
-                <div class="w-[88%] flex-1 flex  items-end">
-                    <div class=" w-full flex-1 flex items-end">
-                        <div class="w-[13%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
-                            <p class="color-Grey_90 font-bold text-base">Lane Name</p>
-                        </div>
-                        <div class="w-[75%] flex border-b flex-1 border-solid  border-Grey_20"
-                            v-for="(item, index) in shiftReportArray.vehicle" :key="index">
-                            <div class="flex-1">
-                                <p class="color-Grey_90 py-1.5 px-6 font-bold text-center text-base line-clamp-1">
-                                    {{ item.vehicle_name }}</p>
-                                <div
-                                    class="flex items-center py-1.5 px-6 justify-between gap-6 border-t border-solid border-Grey_20">
-                                    <p class="color-Grey_90 font-bold text-base">#</p>
-                                    <p class="color-Grey_90 font-bold text-base">Amt</p>
+                <div class="mt-6 border-t border-solid border-Grey_20 flex items-end">
+                    <div class="w-[12%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
+                        <p class="color-Grey_90 font-bold text-base">Journey Type</p>
+                    </div>
+                    <div class="w-[88%] flex-1 flex  items-end">
+                        <div class=" w-full flex-1 flex items-end">
+                            <div class="w-[13%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
+                                <p class="color-Grey_90 font-bold text-base">Lane Name</p>
+                            </div>
+                            <div class="w-[75%] flex border-b flex-1 border-solid  border-Grey_20"
+                                v-for="(item, index) in shiftReportArray.vehicle" :key="index">
+                                <div class="flex-1">
+                                    <p class="color-Grey_90 py-1.5 px-6 font-bold text-center text-base line-clamp-1">
+                                        {{ item.vehicle_name }}</p>
+                                    <div
+                                        class="flex items-center py-1.5 px-6 justify-between gap-6 border-t border-solid border-Grey_20">
+                                        <p class="color-Grey_90 font-bold text-base">#</p>
+                                        <p class="color-Grey_90 font-bold text-base">Amt</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="w-[13%] flex border-b flex-1 border-solid border-Grey_20">
-                            <div class="flex-1">
-                                <p class="color-Grey_90 py-1.5 px-6 font-bold text-center text-base">
-                                    Total
-                                </p>
-                                <div
-                                    class="flex items-center py-1.5 px-6 justify-between gap-6 border-t border-solid border-Grey_20">
-                                    <p class="color-Grey_90 font-bold text-base">#</p>
-                                    <p class="color-Grey_90 font-bold text-base">Amt</p>
+                            <div class="w-[13%] flex border-b flex-1 border-solid border-Grey_20">
+                                <div class="flex-1">
+                                    <p class="color-Grey_90 py-1.5 px-6 font-bold text-center text-base">
+                                        Total
+                                    </p>
+                                    <div
+                                        class="flex items-center py-1.5 px-6 justify-between gap-6 border-t border-solid border-Grey_20">
+                                        <p class="color-Grey_90 font-bold text-base">#</p>
+                                        <p class="color-Grey_90 font-bold text-base">Amt</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="flex items-end" v-for="(item, index) in shiftReportArray.lane_reports" :key="index">
+                    <div class="w-[12%] py-1.5 px-1.5"></div>
+                    <div class="w-[88%] flex-1 flex  items-end">
+                        <div class="w-full flex-1 flex items-end">
+                            <div class="w-[13%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
+                                <p class="color-Grey_90 text-base">{{ item.lane_name }}</p>
+                            </div>
+                            <div class="w-[87%] flex border-b flex-1 border-solid  border-Grey_20"
+                                v-for="(vehicledata, vehicleIndex) in item.vehicle_reports" :key="vehicleIndex">
+                                <div class="flex-1">
+                                    <div class="flex items-center py-1.5 px-6 justify-between gap-6">
+                                        <p class="color-Grey_90 text-base">{{ vehicledata.ticket_count }}</p>
+                                        <p class="color-Grey_90 text-base">{{ vehicledata.vehicle_price }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-[13%] flex border-b flex-1 border-solid border-Grey_20">
+                                <div class="flex-1">
+                                    <div class="flex items-center py-1.5 px-6 justify-between gap-6">
+                                        <p class="color-Grey_90 text-base font-bold"> {{ item.total_tickets }}</p>
+                                        <p class="color-Grey_90 text-base font-bold">{{ item.total_amount }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-end">
+                    <div class="w-[12%] py-1.5 px-1.5 border-b border-solid border-Gray-200"></div>
+                    <div class="w-[88%] flex-1 flex  items-end">
+                        <div class="w-full flex-1 flex items-end">
+                            <div class="w-[13%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
+                                <p class="color-Grey_90 text-base font-bold">Total</p>
+                            </div>
+                            <div class="w-[87%] flex border-b flex-1 border-solid  border-Grey_20"
+                                v-for="(totalData, index) in vehicleTotalsArray" :key="index">
+                                <div class="flex-1">
+                                    <div class="flex items-center py-1.5 px-6 justify-between gap-6">
+                                        <p class="color-Grey_90 text-base font-bold">{{ totalData.total_ticket_count }}
+                                        </p>
+                                        <p class="color-Grey_90 text-base font-bold">{{ totalData.total_vehicle_price }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-[13%] flex border-b flex-1 border-solid border-Grey_20">
+                                <div class="flex-1">
+                                    <div class="flex items-center py-1.5 px-6 justify-between gap-6">
+                                        <p class="color-Grey_90 text-base font-bold">{{ totalOfTickets }}</p>
+                                        <p class="color-Grey_90 text-base font-bold"> {{ totalOfAmount }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 border-t border-solid border-Grey_20 flex items-end">
+                    <div class="w-[12%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
+                        <p class="color-Grey_90 font-bold text-base">Grand Total</p>
+                    </div>
+                    <div class="w-[88%] flex-1 flex  items-end">
+                        <div class=" w-full flex-1 flex items-end">
+                            <div class="w-[13%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
+                            </div>
+                            <div class="w-[75%] flex border-b flex-1 border-solid  border-Grey_20"
+                                v-for="(totalData, index) in vehicleTotalsArray" :key="index">
+                                <div class="flex-1">
+                                    <div class="flex items-center py-1.5 px-6 justify-between gap-6">
+                                        <p class="color-Grey_90 text-base font-bold">{{ totalData.total_ticket_count }}
+                                        </p>
+                                        <p class="color-Grey_90 text-base font-bold">{{ totalData.total_vehicle_price }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-[13%] flex border-b flex-1 border-solid border-Grey_20">
+                                <div class="flex-1">
+                                    <div class="flex items-center py-1.5 px-6 justify-between gap-6">
+                                        <p class="color-Grey_90 text-base font-bold">{{ totalOfTickets }}</p>
+                                        <p class="color-Grey_90 text-base font-bold"> {{ totalOfAmount }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="flex items-end" v-for="(item, index) in shiftReportArray.lane_reports" :key="index">
-                <div class="w-[12%] py-1.5 px-1.5"></div>
-                <div class="w-[88%] flex-1 flex  items-end">
-                    <div class="w-full flex-1 flex items-end">
-                        <div class="w-[13%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
-                            <p class="color-Grey_90 text-base">{{ item.lane_name }}</p>
-                        </div>
-                        <div class="w-[87%] flex border-b flex-1 border-solid  border-Grey_20"
-                            v-for="(vehicledata, vehicleIndex) in item.vehicle_reports" :key="vehicleIndex">
-                            <div class="flex-1">
-                                <div class="flex items-center py-1.5 px-6 justify-between gap-6">
-                                    <p class="color-Grey_90 text-base">{{ vehicledata.ticket_count }}</p>
-                                    <p class="color-Grey_90 text-base">{{ vehicledata.vehicle_price }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-[13%] flex border-b flex-1 border-solid border-Grey_20">
-                            <div class="flex-1">
-                                <div class="flex items-center py-1.5 px-6 justify-between gap-6">
-                                    <p class="color-Grey_90 text-base font-bold"> {{ item.total_tickets }}</p>
-                                    <p class="color-Grey_90 text-base font-bold">{{ item.total_amount }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-end">
-                <div class="w-[12%] py-1.5 px-1.5 border-b border-solid border-Gray-200"></div>
-                <div class="w-[88%] flex-1 flex  items-end">
-                    <div class="w-full flex-1 flex items-end">
-                        <div class="w-[13%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
-                            <p class="color-Grey_90 text-base font-bold">Total</p>
-                        </div>
-                        <div class="w-[87%] flex border-b flex-1 border-solid  border-Grey_20">
-                            <div class="flex-1">
-                                <div v-for="(totalData, index) in vehicleTotalsArray" :key="index"
-                                    class="flex items-center py-1.5 px-6 justify-between gap-6">
-                                    <p class="color-Grey_90 text-base">{{ totalData.total_ticket_count }}</p>
-                                    <p class="color-Grey_90 text-base">{{ totalData.total_vehicle_price }}</p>
-                                </div>
-                            </div>
-                            total: {{ totalOfAmount }}
-                            Tickets: {{ totalOfTickets }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- <div class="mt-6 border-t border-solid border-Grey_20">
-
-                <div v-for="(item, index) in shiftReportArray" :key="index"
-                    class="flex items-center gap-2 w-full border-b border-solid border-Grey_20">
-                    <div class="w-1/3 flex items-center px-2">
-                        <div class="w-1/3">
-                            <p class="color-Grey_90 font-bold text-base">Journey Type</p>
-                        </div>
-                        <div class="w-2/3 flex items-center justify-between gap-1.5">
-                            <p class="color-Grey_90 font-bold text-base">Lane Name</p>
-                        </div>
-                    </div>
-                    {{ item }}
-                    <div class="w-2/3 flex  flex-col items-stretch">
-                        <div class="flex items-stretch">
-                            <div class="w-1/3 py-1.5">
-                                <p class="color-Grey_90 font-bold text-base text-center">Generate(A)</p>
-                            </div>
-                            <div class="w-1/3 py-1.5">
-                                <p class="color-Grey_90 font-bold text-base text-center">Generate(B)</p>
-                            </div>
-                            <div class="w-1/3 py-1.5">
-                                <p class="color-Grey_90 font-bold text-base text-center">Total(A - B)</p>
-                            </div>
-                        </div>
-                        <div class="border-t border-solid border-Grey_20 flex items-stretch">
-                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                <p class="color-Grey_90 font-bold text-base text-center">Ticket</p>
-                                <p class="color-Grey_90 font-bold text-base text-center">Amount</p>
-                            </div>
-                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                <p class="color-Grey_90 font-bold text-base text-center">Ticket</p>
-                                <p class="color-Grey_90 font-bold text-base text-center">Amount</p>
-                            </div>
-                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                <p class="color-Grey_90 font-bold text-base text-center">Ticket</p>
-                                <p class="color-Grey_90 font-bold text-base text-center">Amount</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-2 w-full border-b border-solid border-Grey_20"
-                    v-for="(item, index) in dailyReportArray" :key="index">
-                    <div class="w-1/3 flex items-center px-2">
-                        <div class="w-1/3">
-                            <p class="color-Grey_50  text-base">Single</p>
-                        </div>
-                        <div class="w-2/3 flex items-center justify-between gap-1.5">
-                            <p class="color-Grey_50 line-clamp-1 text-base"> {{ item.vehicle_name }}</p>
-                            <p class="color-Grey_50 line-clamp-1  text-base"> {{ item.vehicle_actual_price }}</p>
-                        </div>
-                    </div>
-                    <div class="w-2/3">
-                        <div class="flex items-stretch">
-                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                <p class="color-Grey_50 line-clamp-1  text-base text-center"> {{ item.ticket_count }}
-                                </p>
-                                <p class="color-Grey_50 line-clamp-1  text-base text-center">Rs.{{ item.vehicle_price }}
-                                </p>
-                            </div>
-                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                <p class="color-Grey_50  line-clamp-1 text-base text-center"> {{ item.cancelled_ticket
-                                    }}
-                                </p>
-                                <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{
-                                    item.cancelled_ticket_amount
-                                }}</p>
-                            </div>
-                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                <p class="color-Grey_50  line-clamp-1 text-base text-center">{{ item.total_ticket }}</p>
-                                <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{ item.total_amount }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2 w-full border-b border-solid border-Grey_20">
-                    <div class="w-1/3 flex items-center px-2">
-                        <div class="w-1/3">
-                        </div>
-                        <div class="w-2/3 flex items-center justify-center gap-1.5">
-                            <p class="color-Grey_90 line-clamp-1 font-bold text-base"> Total</p>
-                        </div>
-                    </div>
-                    <div class="w-2/3">
-                        <div class="flex items-stretch">
-                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">
-                                    {{ ticketCounts }}
-                                </p>
-                                <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">
-                                    Rs.{{ AmountTotal }}
-                                </p>
-                            </div>
-                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
-                                    {{ cancelTicketCounts }}
-                                </p>
-                                <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
-                                    Rs.{{ cancelTicketAmountTotal }}
-                                </p>
-                            </div>
-                            <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
-                                    {{ totalTicket }}
-                                </p>
-                                <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
-                                    Rs.{{ totalAmount }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div> -->
         </div>
     </Layout>
 </template>
