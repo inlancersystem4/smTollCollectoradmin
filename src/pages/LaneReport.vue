@@ -399,7 +399,7 @@ export default {
                                             <p class="color-Grey_90 text-base">Rs {{ item.manual_ticket_amount }}</p>
                                         </div>
                                         <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
-                                            <p class="color-Grey_90 text-base">{{ item.ticket_count }}</p>
+                                            <p class="color-Grey_90 text-base">{{ item.total_ticket }}</p>
                                             <p class="color-Grey_90 text-base">Rs{{ item.total_amount }}</p>
                                         </div>
                                     </div>
