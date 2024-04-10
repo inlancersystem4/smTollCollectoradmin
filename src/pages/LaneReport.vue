@@ -29,7 +29,6 @@ export default {
             reportLane: "",
             laneSelected: "",
             manualTicket: "",
-            vehicle: "",
             ticketCounts: "",
             AmountTotal: "",
             cancelTicketCounts: "",
@@ -38,6 +37,7 @@ export default {
             manualTicketsAmount: "",
             totalTicket: "",
             totalAmount: "",
+            manualArray: []
         }
     },
     created() {
@@ -91,6 +91,24 @@ export default {
                 this.reportLane = ""
             }
             this.laneSelected = option.l_name
+        },
+
+
+        getManualTicket(e, index, item) {
+            const manualObj = {
+                value: parseInt(e.target.value),
+                index: index,
+                key: item
+            };
+
+            const existingIndex = this.manualArray.findIndex(obj => obj.index === index);
+
+            if (existingIndex !== -1) {
+                this.manualArray.splice(existingIndex, 1, manualObj);
+            } else {
+                this.manualArray.push(manualObj);
+            }
+
         },
 
         async tollData() {
@@ -147,8 +165,8 @@ export default {
         },
 
         addManualData() {
-            if (this.manualTicket && this.vehicle) {
-                this.laneData();
+            if (this.manualArray && this.manualArray.length > 0) {
+                this.laneReport();
             }
         },
 
@@ -160,8 +178,7 @@ export default {
                 lane_report_data.append("date", this.reportStartDate);
                 lane_report_data.append("shift", this.reportShift);
                 lane_report_data.append("lane", this.reportLane);
-                lane_report_data.append("manual_ticket", this.manualTicket);
-                lane_report_data.append("vehicle", this.vehicle);
+                lane_report_data.append("manual_ticket", JSON.stringify(this.manualArray));
 
                 try {
                     const response = await fetchWrapper.post(`${baseUrl}/admin/lane-report`, lane_report_data);
@@ -291,17 +308,18 @@ export default {
                 </div>
             </div>
 
-            <div class="text-center mt-9">
-                <div v-if="LaneReportArray.length > 0">
+
+
+            <div class="text-center mt-9" v-if="this.LaneReportArray && this.LaneReportArray.length > 0">
+                <div>
                     <p>Daily report - {{ reportStartDate }}</p>
                     <p>Lane - {{ laneSelected }}</p>
                     <p>Shift - {{ shiftSelected }}</p>
                     <p>Toll Plaza: {{ tollSelected }}</p>
                 </div>
-                <p v-else>First, select the required field, and after the available data</p>
             </div>
 
-            <div v-if="LaneReportArray.length > 0">
+            <div v-if="this.LaneReportArray && this.LaneReportArray.length > 0">
                 <div>
                     <div class="w-full border-t border-solid border-Grey_20 mt-6">
                         <div class="flex items-center border-b border-solid border-Grey_20">
@@ -376,12 +394,13 @@ export default {
                                         </div>
                                         <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
                                             <input type="number" v-model="item.manual_ticket"
+                                                @change="getManualTicket($event, index, item.veihcle_id)"
                                                 class="input-1 max-w-[60px] max-h-[32px] text-right !px-1.5" />
                                             <p class="color-Grey_90 text-base">Rs {{ item.manual_ticket_amount }}</p>
                                         </div>
                                         <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
                                             <p class="color-Grey_90 text-base">{{ item.ticket_count }}</p>
-                                            <p class="color-Grey_90 text-base">Rs {{ item.total_amount }}</p>
+                                            <p class="color-Grey_90 text-base">Rs{{ item.total_amount }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -389,7 +408,6 @@ export default {
                         </div>
                     </div>
                 </div>
-
                 <div>
                     <div class="w-full">
                         <div class="flex items-center">
@@ -414,12 +432,14 @@ export default {
                                             </p>
                                         </div>
                                         <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
-                                            <p class="font-bold color-Grey_90 text-base">{{ manualTickets }}</p>
+                                            <p
+                                                class="font-bold color-Grey_90 text-base text-right min-w-[60px] max-w-[60px]">
+                                                {{ manualTickets }}</p>
                                             <p class="font-bold color-Grey_90 text-base">Rs {{ manualTicketsAmount }}
                                             </p>
                                         </div>
                                         <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
-                                            <p class="font-bold color-Grey_90 text-base">{{ totalTicket }}</p>
+                                            <p class="font-bold color-Grey_90 text-base ">{{ totalTicket }}</p>
                                             <p class="font-bold color-Grey_90 text-base">Rs {{ totalAmount }}</p>
                                         </div>
                                     </div>
@@ -428,7 +448,6 @@ export default {
                         </div>
                     </div>
                 </div>
-
                 <div class="w-full mt-4">
                     <div class="flex items-center">
                         <div class="w-full py-1.5 flex items-center border-y border-solid border-Grey_20">
@@ -449,7 +468,10 @@ export default {
                                         </p>
                                     </div>
                                     <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
-                                        <p class="font-bold color-Grey_90 text-base">{{ manualTickets }}</p>
+                                        <p
+                                            class="font-bold color-Grey_90 text-base min-w-[60px] max-w-[60px] text-right">
+                                            {{ manualTickets }}
+                                        </p>
                                         <p class="font-bold color-Grey_90 text-base">Rs {{ manualTicketsAmount }}</p>
                                     </div>
                                     <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
@@ -462,6 +484,13 @@ export default {
                     </div>
                 </div>
             </div>
+
+
+
+            <p class="text-center mt-6" v-else>First, select the required field, and after the available data</p>
+
+
+
         </div>
     </Layout>
 </template>
