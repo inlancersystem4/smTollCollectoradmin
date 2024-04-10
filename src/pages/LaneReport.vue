@@ -6,14 +6,191 @@ import Label from '../subcomponents/Label.vue';
 import Select from '../subcomponents/Select.vue';
 import Input from '../subcomponents/Input.vue';
 
+const baseUrl = `${import.meta.env.VITE_API_URL}`;
+
 export default {
     components: { Layout, Label, Select, Input },
     data() {
         return {
+            tollArray: [],
+            shiftArray: [],
+            tollLaneArray: [],
+            LaneReportArray: [],
+            sort: "asc",
+            currentPage: 1,
+            searchToll: "",
+            tollSelected: "",
+            reportTollPlaza: "",
 
+            reportStartDate: "",
+
+            searchShift: "",
+            shiftSelected: "",
+            reportShift: "",
+
+            searchLane: "",
+            reportLane: "",
+            laneSelected: "",
+
+            manualTicket: "",
+            vehicle: "",
+
+            cancelTicketCounts: "",
+            cancelTicketAmountTotal: "",
+
+            totalTicket: "",
+            totalAmount: "",
         }
     },
+    created() {
+        this.tollData();
+        this.shiftData();
+        this.laneData();
+    },
     methods: {
+        handleStartDateInput(event) {
+            this.reportStartDate = event.target.value;
+        },
+
+        searchTollFun(event) {
+            this.searchToll = event.target.value.trim();
+            this.tollData();
+        },
+
+        searchShiftFun(event) {
+            this.searchShift = event.target.value.trim();
+            this.shiftData();
+        },
+
+        searchLaneFun(event) {
+            this.searchLane = event.target.value.trim();
+            this.laneData();
+        },
+
+        getTollPlaza(option) {
+            if (option) {
+                this.reportTollPlaza = option.t_id
+            }
+            else {
+                this.reportTollPlaza = ""
+            }
+            this.tollSelected = option.t_name
+        },
+
+        getShift(option) {
+            if (option) {
+                this.reportShift = option.s_id
+            } else {
+                this.reportShift = ""
+            }
+            this.shiftSelected = option.s_name
+        },
+
+        getLane(option) {
+            if (option) {
+                this.reportLane = option.l_id
+            } else {
+                this.reportLane = ""
+            }
+            this.laneSelected = option.l_name
+        },
+
+        async tollData() {
+            var toll_data = new FormData();
+            toll_data.append("t_id", "");
+            toll_data.append("sort", this.sort);
+            toll_data.append("search", this.searchToll);
+            toll_data.append("page", this.currentPage);
+
+            try {
+                const response = await fetchWrapper.post(`${baseUrl}/admin/toll-plaza-list`, toll_data);
+                this.tollArray = response.data;
+
+            } catch (error) {
+                const alertStore = useAlertStore();
+                alertStore.error(error)
+            }
+        },
+
+        async shiftData() {
+            var shift_data = new FormData();
+            shift_data.append("s_id", "");
+            shift_data.append("sort", this.sort);
+            shift_data.append("search", this.searchShift);
+            shift_data.append("page", this.currentPage);
+
+            try {
+                const response = await fetchWrapper.post(`${baseUrl}/admin/shift-list`, shift_data);
+
+                this.shiftArray = response.data
+
+            } catch (error) {
+                const alertStore = useAlertStore()
+                alertStore.error(error)
+            }
+        },
+
+        async laneData() {
+            var toll_data = new FormData();
+            toll_data.append("l_id", "");
+            toll_data.append("sort", this.sort);
+            toll_data.append("search", this.searchLane);
+            toll_data.append("page", this.currentPage);
+
+            try {
+                const response = await fetchWrapper.post(`${baseUrl}/admin/lane-list`, toll_data);
+
+                this.tollLaneArray = response.data
+
+            } catch (error) {
+                const alertStore = useAlertStore()
+                alertStore.error(error)
+            }
+        },
+
+        async LaneReport() {
+            if (this.reportTollPlaza && this.reportStartDate && this.reportShift && this.reportLane) {
+
+                var lane_report_data = new FormData();
+                lane_report_data.append("toll_plaza", this.reportTollPlaza);
+                lane_report_data.append("date", this.reportStartDate);
+                lane_report_data.append("shift", this.reportShift);
+                lane_report_data.append("lane", this.reportLane);
+                lane_report_data.append("manual_ticket", this.manualTicket);
+                lane_report_data.append("vehicle", this.vehicle);
+
+                try {
+                    const response = await fetchWrapper.post(`${baseUrl}/admin/lane-report`, lane_report_data);
+                    this.LaneReportArray = response.data;
+
+                    // this.ticketCounts = this.dailyReportArray.reduce((total, item) => {
+                    //     return total + item.ticket_count;
+                    // }, 0);
+                    // this.AmountTotal = this.dailyReportArray.reduce((total, item) => {
+                    //     return total + item.vehicle_price;
+                    // }, 0);
+                    // this.cancelTicketCounts = this.dailyReportArray.reduce((total, item) => {
+                    //     return total + item.cancelled_ticket;
+                    // }, 0);
+                    // this.cancelTicketAmountTotal = this.dailyReportArray.reduce((total, item) => {
+                    //     return total + item.cancelled_ticket_amount;
+                    // }, 0);
+                    // this.totalTicket = this.dailyReportArray.reduce((total, item) => {
+                    //     return total + item.total_ticket;
+                    // }, 0);
+                    // this.totalAmount = this.dailyReportArray.reduce((total, item) => {
+                    //     return total + item.total_amount;
+                    // }, 0);
+
+                } catch (error) {
+                    const alertStore = useAlertStore();
+                    alertStore.error(error)
+                }
+            } else {
+                const alertStore = useAlertStore();
+                alertStore.error('Please select Toll Plaza, Start Date, and End Date.')
+            }
+        },
 
     },
 }
@@ -40,14 +217,16 @@ export default {
                     </div>
                     <div class="space-y-8px min-w-[250px]">
                         <Label label="Shirt" />
-                        <Select :options="tollArray" @option-selected="getTollPlaza" :value="searchToll"
-                            @input="searchTollFun" />
+                        <Select :options="shiftArray" @option-selected="getShift" :value="searchShift"
+                            @input="searchShiftFun" />
                     </div>
                     <div class="space-y-8px min-w-[250px]">
                         <Label label="Lane" />
-                        <Select :options="tollArray" @option-selected="getTollPlaza" :value="searchToll"
-                            @input="searchTollFun" />
+                        <Select :options="tollLaneArray" @option-selected="getLane" :value="searchLane"
+                            @input="searchLaneFun" />
                     </div>
+                    <button class="bg-[#007BFF] px-3.5 py-2 rounded-md text-white"
+                        @click="LaneReport()">Generate</button>
                     <button class="bg-[#007BFF] px-3.5 py-2 rounded-md text-white">Reset</button>
                     <button class="bg-[#17A2B8] px-3.5 py-2 rounded-md text-white flex items-center gap-1">
                         <span>
@@ -103,7 +282,7 @@ export default {
 
 
             <div>
-
+                {{ LaneReportArray }}
                 <div class="w-full border-t border-solid border-Grey_20 mt-6">
                     <div class="flex items-center border-b border-solid border-Grey_20">
                         <div class="w-[12%] py-1.5 px-1.5">
@@ -131,6 +310,41 @@ export default {
                                         <p class="font-bold color-Grey_90 text-base">Total(A - B + C)</p>
                                     </div>
                                 </div>
+                                <div class="w-full flex items-center py-1.5">
+                                    <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
+                                        <p class="font-bold color-Grey_90 text-base">Ticket</p>
+                                        <p class="font-bold color-Grey_90 text-base">Amt.</p>
+                                    </div>
+                                    <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
+                                        <p class="font-bold color-Grey_90 text-base">Ticket</p>
+                                        <p class="font-bold color-Grey_90 text-base">Amt.</p>
+                                    </div>
+                                    <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
+                                        <p class="font-bold color-Grey_90 text-base">Ticket</p>
+                                        <p class="font-bold color-Grey_90 text-base">Amt.</p>
+                                    </div>
+                                    <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
+                                        <p class="font-bold color-Grey_90 text-base">Ticket</p>
+                                        <p class="font-bold color-Grey_90 text-base">Amt.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <div class="flex items-center border-b border-solid border-Grey_20">
+                        <div class="w-[12%] py-1.5 px-1.5">
+                        </div>
+                        <div class="flex-1 flex items-center w-full" v-for="(item, index) in LaneReportArray"
+                            :key="index">
+                            <div class="w-1/4 px-1.5">
+                                <div class="flex items-center justify-between">
+                                    <p class="font-bold color-Grey_90 text-base">Vehicle</p>
+                                    <p class="font-bold color-Grey_90 text-base">Rate</p>
+                                </div>
+                            </div>
+                            <div class="w-3/4 flex-1">
                                 <div class="w-full flex items-center py-1.5">
                                     <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
                                         <p class="font-bold color-Grey_90 text-base">Ticket</p>
