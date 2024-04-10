@@ -32,6 +32,10 @@ export default {
             searchShift: "",
             shiftSelected: "",
             reportShift: "",
+            total_ticket_count: "",
+            total_vehicle_price: "",
+            totalOfAmount: 0,
+            totalOfTickets: 0,
         }
     },
     created() {
@@ -106,6 +110,29 @@ export default {
             }
         },
 
+        calculateTotals(data) {
+            const vehicleTotals = {};
+
+            data.lane_reports.forEach(laneReport => {
+                const { vehicle_reports } = laneReport;
+
+                vehicle_reports.forEach(vehicleReport => {
+                    const { vehicle_name, vehicle_price, ticket_count } = vehicleReport;
+
+                    if (!vehicleTotals[vehicle_name]) {
+                        vehicleTotals[vehicle_name] = {
+                            total_vehicle_price: 0,
+                            total_ticket_count: 0
+                        };
+                    }
+
+                    vehicleTotals[vehicle_name].total_vehicle_price += vehicle_price;
+                    vehicleTotals[vehicle_name].total_ticket_count += ticket_count;
+                });
+            });
+            return vehicleTotals;
+        },
+
         async shiftReport() {
             if (this.reportTollPlaza && this.reportStartDate && this.reportShift) {
 
@@ -117,6 +144,21 @@ export default {
                 try {
                     const response = await fetchWrapper.post(`${baseUrl}/admin/shift-report`, shift_report_data);
                     this.shiftReportArray = response.data;
+
+                    const vehicleTotals = this.calculateTotals(this.shiftReportArray);
+                    this.vehicleTotalsArray = Object.keys(vehicleTotals).map(vehicle_name => ({
+                        vehicle_name,
+                        total_vehicle_price: vehicleTotals[vehicle_name].total_vehicle_price,
+                        total_ticket_count: vehicleTotals[vehicle_name].total_ticket_count
+                    }));
+
+                    this.totalOfAmount = 0;
+                    this.totalOfTickets = 0;
+
+                    this.shiftReportArray.lane_reports.forEach(laneReport => {
+                        this.totalOfAmount += laneReport.total_amount;
+                        this.totalOfTickets += laneReport.total_tickets;
+                    });
 
                 } catch (error) {
                     const alertStore = useAlertStore();
@@ -264,19 +306,14 @@ export default {
                         </div>
                         <div class="w-[87%] flex border-b flex-1 border-solid  border-Grey_20">
                             <div class="flex-1">
-                                <div class="flex items-center py-1.5 px-6 justify-between gap-6">
-                                    <p class="color-Grey_90 text-base"></p>
-                                    <p class="color-Grey_90 text-base"></p>
+                                <div v-for="(totalData, index) in vehicleTotalsArray" :key="index"
+                                    class="flex items-center py-1.5 px-6 justify-between gap-6">
+                                    <p class="color-Grey_90 text-base">{{ totalData.total_ticket_count }}</p>
+                                    <p class="color-Grey_90 text-base">{{ totalData.total_vehicle_price }}</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="w-[13%] flex border-b flex-1 border-solid border-Grey_20">
-                            <div class="flex-1">
-                                <div class="flex items-center py-1.5 px-6 justify-between gap-6">
-                                    <p class="color-Grey_90 text-base font-bold"> </p>
-                                    <p class="color-Grey_90 text-base font-bold"></p>
-                                </div>
-                            </div>
+                            total: {{ totalOfAmount }}
+                            Tickets: {{ totalOfTickets }}
                         </div>
                     </div>
                 </div>
