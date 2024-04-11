@@ -117,6 +117,20 @@ export default {
                 alertStore.error('Please select Toll Plaza, Start Date, and End Date.')
             }
         },
+
+        printReport() {
+            const printableContent = document.getElementById('printable-content');
+            if (printableContent) {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(printableContent.innerHTML);
+                printWindow.document.close();
+                printWindow.print();
+                printWindow.close();
+            } else {
+                const alertStore = useAlertStore();
+                alertStore.error('Printable content not found.');
+            }
+        },
     }
 }
 </script>
@@ -151,7 +165,8 @@ export default {
                     <div class="flex gap-4 text-center justify-start">
                         <button class="bg-[#007BFF] px-3.5 py-2 rounded-md text-white"
                             @click="dailyReport">Generate</button>
-                        <button class="bg-[#17A2B8] px-3.5 py-2 rounded-md text-white flex items-center gap-1">
+                        <button @click="printReport"
+                            class="bg-[#17A2B8] px-3.5 py-2 rounded-md text-white flex items-center gap-1">
                             <span>
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -175,8 +190,7 @@ export default {
                 </div>
             </div>
 
-
-            <div v-if="dailyReportArray && dailyReportArray.length > 0" class="mt-9">
+            <div v-if="dailyReportArray && dailyReportArray.length > 0" class="mt-9" id="printable-content">
                 <div class=" text-center ">
                     <div v-if="dailyReportArray.length > 0">
                         <p>Daily report - {{ reportStartDate }} to {{ reportEndDate }}</p>
@@ -233,34 +247,23 @@ export default {
                             </div>
                             <div class="w-2/3 flex items-center justify-between gap-1.5">
                                 <p class="color-Grey_50 line-clamp-1 text-base"> {{ item.vehicle_name }}</p>
-                                <p class="color-Grey_50 line-clamp-1  text-base"> {{ item.vehicle_actual_price }}</p>
+                                <p class="color-Grey_50 line-clamp-1  text-base"> {{ item.vehicle_actual_price }}
+                                </p>
                             </div>
                         </div>
                         <div class="w-2/3">
                             <div class="flex items-stretch">
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_50 line-clamp-1  text-base text-center"> {{ item.ticket_count
-                                        }}
-                                    </p>
-                                    <p class="color-Grey_50 line-clamp-1  text-base text-center">Rs.{{
-                                        item.vehicle_price }}
-                                    </p>
+                                    <p class="color-Grey_50 line-clamp-1  text-base text-center"> {{ item.ticket_count }}</p>
+                                    <p class="color-Grey_50 line-clamp-1  text-base text-center">Rs.{{item.vehicle_price }}</p>
                                 </div>
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_50  line-clamp-1 text-base text-center"> {{
-                                        item.cancelled_ticket
-                                        }}
-                                    </p>
-                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{
-                                        item.cancelled_ticket_amount
-                                        }}</p>
+                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">{{ item.cancelled_ticket }}</p>
+                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{ item.cancelled_ticket_amount }}</p>
                                 </div>
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">{{ item.total_ticket }}
-                                    </p>
-                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{ item.total_amount
-                                        }}
-                                    </p>
+                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">{{ item.total_ticket }}</p>
+                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{ item.total_amount }}</p>
                                 </div>
                             </div>
                         </div>
@@ -276,28 +279,16 @@ export default {
                         <div class="w-2/3">
                             <div class="flex items-stretch">
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">
-                                        {{ ticketCounts }}
-                                    </p>
-                                    <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">
-                                        Rs.{{ AmountTotal }}
-                                    </p>
+                                    <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">{{ ticketCounts }}</p>
+                                    <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">Rs.{{ AmountTotal }}</p>
                                 </div>
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
-                                        {{ cancelTicketCounts }}
-                                    </p>
-                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
-                                        Rs.{{ cancelTicketAmountTotal }}
-                                    </p>
+                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">{{ cancelTicketCounts }}</p>
+                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">Rs.{{ cancelTicketAmountTotal }}</p>
                                 </div>
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
-                                        {{ totalTicket }}
-                                    </p>
-                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">
-                                        Rs.{{ totalAmount }}
-                                    </p>
+                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">{{ totalTicket }}</p>
+                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">Rs.{{ totalAmount }}</p>
                                 </div>
                             </div>
                         </div>
@@ -314,14 +305,17 @@ export default {
                     <p class="color-Grey_90  line-clamp-1 text-base font-bold">{{ totalTicket }}</p>
                     <p class="color-Grey_90  line-clamp-1 text-base font-bold">{{ totalAmount }}</p>
                 </div>
-
             </div>
-
             <div v-else>
                 <p class="text-center mt-9">First, select the required field, and after the available data</p>
             </div>
-
-
         </div>
     </Layout>
 </template>
+<style scoped>
+@media print {
+    #printable-content {
+        display: none !important;
+    }
+}
+</style>

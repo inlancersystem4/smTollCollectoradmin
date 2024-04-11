@@ -18,7 +18,6 @@ export const useAuthStore = defineStore({
             form_data.append('user_password', password);
             try {
                 const user = await fetchWrapper.post(`${baseUrl}/admin/sign-in`, form_data);
-                console.log(user);
 
                 if (user.success == 1) {
                     var new_user = {
@@ -27,8 +26,9 @@ export const useAuthStore = defineStore({
                     this.user = new_user;
                     localStorage.setItem('user', JSON.stringify(new_user));
 
-                    // const alertStore = useAlertStore();
-                    // alertStore.success('Login successfully !!');
+                    // Add Role In localStorage for Manageer and Admin Show Defiferent sidebar values
+                    localStorage.setItem('role', JSON.stringify(user.user_role));
+
                     router.push({ name: 'home' });
                 }
                 else {

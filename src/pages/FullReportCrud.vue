@@ -68,9 +68,10 @@ export default {
     },
     methods: {
         handleTicketTypeInput(event) {
-            this.reportTicketType = event.target.value.trim();
-            clearTimeout(this.reportTicketType);
-            this.reportTicketType = setTimeout(() => {
+            const inputValue = event.target.value.trim();
+            clearTimeout(this.reportTicketTypeTimeout);
+            this.reportTicketTypeTimeout = setTimeout(() => {
+                this.reportTicketType = String(inputValue);
                 this.fullReport();
             }, 1000);
         },

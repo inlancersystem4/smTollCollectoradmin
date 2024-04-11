@@ -2,6 +2,11 @@
 
 export default {
     computed: {
+        isRole1() {
+            const userRole = localStorage.getItem('role');
+            console.log('isRole1:', userRole === '1');
+            return userRole === '1';
+        },
         isTollCrudActive() {
             return this.$route.matched.some(route => route.path === '/toll-crud' || route.path === '/add-toll_plaza');
         },
@@ -29,7 +34,7 @@ export default {
         isShiftReportActive() {
             return this.$route.matched.some(route => route.path === '/shift-report');
         },
-        isLaneReportActive(){
+        isLaneReportActive() {
             return this.$route.matched.some(route => route.path === '/lane-report');
         }
     },
@@ -135,7 +140,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/user-crud" class="list-link" :class="{ link_active: isuserCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -161,7 +166,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/toll-crud" class="list-link" :class="{ link_active: isTollCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -186,7 +191,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/lane-crud" class="list-link" :class="{ link_active: islaneCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -211,7 +216,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/vehicle-crud" class="list-link" :class="{ link_active: isvehicleCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -240,7 +245,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/shift-crud" class="list-link" :class="{ link_active: isshiftCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -433,7 +438,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/user-crud" class="list-link" :class="{ link_active: isuserCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -458,7 +463,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/toll-crud" class="list-link" :class="{ link_active: isTollCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -482,7 +487,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/lane-crud" class="list-link" :class="{ link_active: islaneCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -506,7 +511,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/vehicle-crud" class="list-link" :class="{ link_active: isvehicleCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -534,7 +539,7 @@ export default {
                         </router-link>
                     </li>
 
-                    <li class="list-items">
+                    <li v-if="isRole1" class="list-items">
                         <router-link to="/shift-crud" class="list-link" :class="{ link_active: isshiftCrudActive }">
                             <div class="link-items">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
