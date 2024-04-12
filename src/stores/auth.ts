@@ -46,6 +46,19 @@ export const useAuthStore = defineStore({
             localStorage.removeItem('user');
             router.push('/login');
         },
+        chnageTitle(title, description) {
+            document.title = title
+            const metaTag = document.createElement('meta');
+            metaTag.setAttribute('name', 'description');
+            metaTag.setAttribute('content', description);
+            const ifdescription = document.querySelector('meta[name="description"]');
+
+            if (ifdescription) {
+                ifdescription.parentNode.replaceChild(metaTag, ifdescription);
+            } else {
+                document.head.appendChild(metaTag);
+            }
+        },
         async mailcheck(email) {
             var form_data = new FormData();
             form_data.append('email', email);

@@ -1,7 +1,7 @@
 <script>
 
 import Layout from '../components/Layout.vue';
-import { useAlertStore } from '../stores';
+import { useAuthStore, useAlertStore } from '../stores';
 import { fetchWrapper } from '../helpers/fetch-wrapper';
 
 import Label from '../subcomponents/Label.vue';
@@ -37,6 +37,10 @@ export default {
     },
     created() {
         this.tollData();
+        const authStore = useAuthStore();
+        const title = "Daily Report | Smtoll"
+        const description = "this is description for Daily Report."
+        authStore.chnageTitle(title, description)
     },
     methods: {
         handleStartDateInput(event) {
@@ -89,24 +93,30 @@ export default {
                 try {
                     const response = await fetchWrapper.post(`${baseUrl}/admin/daily-reports`, daily_report_data);
                     this.dailyReportArray = response.data;
-                    this.ticketCounts = this.dailyReportArray.reduce((total, item) => {
-                        return total + item.ticket_count;
-                    }, 0);
-                    this.AmountTotal = this.dailyReportArray.reduce((total, item) => {
-                        return total + item.vehicle_price;
-                    }, 0);
-                    this.cancelTicketCounts = this.dailyReportArray.reduce((total, item) => {
-                        return total + item.cancelled_ticket;
-                    }, 0);
-                    this.cancelTicketAmountTotal = this.dailyReportArray.reduce((total, item) => {
-                        return total + item.cancelled_ticket_amount;
-                    }, 0);
-                    this.totalTicket = this.dailyReportArray.reduce((total, item) => {
-                        return total + item.total_ticket;
-                    }, 0);
-                    this.totalAmount = this.dailyReportArray.reduce((total, item) => {
-                        return total + item.total_amount;
-                    }, 0);
+                    if (this.dailyReportArray && this.dailyReportArray.length > 0 && response.success === 1) {
+
+                        this.ticketCounts = this.dailyReportArray.reduce((total, item) => {
+                            return total + item.ticket_count;
+                        }, 0);
+                        this.AmountTotal = this.dailyReportArray.reduce((total, item) => {
+                            return total + item.vehicle_price;
+                        }, 0);
+                        this.cancelTicketCounts = this.dailyReportArray.reduce((total, item) => {
+                            return total + item.cancelled_ticket;
+                        }, 0);
+                        this.cancelTicketAmountTotal = this.dailyReportArray.reduce((total, item) => {
+                            return total + item.cancelled_ticket_amount;
+                        }, 0);
+                        this.totalTicket = this.dailyReportArray.reduce((total, item) => {
+                            return total + item.total_ticket;
+                        }, 0);
+                        this.totalAmount = this.dailyReportArray.reduce((total, item) => {
+                            return total + item.total_amount;
+                        }, 0);
+                    } else {
+                        const alertStore = useAlertStore();
+                        alertStore.error(response.message)
+                    }
 
                 } catch (error) {
                     const alertStore = useAlertStore();
@@ -114,22 +124,33 @@ export default {
                 }
             } else {
                 const alertStore = useAlertStore();
-                alertStore.error('Please select Toll Plaza, Start Date, and End Date.')
+                alertStore.error('Please select Toll Plaza, Start Date, and End Date After Show Records.')
             }
         },
 
-        printReport() {
-            const printableContent = document.getElementById('printable-content');
-            if (printableContent) {
-                const printWindow = window.open('', '_blank');
-                printWindow.document.write(printableContent.innerHTML);
-                printWindow.document.close();
-                printWindow.print();
-                printWindow.close();
+        printdiv(elem) {
+            if (this.reportTollPlaza && this.reportStartDate && this.reportEndDate) {
+                var header_str = '<html><head><title>' + document.title + '</title></head><body>';
+                var footer_str = '</body></html>';
+                var new_str = document.getElementById(elem).innerHTML;
+                var old_str = document.body.innerHTML;
+                document.body.innerHTML = header_str + new_str + footer_str;
+                window.print();
+                document.body.innerHTML = old_str;
+                return false;
             } else {
                 const alertStore = useAlertStore();
-                alertStore.error('Printable content not found.');
+                alertStore.error('Please select Toll Plaza, Start Date, and End Date After Print.')
             }
+        },
+
+        formatDate(timestamp) {
+            const date  = new Date(timestamp);
+            const day   = date.getDate();
+            const month = date.getMonth() + 1;
+            const year  = date.getFullYear();
+            const pad   = (num) => (num < 10 ? '0' : '') + num;
+            return `${pad(day)}-${pad(month)}-${year}`;
         },
     }
 }
@@ -165,7 +186,7 @@ export default {
                     <div class="flex gap-4 text-center justify-start">
                         <button class="bg-[#007BFF] px-3.5 py-2 rounded-md text-white"
                             @click="dailyReport">Generate</button>
-                        <button @click="printReport"
+                        <button @click="printdiv('printable-content')"
                             class="bg-[#17A2B8] px-3.5 py-2 rounded-md text-white flex items-center gap-1">
                             <span>
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -193,7 +214,7 @@ export default {
             <div v-if="dailyReportArray && dailyReportArray.length > 0" class="mt-9" id="printable-content">
                 <div class=" text-center ">
                     <div v-if="dailyReportArray.length > 0">
-                        <p>Daily report - {{ reportStartDate }} to {{ reportEndDate }}</p>
+                        <p>Daily report - {{ formatDate(reportStartDate) }} to {{ formatDate(reportEndDate) }}</p>
                         <p>Toll Plaza: {{ tollSelected }}</p>
                     </div>
                 </div>
@@ -254,16 +275,23 @@ export default {
                         <div class="w-2/3">
                             <div class="flex items-stretch">
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_50 line-clamp-1  text-base text-center"> {{ item.ticket_count }}</p>
-                                    <p class="color-Grey_50 line-clamp-1  text-base text-center">Rs.{{item.vehicle_price }}</p>
+                                    <p class="color-Grey_50 line-clamp-1  text-base text-center"> {{ item.ticket_count
+                                        }}</p>
+                                    <p class="color-Grey_50 line-clamp-1  text-base text-center">Rs.{{
+                                        item.vehicle_price
+                                        }}</p>
                                 </div>
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">{{ item.cancelled_ticket }}</p>
-                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{ item.cancelled_ticket_amount }}</p>
+                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">{{
+                                        item.cancelled_ticket }}</p>
+                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{
+                                        item.cancelled_ticket_amount }}</p>
                                 </div>
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">{{ item.total_ticket }}</p>
-                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{ item.total_amount }}</p>
+                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">{{ item.total_ticket }}
+                                    </p>
+                                    <p class="color-Grey_50  line-clamp-1 text-base text-center">Rs.{{ item.total_amount
+                                        }}</p>
                                 </div>
                             </div>
                         </div>
@@ -279,16 +307,22 @@ export default {
                         <div class="w-2/3">
                             <div class="flex items-stretch">
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">{{ ticketCounts }}</p>
-                                    <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">Rs.{{ AmountTotal }}</p>
+                                    <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">{{
+                                        ticketCounts }}</p>
+                                    <p class="color-Grey_90 font-bold line-clamp-1  text-base text-center">Rs.{{
+                                        AmountTotal }}</p>
                                 </div>
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">{{ cancelTicketCounts }}</p>
-                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">Rs.{{ cancelTicketAmountTotal }}</p>
+                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">{{
+                                        cancelTicketCounts }}</p>
+                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">Rs.{{
+                                        cancelTicketAmountTotal }}</p>
                                 </div>
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
-                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">{{ totalTicket }}</p>
-                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">Rs.{{ totalAmount }}</p>
+                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">{{
+                                        totalTicket }}</p>
+                                    <p class="color-Grey_90 font-bold  line-clamp-1 text-base text-center">Rs.{{
+                                        totalAmount }}</p>
                                 </div>
                             </div>
                         </div>
@@ -312,10 +346,3 @@ export default {
         </div>
     </Layout>
 </template>
-<style scoped>
-@media print {
-    #printable-content {
-        display: none !important;
-    }
-}
-</style>

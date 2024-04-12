@@ -1,8 +1,11 @@
 <script>
 
 import { useAuthStore } from "@/stores";
-import { useProfileImgStore } from '../stores/profileImg'
+// import { useProfileImgStore } from '../stores/profileImg'
+import { fetchWrapper } from '../helpers/fetch-wrapper'
 import DeleteModel from '../subcomponents/DeleteModel.vue';
+
+const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
     components: {
@@ -15,20 +18,24 @@ export default {
         return {
             personal_optionDrop: false,
             logOutModal: false,
+            profilePicture: "",
         }
     },
-    computed: {
-        profilePicture() {
-            const profileStore = useProfileImgStore();
-            const storedProfileImg = localStorage.getItem('profile_img');
-            const profileImg = storedProfileImg || profileStore.profilePic;
+    created() {
+        this.profileData();
+    },
+    // computed: {
+    //     profilePicture() {
+    //         const profileStore = useProfileImgStore();
+    //         const storedProfileImg = localStorage.getItem('profile_img');
+    //         const profileImg = storedProfileImg || profileStore.profilePic;
 
-            return profileImg;
-        }
-    },
-    mounted() {
-        document.body.addEventListener('click', this.handleClickOutside);
-    },
+    //         return profileImg;
+    //     }
+    // },
+    // mounted() {
+    //     document.body.addEventListener('click', this.handleClickOutside);
+    // },
     methods: {
         goToPreviousPage() {
             this.$router.go(-1);
@@ -48,7 +55,21 @@ export default {
         },
         responsiveMenu() {
             this.$emit('responsiveMenu')
-        }
+        },
+        async profileData() {
+            var data = new FormData();
+
+            try {
+                const response = await fetchWrapper.post(`${baseUrl}/admin/details`, data);
+
+                this.adminData = response.data
+                this.profilePicture = response.data.profile_pic
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        },
     },
 }
 </script>

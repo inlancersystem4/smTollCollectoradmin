@@ -1,6 +1,6 @@
 <script>
-import { useAuthStore, useAlertStore } from '../stores'
-import { useProfileImgStore } from '../stores/profileImg'
+import { useAlertStore } from '../stores'
+// import { useProfileImgStore } from '../stores/profileImg'
 import { fetchWrapper } from '../helpers/fetch-wrapper'
 
 import Layout from '../components/Layout.vue';
@@ -13,7 +13,7 @@ import Drawer from '../subcomponents/Drawer.vue';
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
-    components: { Layout, Input, Label, TextArea, useAuthStore, Drawer },
+    components: { Layout, Input, Label, TextArea, Drawer },
     data() {
         return {
             adminData: "",
@@ -46,9 +46,9 @@ export default {
                 const response = await fetchWrapper.post(`${baseUrl}/admin/details`, data);
 
                 this.adminData = response.data
-                const profileStore = useProfileImgStore();
-                profileStore.setProfilePic(response.data.profile_pic);
-                localStorage.setItem('profile_img', response.data.profile_pic)
+                // const profileStore = useProfileImgStore();
+                // profileStore.setProfilePic(response.data.profile_pic);
+                // localStorage.setItem('profile_img', response.data.profile_pic)
 
                 this.name = response.data.user_name
                 this.email = response.data.user_email

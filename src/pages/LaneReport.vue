@@ -1,6 +1,6 @@
 <script>
 import Layout from '../components/Layout.vue';
-import { useAlertStore } from '../stores';
+import { useAuthStore, useAlertStore } from '../stores';
 import { fetchWrapper } from '../helpers/fetch-wrapper';
 import Label from '../subcomponents/Label.vue';
 import Select from '../subcomponents/Select.vue';
@@ -44,6 +44,10 @@ export default {
         this.tollData();
         this.shiftData();
         this.laneData();
+        const authStore = useAuthStore();
+        const title = "Lane Report | Smtoll"
+        const description = "this is description for Lane Report."
+        authStore.chnageTitle(title, description)
     },
     methods: {
         handleStartDateInput(event) {
@@ -92,7 +96,6 @@ export default {
             }
             this.laneSelected = option.l_name
         },
-
 
         getManualTicket(e, index, item) {
             const manualObj = {
@@ -183,42 +186,70 @@ export default {
                 try {
                     const response = await fetchWrapper.post(`${baseUrl}/admin/lane-report`, lane_report_data);
                     this.LaneReportArray = response.data;
+                    if (this.LaneReportArray && this.LaneReportArray.length > 0 && response.success === 1) {
 
-                    this.ticketCounts = this.LaneReportArray.reduce((total, item) => {
-                        return total + item.ticket_count;
-                    }, 0);
-                    this.AmountTotal = this.LaneReportArray.reduce((total, item) => {
-                        return total + item.vehicle_price;
-                    }, 0);
-                    this.cancelTicketCounts = this.LaneReportArray.reduce((total, item) => {
-                        return total + item.cancelled_ticket;
-                    }, 0);
-                    this.cancelTicketAmountTotal = this.LaneReportArray.reduce((total, item) => {
-                        return total + item.cancelled_ticket_amount;
-                    }, 0);
-                    this.manualTickets = this.LaneReportArray.reduce((total, item) => {
-                        return total + item.manual_ticket;
-                    }, 0);
-                    this.manualTicketsAmount = this.LaneReportArray.reduce((total, item) => {
-                        return total + item.manual_ticket_amount;
-                    }, 0);
-                    this.totalTicket = this.LaneReportArray.reduce((total, item) => {
-                        return total + item.total_ticket;
-                    }, 0);
-                    this.totalAmount = this.LaneReportArray.reduce((total, item) => {
-                        return total + item.total_amount;
-                    }, 0);
-
+                        this.ticketCounts = this.LaneReportArray.reduce((total, item) => {
+                            return total + item.ticket_count;
+                        }, 0);
+                        this.AmountTotal = this.LaneReportArray.reduce((total, item) => {
+                            return total + item.vehicle_price;
+                        }, 0);
+                        this.cancelTicketCounts = this.LaneReportArray.reduce((total, item) => {
+                            return total + item.cancelled_ticket;
+                        }, 0);
+                        this.cancelTicketAmountTotal = this.LaneReportArray.reduce((total, item) => {
+                            return total + item.cancelled_ticket_amount;
+                        }, 0);
+                        this.manualTickets = this.LaneReportArray.reduce((total, item) => {
+                            return total + item.manual_ticket;
+                        }, 0);
+                        this.manualTicketsAmount = this.LaneReportArray.reduce((total, item) => {
+                            return total + item.manual_ticket_amount;
+                        }, 0);
+                        this.totalTicket = this.LaneReportArray.reduce((total, item) => {
+                            return total + item.total_ticket;
+                        }, 0);
+                        this.totalAmount = this.LaneReportArray.reduce((total, item) => {
+                            return total + item.total_amount;
+                        }, 0);
+                    } else {
+                        const alertStore = useAlertStore();
+                        alertStore.error(response.message)
+                    }
                 } catch (error) {
                     const alertStore = useAlertStore();
                     alertStore.error(error)
                 }
             } else {
                 const alertStore = useAlertStore();
-                alertStore.error('Please select Toll Plaza, Start Date, and End Date.')
+                alertStore.error('Please select Toll Plaza, Start Date, Shift and Lane Select After Show Records.')
             }
         },
 
+        printdiv(elem) {
+            if (this.reportTollPlaza && this.reportStartDate && this.reportShift && this.reportLane) {
+                var header_str = '<html><head><title>' + document.title + '</title></head><body>';
+                var footer_str = '</body></html>';
+                var new_str = document.getElementById(elem).innerHTML;
+                var old_str = document.body.innerHTML;
+                document.body.innerHTML = header_str + new_str + footer_str;
+                window.print();
+                document.body.innerHTML = old_str;
+                return false;
+            } else {
+                const alertStore = useAlertStore();
+                alertStore.error('Please select Toll Plaza, Start Date, Shift and Lane Select After Print.')
+            }
+        },
+
+        formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            const pad = (num) => (num < 10 ? '0' : '') + num;
+            return `${pad(day)}-${pad(month)}-${year}`;
+        }
     },
 }
 </script>
@@ -255,7 +286,8 @@ export default {
                     <button class="bg-[#007BFF] px-3.5 py-2 rounded-md text-white"
                         @click="laneReport()">Generate</button>
                     <button class="bg-[#007BFF] px-3.5 py-2 rounded-md text-white">Reset</button>
-                    <button class="bg-[#17A2B8] px-3.5 py-2 rounded-md text-white flex items-center gap-1">
+                    <button @click="printdiv('printable-content')"
+                        class="bg-[#17A2B8] px-3.5 py-2 rounded-md text-white flex items-center gap-1">
                         <span>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -309,17 +341,16 @@ export default {
             </div>
 
 
-
-            <div class="text-center mt-9" v-if="this.LaneReportArray && this.LaneReportArray.length > 0">
-                <div>
-                    <p>Daily report - {{ reportStartDate }}</p>
-                    <p>Lane - {{ laneSelected }}</p>
-                    <p>Shift - {{ shiftSelected }}</p>
-                    <p>Toll Plaza: {{ tollSelected }}</p>
+            <div id="printable-content" v-if="this.LaneReportArray && this.LaneReportArray.length > 0">
+                <div class="text-center mt-9">
+                    <div>
+                        <p>Daily report - {{ formatDate(reportStartDate) }}</p>
+                        <p>Lane - {{ laneSelected }}</p>
+                        <p>Shift - {{ shiftSelected }}</p>
+                        <p>Toll Plaza: {{ tollSelected }}</p>
+                    </div>
                 </div>
-            </div>
 
-            <div v-if="this.LaneReportArray && this.LaneReportArray.length > 0">
                 <div>
                     <div class="w-full border-t border-solid border-Grey_20 mt-6">
                         <div class="flex items-center border-b border-solid border-Grey_20">
@@ -393,7 +424,7 @@ export default {
                                             <p class="color-Grey_90 text-base">Rs {{ item.cancelled_ticket_amount }}</p>
                                         </div>
                                         <div class="w-1/4 flex-1 flex items-center justify-between px-2.5">
-                                            <input type="number" v-model="item.manual_ticket"
+                                            <input type="number" value="0"
                                                 @change="getManualTicket($event, index, item.veihcle_id)"
                                                 class="input-1 max-w-[60px] max-h-[32px] text-right !px-1.5" />
                                             <p class="color-Grey_90 text-base">Rs {{ item.manual_ticket_amount }}</p>
@@ -484,10 +515,9 @@ export default {
                     </div>
                 </div>
             </div>
-
-
-
-            <p class="text-center mt-6" v-else>First, select the required field, and after the available data</p>
+            <div v-else>
+                <p class="text-center mt-6">First, select the required field, and after the available data</p>
+            </div>
 
 
 
