@@ -4,7 +4,6 @@ export default {
     computed: {
         isRole1() {
             const userRole = localStorage.getItem('role');
-            console.log('isRole1:', userRole === '1');
             return userRole === '1';
         },
         isTollCrudActive() {

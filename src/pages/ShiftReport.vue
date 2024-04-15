@@ -148,22 +148,26 @@ export default {
                 try {
                     const response = await fetchWrapper.post(`${baseUrl}/admin/shift-report`, shift_report_data);
                     this.shiftReportArray = response.data;
+                    if (this.shiftReportArray && this.shiftReportArray.lane_reports.length > 0) {
+                        const vehicleTotals = this.calculateTotals(this.shiftReportArray);
+                        this.vehicleTotalsArray = Object.keys(vehicleTotals).map(vehicle_name => ({
+                            vehicle_name,
+                            total_vehicle_price: vehicleTotals[vehicle_name].total_vehicle_price,
+                            total_ticket_count: vehicleTotals[vehicle_name].total_ticket_count
+                        }));
 
-                    const vehicleTotals = this.calculateTotals(this.shiftReportArray);
-                    this.vehicleTotalsArray = Object.keys(vehicleTotals).map(vehicle_name => ({
-                        vehicle_name,
-                        total_vehicle_price: vehicleTotals[vehicle_name].total_vehicle_price,
-                        total_ticket_count: vehicleTotals[vehicle_name].total_ticket_count
-                    }));
+                        this.totalOfAmount = 0;
+                        this.totalOfTickets = 0;
 
-                    this.totalOfAmount = 0;
-                    this.totalOfTickets = 0;
-
-                    this.shiftReportArray.lane_reports.forEach(laneReport => {
-                        this.totalOfAmount += laneReport.total_amount;
-                        this.totalOfTickets += laneReport.total_tickets;
-                    });
-
+                        this.shiftReportArray.lane_reports.forEach(laneReport => {
+                            this.totalOfAmount += laneReport.total_amount;
+                            this.totalOfTickets += laneReport.total_tickets;
+                        });
+                    } else {
+                        const alertStore = useAlertStore();
+                        // alertStore.error("This Selected Toll And Shift Have Data No Found.")
+                        alertStore.error(response.message);
+                    }
                 } catch (error) {
                     const alertStore = useAlertStore();
                     alertStore.error(error)
@@ -183,7 +187,10 @@ export default {
                 document.body.innerHTML = header_str + new_str + footer_str;
                 window.print();
                 document.body.innerHTML = old_str;
-                return false;
+                // return false;
+                setTimeout(function() {
+                    location.reload();
+                })
             } else {
                 const alertStore = useAlertStore();
                 alertStore.error('Please select Toll Plaza, Start Date, and Shift Select After Print.')
@@ -261,44 +268,44 @@ export default {
                     </div>
                 </div>
 
-                    <div class="mt-6 border-t border-solid border-Grey_20 flex items-end">
-                        <div class="w-[12%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
-                            <p class="color-Grey_90 font-bold text-base">Journey Type</p>
-                        </div>
-                        <div class="w-[88%] flex-1 flex  items-end">
-                            <div class=" w-full flex-1 flex items-end">
-                                <div class="w-[13%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
-                                    <p class="color-Grey_90 font-bold text-base">Lane Name</p>
-                                </div>
-                                <div class="w-[75%] flex border-b flex-1 border-solid  border-Grey_20"
-                                    v-for="(item, index) in shiftReportArray.vehicle" :key="index">
-                                    <div class="flex-1">
-                                        <p
-                                            class="color-Grey_90 py-1.5 px-6 font-bold text-center text-base line-clamp-1">
-                                            {{ item.vehicle_name }}</p>
-                                        <div
-                                            class="flex items-center py-1.5 px-6 justify-between gap-6 border-t border-solid border-Grey_20">
-                                            <p class="color-Grey_90 font-bold text-base">#</p>
-                                            <p class="color-Grey_90 font-bold text-base">Amt</p>
-                                        </div>
+                <div class="mt-6 border-t border-solid border-Grey_20 flex items-end">
+                    <div class="w-[12%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
+                        <p class="color-Grey_90 font-bold text-base">Journey Type</p>
+                    </div>
+                    <div class="w-[88%] flex-1 flex  items-end">
+                        <div class=" w-full flex-1 flex items-end">
+                            <div class="w-[13%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
+                                <p class="color-Grey_90 font-bold text-base">Lane Name</p>
+                            </div>
+                            <div class="w-[75%] flex border-b flex-1 border-solid  border-Grey_20"
+                                v-for="(item, index) in shiftReportArray.vehicle" :key="index">
+                                <div class="flex-1">
+                                    <p class="color-Grey_90 py-1.5 px-6 font-bold text-center text-base line-clamp-1">
+                                        {{ item.vehicle_name }}</p>
+                                    <div
+                                        class="flex items-center py-1.5 px-6 justify-between gap-6 border-t border-solid border-Grey_20">
+                                        <p class="color-Grey_90 font-bold text-base">#</p>
+                                        <p class="color-Grey_90 font-bold text-base">Amt</p>
                                     </div>
                                 </div>
-                                <div class="w-[13%] flex border-b flex-1 border-solid border-Grey_20">
-                                    <div class="flex-1">
-                                        <p class="color-Grey_90 py-1.5 px-6 font-bold text-center text-base">
-                                            Total
-                                        </p>
-                                        <div
-                                            class="flex items-center py-1.5 px-6 justify-between gap-6 border-t border-solid border-Grey_20">
-                                            <p class="color-Grey_90 font-bold text-base">#</p>
-                                            <p class="color-Grey_90 font-bold text-base">Amt</p>
-                                        </div>
+                            </div>
+                            <div class="w-[13%] flex border-b flex-1 border-solid border-Grey_20">
+                                <div class="flex-1">
+                                    <p class="color-Grey_90 py-1.5 px-6 font-bold text-center text-base">
+                                        Total
+                                    </p>
+                                    <div
+                                        class="flex items-center py-1.5 px-6 justify-between gap-6 border-t border-solid border-Grey_20">
+                                        <p class="color-Grey_90 font-bold text-base">#</p>
+                                        <p class="color-Grey_90 font-bold text-base">Amt</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div v-if="shiftReportArray.lane_reports.length > 0">
                     <div class="flex items-end" v-for="(item, index) in shiftReportArray.lane_reports" :key="index">
                         <div class="w-[12%] py-1.5 px-1.5"></div>
                         <div class="w-[88%] flex-1 flex  items-end">
@@ -326,6 +333,7 @@ export default {
                             </div>
                         </div>
                     </div>
+
 
                     <div class="flex items-end">
                         <div class="w-[12%] py-1.5 px-1.5 border-b border-solid border-Gray-200"></div>
@@ -359,6 +367,7 @@ export default {
                         </div>
                     </div>
 
+
                     <div class="mt-6 border-t border-solid border-Grey_20 flex items-end">
                         <div class="w-[12%] py-1.5 px-1.5 border-b border-solid border-Grey_20">
                             <p class="color-Grey_90 font-bold text-base">Grand Total</p>
@@ -391,7 +400,10 @@ export default {
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div v-else>
+                    <p class="text-center mt-9">This Selected Date Has no Record Found.</p>
+                </div>
             </div>
             <div v-else>
                 <p class="text-center mt-9">First, select the required field, and after the available data</p>

@@ -235,7 +235,10 @@ export default {
                 document.body.innerHTML = header_str + new_str + footer_str;
                 window.print();
                 document.body.innerHTML = old_str;
-                return false;
+                // return false;
+                setTimeout(function() {
+                    location.reload();
+                })
             } else {
                 const alertStore = useAlertStore();
                 alertStore.error('Please select Toll Plaza, Start Date, Shift and Lane Select After Print.')

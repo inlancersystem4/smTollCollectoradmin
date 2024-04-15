@@ -94,25 +94,7 @@ export default {
                     const response = await fetchWrapper.post(`${baseUrl}/admin/daily-reports`, daily_report_data);
                     this.dailyReportArray = response.data;
                     if (this.dailyReportArray && this.dailyReportArray.length > 0 && response.success === 1) {
-
-                        this.ticketCounts = this.dailyReportArray.reduce((total, item) => {
-                            return total + item.ticket_count;
-                        }, 0);
-                        this.AmountTotal = this.dailyReportArray.reduce((total, item) => {
-                            return total + item.vehicle_price;
-                        }, 0);
-                        this.cancelTicketCounts = this.dailyReportArray.reduce((total, item) => {
-                            return total + item.cancelled_ticket;
-                        }, 0);
-                        this.cancelTicketAmountTotal = this.dailyReportArray.reduce((total, item) => {
-                            return total + item.cancelled_ticket_amount;
-                        }, 0);
-                        this.totalTicket = this.dailyReportArray.reduce((total, item) => {
-                            return total + item.total_ticket;
-                        }, 0);
-                        this.totalAmount = this.dailyReportArray.reduce((total, item) => {
-                            return total + item.total_amount;
-                        }, 0);
+                        this.calculateTotals();
                     } else {
                         const alertStore = useAlertStore();
                         alertStore.error(response.message)
@@ -128,6 +110,15 @@ export default {
             }
         },
 
+        calculateTotals() {
+            this.ticketCounts = this.dailyReportArray.reduce((total, item) => total + item.ticket_count, 0);
+            this.AmountTotal = this.dailyReportArray.reduce((total, item) => total + item.vehicle_price, 0);
+            this.cancelTicketCounts = this.dailyReportArray.reduce((total, item) => total + item.cancelled_ticket, 0);
+            this.cancelTicketAmountTotal = this.dailyReportArray.reduce((total, item) => total + item.cancelled_ticket_amount, 0);
+            this.totalTicket = this.dailyReportArray.reduce((total, item) => total + item.total_ticket, 0);
+            this.totalAmount = this.dailyReportArray.reduce((total, item) => total + item.total_amount, 0);
+        },
+
         printdiv(elem) {
             if (this.reportTollPlaza && this.reportStartDate && this.reportEndDate) {
                 var header_str = '<html><head><title>' + document.title + '</title></head><body>';
@@ -137,19 +128,30 @@ export default {
                 document.body.innerHTML = header_str + new_str + footer_str;
                 window.print();
                 document.body.innerHTML = old_str;
-                return false;
+                setTimeout(function() {
+                    location.reload();
+                })
+
+                // const printableContent = document.getElementById('printable-content');
+                // if (printableContent) {
+                //     const printWindow = window.open('', '_blank');
+                //     printWindow.document.write(printableContent.innerHTML);
+                //     printWindow.document.close();
+                //     printWindow.print();
+                //     printWindow.close();
+                // }
             } else {
                 const alertStore = useAlertStore();
-                alertStore.error('Please select Toll Plaza, Start Date, and End Date After Print.')
+                alertStore.error('Please select Toll Plaza, Start Date, and End Date After Print.');
             }
         },
 
         formatDate(timestamp) {
-            const date  = new Date(timestamp);
-            const day   = date.getDate();
+            const date = new Date(timestamp);
+            const day = date.getDate();
             const month = date.getMonth() + 1;
-            const year  = date.getFullYear();
-            const pad   = (num) => (num < 10 ? '0' : '') + num;
+            const year = date.getFullYear();
+            const pad = (num) => (num < 10 ? '0' : '') + num;
             return `${pad(day)}-${pad(month)}-${year}`;
         },
     }
