@@ -179,21 +179,38 @@ export default {
         },
 
         printdiv(elem) {
+            const printableContent = document.getElementById(elem);
+
+            if (!printableContent || !printableContent.innerHTML) {
+                const alertStore = useAlertStore();
+                alertStore.error("No printable content found.");
+                return;
+            }
+
             if (this.reportTollPlaza && this.reportStartDate && this.reportShift) {
-                var header_str = '<html><head><title>' + document.title + '</title></head><body>';
-                var footer_str = '</body></html>';
-                var new_str = document.getElementById(elem).innerHTML;
-                var old_str = document.body.innerHTML;
-                document.body.innerHTML = header_str + new_str + footer_str;
-                window.print();
-                document.body.innerHTML = old_str;
-                // return false;
-                setTimeout(function() {
-                    location.reload();
-                })
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('toll-plaza', this.reportTollPlaza);
+                urlParams.set('start-date', this.reportStartDate);
+                urlParams.set('shift', this.reportShift);
+                const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+
+                var newWindow = window.open(newUrl, '_blank');
+
+                if (newWindow) {
+                    newWindow.onload = () => {
+                        newWindow.document.body.innerHTML = printableContent.innerHTML;
+                        newWindow.print();
+                        newWindow.onafterprint = () => {
+                            newWindow.close();
+                        };
+                    };
+                } else {
+                    const alertStore = useAlertStore();
+                    alertStore.error('Please select Toll Plaza, Start Date, and Shift Select After Print.');
+                }
             } else {
                 const alertStore = useAlertStore();
-                alertStore.error('Please select Toll Plaza, Start Date, and Shift Select After Print.')
+                alertStore.error('Please select Toll Plaza, Start Date, and Shift Select After Print.');
             }
         },
 
@@ -259,7 +276,7 @@ export default {
                     </div>
                 </div>
             </div>
-            <div id="printable-content" v-if="shiftReportArray.vehicle && shiftReportArray.vehicle.length > 0">
+            <div id="printable-content" v-if="shiftReportArray.vehicle && shiftReportArray.vehicle.length > 0 && shiftReportArray.lane_reports.length > 0">
                 <div class="text-center mt-9">
                     <div>
                         <p>Daily report - {{ formatDate(reportStartDate) }}</p>

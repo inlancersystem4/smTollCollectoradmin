@@ -120,29 +120,38 @@ export default {
         },
 
         printdiv(elem) {
-            if (this.reportTollPlaza && this.reportStartDate && this.reportEndDate) {
-                var header_str = '<html><head><title>' + document.title + '</title></head><body>';
-                var footer_str = '</body></html>';
-                var new_str = document.getElementById(elem).innerHTML;
-                var old_str = document.body.innerHTML;
-                document.body.innerHTML = header_str + new_str + footer_str;
-                window.print();
-                document.body.innerHTML = old_str;
-                setTimeout(function() {
-                    location.reload();
-                })
+            const printableContent = document.getElementById(elem);
 
-                // const printableContent = document.getElementById('printable-content');
-                // if (printableContent) {
-                //     const printWindow = window.open('', '_blank');
-                //     printWindow.document.write(printableContent.innerHTML);
-                //     printWindow.document.close();
-                //     printWindow.print();
-                //     printWindow.close();
-                // }
+            if (!printableContent || !printableContent.innerHTML) {
+                const alertStore = useAlertStore();
+                alertStore.error("No printable content found.");
+                return;
+            }
+
+            if (this.reportTollPlaza && this.reportStartDate && this.reportEndDate) {
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('toll-plaza', this.reportTollPlaza);
+                urlParams.set('start-date', this.reportStartDate);
+                urlParams.set('end-date', this.reportEndDate);
+                const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+
+                var newWindow = window.open(newUrl, '_blank');
+
+                if (newWindow) {
+                    newWindow.onload = () => {
+                        newWindow.document.body.innerHTML = printableContent.innerHTML;
+                        newWindow.print();
+                        newWindow.onafterprint = () => {
+                            newWindow.close();
+                        };
+                    };
+                } else {
+                    const alertStore = useAlertStore();
+                    alertStore.error('Please select Toll Plaza, Start Date, and End Date before printing.');
+                }
             } else {
                 const alertStore = useAlertStore();
-                alertStore.error('Please select Toll Plaza, Start Date, and End Date After Print.');
+                alertStore.error('Please select Toll Plaza, Start Date, and End Date before printing.');
             }
         },
 
@@ -281,7 +290,7 @@ export default {
                                         }}</p>
                                     <p class="color-Grey_50 line-clamp-1  text-base text-center">Rs.{{
                                         item.vehicle_price
-                                        }}</p>
+                                    }}</p>
                                 </div>
                                 <div class="w-1/3 flex items-center justify-between py-1.5 px-6">
                                     <p class="color-Grey_50  line-clamp-1 text-base text-center">{{
